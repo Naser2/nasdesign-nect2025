@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import Login from "@/components/auth/Login"
+import AuthComponent from '@/components/auth';
 
 const AuthPage = () => {
     return (
-      <Login />
+      <AuthComponent />
         
     )
   }
