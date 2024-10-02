@@ -46,7 +46,7 @@ const AuthPage = () => {
     };
   
     // Handle registration
-    const handleRegister = async (e) => {
+    const handleRegister = async (e: { preventDefault: () => void; }) => {
       e.preventDefault();
       const { error } = await supabase.auth.signUp({
         email,
