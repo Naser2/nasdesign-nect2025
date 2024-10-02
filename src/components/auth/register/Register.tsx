@@ -53,9 +53,9 @@ export default function Register({
 
   return (
   
-     
-   
-        <div className="w-full max-w-md rounded-xl bg-white shadow-md ring-1 ring-black/5">
+    <main className="overflow-hidden bg-gray-50">
+        <GradientBackground />
+         <div className="isolate flex min-h-dvh items-center justify-center p-6 lg:p-8">
           <form action="#" method="POST" className="p-7 sm:p-11"   onSubmit={handleRegister}>
             <div className="flex items-start">
               <Link href="/" title="Home">
@@ -241,7 +241,8 @@ export default function Register({
         
         </form>
        </div>
-       
+      
+     </main>
 
 
   )

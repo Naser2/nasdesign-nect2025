@@ -14,7 +14,7 @@ import { Button } from '@/components/button'
 import { clsx } from 'clsx'
 import type { Metadata } from 'next'
 import {GoogleButton, AppleButton, MicrosoftButton} from '@/components/auth/auth-buttons'
-import Login from './login/Login';
+import Login from '@/components/auth/login/Login';
 import Register from './register/Register';
 export const metadata: Metadata = {
   title: 'Login',
