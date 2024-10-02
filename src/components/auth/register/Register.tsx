@@ -78,13 +78,28 @@ export default function Register({
                   </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <label
+                           <label
                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             htmlFor="firstName"
                             >
                             {/* First Name */}
                             </label>
-                            <input
+                         <Field className="mt-0 space-y-3">
+                          <Label className="text-sm/5 font-medium">First Name</Label>
+                            <Input    onChange={(e) => setFirstName(e.target.value)}
+                              required
+                              autoFocus
+                              id="firstName"
+                              type="text"
+                              value={firstName}
+                              className={clsx(
+                                'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
+                                'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
+                                'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
+                              )}
+                            />
+                          </Field>
+                            {/* <input
                             className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             id="firstName"
                             type="text"
@@ -92,16 +107,32 @@ export default function Register({
                             onChange={(e) => setFirstName(e.target.value)}
                             required
                             placeholder="John"
-                            />
+                            /> */}
                         </div>
                         <div className="space-y-2">
+                          
                             <label
                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             htmlFor="lastName"
                             >
                             {/* Last Name */}
                             </label>
-                            <input
+                            <Field className="mt-0 space-y-3">
+                          <Label className="text-sm/5 font-medium">Last Name</Label>
+                            <Input    onChange={(e) => setLastName(e.target.value)}
+                              required
+                              autoFocus
+                              id="lastName"
+                              type="text"
+                              value={lastName}
+                              className={clsx(
+                                'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
+                                'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
+                                'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
+                              )}
+                            />
+                          </Field>
+                           {/* <input
                             className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             id="lastName"
                             type="text"
@@ -109,7 +140,7 @@ export default function Register({
                             onChange={(e) => setLastName(e.target.value)}
                             required
                             placeholder="Doe"
-                            />
+                            /> */}
                         </div>
                       </div>
                         
@@ -122,7 +153,37 @@ export default function Register({
                           >
                               {/* Phone Number */}
                           </label>
-                          <input
+                          <Field className="mt-0 space-y-3">
+                          <Label className="text-sm/5 font-medium">Email</Label>
+                            <Input  onChange={(e) => setEmail(e.target.value)}
+                              required
+                              autoFocus
+                              type="email"
+                              name="email"
+                              value={email}
+                              className={clsx(
+                                'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
+                                'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
+                                'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
+                              )}
+                            />
+                          </Field>
+                          <Field className="mt-0 space-y-3">
+                          <Label className="text-sm/5 font-medium">Phone</Label>
+                            <Input    onChange={(e) => setPhone(e.target.value)}
+                              required
+                              autoFocus
+                              id="phone"
+                              type="text"
+                              value={phone}
+                              className={clsx(
+                                'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
+                                'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
+                                'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
+                              )}
+                            />
+                          </Field>
+                          {/* <input
                               className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                               id="phone"
                               type="text"
@@ -130,7 +191,7 @@ export default function Register({
                               onChange={(e) => setPhone(e.target.value)}
                               required
                               placeholder="(555) 123-4567"
-                          />
+                          /> */}
                         </div>
                     
 
@@ -141,15 +202,22 @@ export default function Register({
                             >
                             {/* Email */}
                             </label>
-                            <input
-                            className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            placeholder="anick@odfit.com"
+                         <Field className="mt-0 space-y-3">
+                           <Label className="text-sm/5 font-medium">Password</Label>
+                            <Input 
+                             autoFocus
+                             id="password"
+                             type="password"
+                             onChange={(e) => setPassword(e.target.value)}
+                             required
+                             placeholder="•••••••"
+                             className={clsx(
+                               'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
+                               'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
+                               'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
+                             )}
                             />
+                          </Field>
                         </div>
 
                           <div className="space-y-4">
@@ -159,7 +227,23 @@ export default function Register({
                             >
                             {/* Password */}
                             </label>
-                            <input
+                         {/* <Field className="mt-0 space-y-3">
+                           <Label className="text-sm/5 font-medium">Password</Label>
+                            <Input
+                              autoFocus
+                              id="password"
+                              type="password"
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                              placeholder="•••••••"
+                              className={clsx(
+                                'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
+                                'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
+                                'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
+                              )}
+                            />
+                          </Field> */}
+                            {/* <input
                             className="flex h-10 w-full rounded-md border focus:ring-black border-input focus:border-indigo-50 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             id="password"
                             type="password"
@@ -167,7 +251,7 @@ export default function Register({
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             placeholder="•••••••"
-                            />
+                            /> */}
                         </div>
 
                         
