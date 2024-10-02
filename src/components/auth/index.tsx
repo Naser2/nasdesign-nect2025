@@ -75,7 +75,7 @@ const AuthComponent = () => {
         <GradientBackground />
         <div className="isolate flex min-h-dvh items-center justify-center p-6 lg:p-8">
           <div className="w-full max-w-md rounded-xl bg-white shadow-md ring-1 ring-black/5">
-           <Login
+         { !isRegistering ? <Login
             isRegistering={isRegistering}
             setIsRegistering={setIsRegistering}
             handleLogin={handleLogin}
@@ -84,23 +84,24 @@ const AuthComponent = () => {
             email={email}
             password={password}
             errorMessage={errorMessage}
-           />
+           /> : 
            <Register
-                isRegistering={isRegistering}
-                setIsRegistering={setIsRegistering}
-                handleRegister={handleRegister}
-                setEmail={setEmail}
-                setFirstName={setFirstName}
-                setLastName={setLastName}
-                setPassword={setPassword}
-                setPhone={setPhone}
-                phone={phone}
-                firstName={firstName}
-                lastName={lastName}
-                email={email}
-                password={password}
-                errorMessage={errorMessage}
-            />
+           isRegistering={isRegistering}
+           setIsRegistering={setIsRegistering}
+           handleRegister={handleRegister}
+           setEmail={setEmail}
+           setFirstName={setFirstName}
+           setLastName={setLastName}
+           setPassword={setPassword}
+           setPhone={setPhone}
+           phone={phone}
+           firstName={firstName}
+           lastName={lastName}
+           email={email}
+           password={password}
+           errorMessage={errorMessage}
+       />}
+        
 
           </div>
        </div>
