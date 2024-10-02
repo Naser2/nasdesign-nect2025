@@ -32,7 +32,7 @@ const AuthPage = () => {
     const supabase = createClient();
   
     // Handle login
-    const handleLogin = async (e) => {
+    const handleLogin = async (e: { preventDefault: () => void; }) => {
       e.preventDefault();
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -73,7 +73,7 @@ const AuthPage = () => {
        
     
           <div className="mx-auto max-w-7xl xl:w-full flex-block xl:grid x:grid-cols-12">
-            <div className="px-6 pb-24 isolate py-4 xl:w-full xl:grid  
+            <div className="pb-24 isolate py-4 xl:w-full xl:grid  
                             gap-6 flex-wrap items-center w-full pt-10 
                             sm:pb-32 xl:!col-span-8 lg:px-0 lg:pb-56
                             lg:pt-38 xl:col-span-6"
@@ -81,9 +81,9 @@ const AuthPage = () => {
              <GradientBackground />
              {/* ------------------- AUTH FORM BEGIN ------------ */}
            
-             <div className="relative mx-4 ax-w-md  lg:max-w-2xl   mlg:max-w-[79rem] xl:max-w-[25vw]"> 
-                   <div className="mx-auto lg:mx-0">
-                    <div className="logo flex gap-x-4">
+             <div className="relative mx-4 ax-w-md   lg:max-w-2xl   mlg:max-w-[79rem] xl:max-w-[25vw]"> 
+                   <div className="px-6 mx-auto lg:mx-0">
+                    <div className="max-[600px]:justify-center p-6 mx-2 logo flex gap-x-4">
                         <Link href="/" aria-label="Home">
                             <CompanyLogo  color={"text-black"}/>
                         </Link>
@@ -95,7 +95,7 @@ const AuthPage = () => {
                         aria-labelledby="radix-:r0:-trigger-account"
                         id="radix-:r0:-content-account"
                         tabIndex={0}
-                        className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        className="mx-10 max-w-[90vw] mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     >
                      <div className="rounded-xl border bg-card text-card-foreground shadow">
                         <div className="flex flex-col space-y-1.5 p-6">
@@ -121,7 +121,7 @@ const AuthPage = () => {
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     htmlFor="firstName"
                                     >
-                                    First Name
+                                    {/* First Name */}
                                     </label>
                                     <input
                                     className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -138,7 +138,7 @@ const AuthPage = () => {
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     htmlFor="lastName"
                                     >
-                                    Last Name
+                                    {/* Last Name */}
                                     </label>
                                     <input
                                     className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -159,7 +159,7 @@ const AuthPage = () => {
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     htmlFor="phone"
                                 >
-                                    Phone Number
+                                    {/* Phone Number */}
                                 </label>
                                 <input
                                     className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -178,7 +178,7 @@ const AuthPage = () => {
                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 htmlFor="email"
                                 >
-                                Email
+                                {/* Email */}
                                 </label>
                                 <input
                                 className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -196,7 +196,7 @@ const AuthPage = () => {
                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 htmlFor="password"
                                 >
-                                Password
+                                {/* Password */}
                                 </label>
                                 <input
                                 className="flex h-10 w-full rounded-md border focus:ring-black border-input focus:border-indigo-50 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -219,12 +219,12 @@ const AuthPage = () => {
                          
                               
                             
-                   <div className="px-8 mt-8 flex items-center justify-between text-sm/5">
+                   <div className="px-2 mt-8 flex items-center justify-between text-sm/5">
                      <Field className="flex items-center gap-3">
                          <div>  {isRegistering ? 
                             
                              <Label className={clsx( )}>
-                                 Already have an account ?
+                                 Already member?
                                </Label>
                         
                              :   "Don't have an account?"
@@ -239,7 +239,7 @@ const AuthPage = () => {
                         
                           
                             {isRegistering &&  
-                            <div className="block  px-8 py-4 ">
+                            <div className="block  lg:px-8 py-4 ">
                                   <div className=" divider-wrapper !mt-[-4em] !w-[10px]">
                               {/* <span className="divider">-Or-</span> */}
                             </div>  
@@ -294,7 +294,7 @@ const AuthPage = () => {
                         Forgot password ?
                         </a>
                         <a href="/reset-password" className="text-sm font-semibold leading-6 text-gray-900">
-                        Resend Confirmation Email ? <span aria-hidden="true">→</span>
+                        Resend Confirmation ? <span aria-hidden="true">→</span>
                         </a>
                     </div>
                 </div>
