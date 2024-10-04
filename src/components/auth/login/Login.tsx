@@ -56,7 +56,8 @@ export default function Login( {
                     {isRegistering ? 'Register' : 'Login'}
                 </h1>
             </div>
-            {errorMessage && errorMessage}
+            
+            <p className="text-red-600">{errorMessage && errorMessage}</p>
             <Field className="mt-0 space-y-3">
               <Label className="text-sm/5 font-medium">Email</Label>
               <Input  onChange={(e) => setEmail(e.target.value)}

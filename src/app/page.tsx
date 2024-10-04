@@ -33,7 +33,7 @@ function Hero() {
               href="/blog/radiant-raises-100m-series-a-from-tailwind-ventures"
               className="flex items-center gap-1 rounded-full bg-fuchsia-950/35 px-3 py-0.5 text-sm/6 font-medium text-white data-[hover]:bg-fuchsia-950/30"
             >
-              Radiant raises $100M Series A from Tailwind Ventures
+             NasDesign raises $100M Series A from Tailwind Ventures
               <ChevronRightIcon className="size-4" />
             </Link>
           }
@@ -43,7 +43,7 @@ function Hero() {
             Close every deal.
           </h1>
           <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-950/75 sm:text-2xl/8">
-            Radiant helps you sell more by revealing sensitive information about
+          NasDesign helps you connect with your audience by revealing sensitive information about
             your customers.
           </p>
           <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">

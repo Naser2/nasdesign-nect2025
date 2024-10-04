@@ -10,6 +10,7 @@ import { motion } from 'framer-motion'
 import { Link } from './link'
 import { Logo } from './logo'
 import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid'
+import CompanyLogo from './CompanyLogo'
 
 const links = [
   { href: '/pricing', label: 'Pricing' },
@@ -76,6 +77,11 @@ function MobileNav() {
 }
 
 export function Navbar({ banner }: { banner?: React.ReactNode }) {
+  let transition = {
+    duration: 0.5,
+    ease: 'easeInOut',
+  }
+
   return (
     <Disclosure as="header" className="pt-12 sm:pt-16">
       <PlusGrid>
@@ -83,7 +89,36 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
           <div className="relative flex gap-6">
             <PlusGridItem className="py-3">
               <Link href="/" title="Home">
-                <Logo className="h-9" />
+               <div className="inline-flex max-w-[10vw] bg-white rounded-full px-1.5 py-1 pr-2 ">
+                 <Logo className="h-9" />
+                 <motion.g
+                     variants={{
+                      idle: { scale: 1, opacity: 1 },
+                      active: {
+                      scale: [1, 1.1, 1],
+                      opacity: [1, 0.75, 1],
+                      transition: {
+                        ...transition,
+                        delay: 0.45,
+                      },
+                    },
+                   }}><h3 className='-ml-[5.5em] mt-1.5 text-black font-bold'>NasDesign</h3>
+                     </motion.g>
+                  {/* <motion.g
+                     variants={{
+                      idle: { scale: 1, opacity: 1 },
+                      active: {
+                      scale: [1, 1.1, 1],
+                      opacity: [1, 0.75, 1],
+                      transition: {
+                        ...transition,
+                        delay: 0.45,
+                      },
+                    },
+                   }}><CompanyLogo color={"black"} />
+                     </motion.g> */}
+               {/* <h5 className='text-black'>NasDesign</h5> */}
+               </div>
               </Link>
             </PlusGridItem>
             {banner && (

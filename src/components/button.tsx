@@ -24,7 +24,7 @@ const variants = {
   ),
 }
 
-type ButtonProps = {
+export type ButtonProps = {
   variant?: keyof typeof variants
 } & (
   | React.ComponentPropsWithoutRef<typeof Link>
