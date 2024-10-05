@@ -27,6 +27,7 @@ function Hero() {
     <div className="relative">
       <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-inset ring-black/5" />
       <Container className="relative">
+      {/* <Navbar /> */}
         <Navbar
           banner={
             <Link

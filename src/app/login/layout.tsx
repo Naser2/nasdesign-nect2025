@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import { ViewTransitions } from 'next-view-transitions';
 import { Toaster } from 'sonner';
-import "../globals.scss";
 
-import { AppWrapper } from "../context";
 
 export const metadata: Metadata = {
   title: "NasDesign Web-app by @nassersanou",
-  description: "Generated with Next.js.",
+  description: "Login to the best website maker, better than wix",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -18,13 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en"> 
      <ViewTransitions>
-  
-         <body>
-          <AppWrapper>
-            {children}
-          </AppWrapper>
-          <Toaster position="top-right" richColors />
-         </body>
+      <body>
+        {children}
+        <Toaster position="top-right" richColors />
+      </body>
         </ViewTransitions>
     </html>
   );

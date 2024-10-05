@@ -4,8 +4,9 @@ import ProfileAvatar from "./ProfileAvatar";
 import ProfileHeader from "./ProfileHeader";
 import InstagramTabs from "./InstagramTabs";
 import UserAvatar from "./UserAvatar";
-import { Button, buttonVariants } from "../button";
-import { SupabaseUserProfile } from "../../lib/Types";
+import { Button} from "../button";
+import buttonVariants  from "../ButtonComponent";
+import type { SupabaseUserProfile } from "../../lib/Types";
 // import { fetchProfile } from "@/lib/data";
 import { MoreHorizontal, Settings} from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
@@ -53,7 +54,8 @@ export async function generateMetadata(
 //   const session = await auth();
 const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 const [loading, setLoading] = useState(false);
-  const isCurrentUser = session?.user.id === profile?.id;
+  // const isCurrentUser = session?.user.id === profile?.id;
+  const isCurrentUser =  profile?.id;
   console.log("IS_CURRENT_USER", isCurrentUser, "SESSION_ID", session, "USER_PROFILE", profile);
   //   the followerId here is the id of the user who is following the profile
   const isFollowing = (profile?.followedBy || []).some( (follower) => follower?.followerId === session?.user.id);
@@ -88,7 +90,7 @@ const handlesetIsHeadlessModal = () => {
               
               {isCurrentUser ? (
                 <>
-                  <Button
+                  {/* <Button
                     size={"icon"}
                     variant={"ghost"}
                     className="md:order-last"
@@ -104,27 +106,27 @@ const handlesetIsHeadlessModal = () => {
                     })}
                   >
                     Edit profile
-                  </Link>
-                  <Button
+                  </Link> */}
+                  {/* <Button
                     variant={"secondary"}
                     className="font-bold"
                     size={"sm"}
                   >
                     View archive
-                  </Button>
-                  <button 
+                  </Button> */}
+                  {/* <button 
                     type="button"
                     onClick={handleAddClick}
                     className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     <span className='text-md font-bold '>+ </span> Add 
-                  </button>
-                  <PopoverList />
+                  </button> */}
+                  {/* <PopoverList /> */}
                   {/* <TestSliderComponent session={session}  navigationOpen={isHeadlessOpen} handlesetIsHeadlessModal={handlesetIsHeadlessModal} /> */}
                 </>
               ) : (
                 <>
-                  <Button
+                  {/* <Button
                     size={"icon"}
                     variant={"ghost"}
                     className="md:order-last"
@@ -134,7 +136,7 @@ const handlesetIsHeadlessModal = () => {
                   <FollowButton
                     isFollowing={isFollowing}
                     profileId={profile.id}
-                  />
+                  /> */}
                   <Button
                     variant={"secondary"}
                     className="font-bold"

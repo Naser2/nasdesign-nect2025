@@ -41,7 +41,7 @@ const AuthPage = () => {
       if (error) {
         setErrorMessage(error.message);
       } else {
-        router.push('/private'); // Redirect on successful login
+        router.push('/profile'); // Redirect on successful login
       }
     };
   
@@ -63,7 +63,7 @@ const AuthPage = () => {
       if (error) {
         setErrorMessage(error.message);
       } else {
-        router.push('/private'); // Redirect on successful registration
+        router.push('/profile'); // Redirect on successful registration
       }
     };
     return (

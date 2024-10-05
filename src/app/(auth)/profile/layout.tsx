@@ -14,8 +14,13 @@ import { Link, ViewTransitions } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { Navbar } from "@/components/navbar";
 
 const PROFILE_OPTIONS = [
+  {
+    title: "Home",
+    route: "/"
+  },
   {
     title: "Profile",
     route: "/profile"
@@ -59,13 +64,17 @@ export default function ProfileLayout({ children }: any) {
 
   return <section>
     <div className="border-b dark:border-neutral-800">
-      <header className="container py-4 lg:py-8">
+      <div className="container py-4 lg:py-8">
+          <Navbar />
+      </div>
+  
+      {/* <header className="container py-4 lg:py-8">
         <h1 className="text-xl lg:text-[24px] font-[800]">Profile</h1>
-      </header>
+      </header> */}
     </div>
-    <div className="container py-4 lg:py-8">
+    <div className="container py-0 lg:py-0 px-0">
       <div className="grid lg:grid-cols-4 items-start gap-8">
-        <div className="grid gap-1 lg:col-span-1">
+        <div className="grid gap-1 py-4 lg:py-8 lg:col-span-1 max-[1024px]:hidden">
           {PROFILE_OPTIONS.map((item: any, key: number) => <Link href={item.route} key={key} className={`item ${pathname === item.route ? 'selected' : ''}`}>
             {item.title}
           </Link>)}

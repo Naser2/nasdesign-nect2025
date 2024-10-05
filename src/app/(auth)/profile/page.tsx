@@ -1,5 +1,5 @@
 'use client';
-import { useAppContext } from '@/app/(auth)/context';
+import { useAppContext } from '../../context';
 import ButtonComponent from '@/components/ButtonComponent';
 import {
   Card,
@@ -88,6 +88,7 @@ export default  function PrivatePage() {
 
   useEffect(() => {
     if (user) {
+      console.log("USER-Profile-IN PROFILE", user)
       const { user_metadata } = user;
       setData(user_metadata)
       setUser(user)

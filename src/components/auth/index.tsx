@@ -45,7 +45,7 @@ const AuthComponent = () => {
       if (error) {
         setErrorMessage(error.message);
       } else {
-        router.push('/private'); // Redirect on successful login
+        router.push('/profile'); // Redirect on successful login
       }
     };
   
@@ -72,8 +72,9 @@ const AuthComponent = () => {
     };
     return (
         <main className="overflow-hidden bg-gray-50">
-        <GradientBackground />
+        {/* <GradientBackground /> */}
         <div className="isolate flex min-h-dvh items-center justify-center p-6 lg:p-8">
+          {/* <h1>HELLO AUTH</h1> */}
           <div className="w-full max-w-md rounded-xl bg-white shadow-md ring-1 ring-black/5">
          { !isRegistering 
             ? 

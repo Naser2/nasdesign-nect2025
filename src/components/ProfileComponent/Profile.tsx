@@ -22,19 +22,41 @@ import {TabsDemo }from '../tabs/tabs';
 // import ProfileTabs from '../tabs/ProfileTabs';
 import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+
+import { Button} from "../button";
+import buttonVariants, { ButtonRoundedMd }  from "../ButtonComponent";
+import type { SupabaseUserProfile } from "../../lib/Types";
+// import { fetchProfile } from "@/lib/data";
+import { MoreHorizontal, Settings} from "lucide-react";
+import TaskForm from './TaskForm';
+import {PopoverList} from "./PopoverList";
+
+import * as React from "react"
+ 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import CreateProjectModal from './CreateProjectModal';
+ 
 
 export default function Profile({
   user,
+  handleChange,
   data,
   setData,
   setError,
   setSaving,
   error, 
-   success,
+  success,
   saving,
-   settings,
-   settingsPage,
+  settings,
+  settingsPage,
   editProfile,
   editProfilePage, 
   sessionUserName,
@@ -47,6 +69,7 @@ export default function Profile({
 }: {
   user: UserProps;
   data: any;
+  handleChange: (e: any) => void;
   setData: (data: any) => void;
   setError: (error: string) => void;
   setSuccess: (success: string) => void;
@@ -67,39 +90,17 @@ export default function Profile({
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showTodoForm, setShowTodoForm] = useState(false);
 
 
-  // DATABASE DATA {
-  //   user: {
-  //     id: '7c7e26cc-7735-41ac-b82a-606df0c46101',
-  //     aud: 'authenticated',
-  //     role: 'authenticated',
-  //     email: 'nassersanou23@gmail.com',
-  //     email_confirmed_at: '2024-10-02T17:49:00.497704Z',
-  //     phone: '',
-  //     confirmation_sent_at: '2024-10-02T17:47:31.431684Z',
-  //     confirmed_at: '2024-10-02T17:49:00.497704Z',
-  //     last_sign_in_at: '2024-10-02T20:55:51.244757Z',
-  //     app_metadata: { provider: 'email', providers: [Array] },
-  //     user_metadata: {
-  //       email: 'nassersanou23@gmail.com',
-  //       email_verified: false,
-  //       first_name: 'Nasser ',
-  //       last_name: 'Sanou',
-  //       phone: '1646575-3555',
-  //       phone_verified: false,
-  //       sub: '7c7e26cc-7735-41ac-b82a-606df0c46101'
-  //     },
-  //     identities: [ [Object] ],
-  //     created_at: '2024-10-02T17:47:31.392599Z',
-  //     updated_at: '2024-10-02T20:55:51.248391Z',
-  //     is_anonymous: false
-  //   }
-  // }
-  console.log("USER-Profile-IN Dynamic", user)
+  const handleAddClick = () => {
+    setShowTodoForm((prevState) => !prevState);
+  };
+  console.log("USER-Profile-IN PRIVATE", user)
   console.log(CheckInCircleIcon, GitHubIcon, LoadingDots, UploadIcon);
-  console.log("DYNAMIC_PROFILE_SESSION", session)
-  const userattr = extractSubabaseUserInfo(user);
+  // console.log("DYNAMIC_PROFILE_SESSION", session)
+  // const userattr = extractSubabaseUserInfo(user);
+  const isCurrentUser =  user !==null 
   // console.log("DYNAMIC_PROFILE_SESSION", user?.username === session?.user?.username)
   return ( <div className="min-h-screen pb-20">
            <div>
@@ -133,7 +134,53 @@ export default function Profile({
                     <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
                   )}
                 </div>
-                {user?.last_sign_in_at ? (
+                {isCurrentUser && (
+                <>
+
+                  {/* <Button
+                    size={"icon"}
+                    variant={"ghost"}
+                    className="md:order-last"
+                  >
+                    <Settings />
+                  </Button> */}
+                  {/* <Link
+                    href={`/dashboard/edit-profile`}
+                    className={buttonVariants({
+                      className: "!font-bold",
+                      variant: "secondary",
+                      size: "sm",
+                    })}
+                  >
+                    Edit profile
+                  </Link> */}
+                  <ButtonRoundedMd href='/archive'
+                    variant={"outline"}
+                    className="font-bold !bg-blue-500 rounded-md"
+                    size={"sm"}
+                  >
+                    See dashboard
+                  </ButtonRoundedMd>
+                  <button 
+                    type="button"
+                    onClick={() =>handleAddClick}
+                    className="inline-flex justify-center gap-x-1.5  border-1 border-black !bg-gray-200 
+                    rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 
+                    shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    <span className='text-md font-bold '>+ </span> Create project 
+                  </button>
+                  <Button
+                    size={"icon"}
+                    variant={"ghost"}
+                    className="md:order-last bg-gray-100 py-2 px-2 rounded-full hover:bg-gray-300"
+                  >
+                    <MoreHorizontal />
+                  </Button>
+                  <PopoverList />
+                  </>)
+              }
+                {/* {user?.last_sign_in_at ? (
                   <div className="div">
                       <button
                         disabled={loading}
@@ -152,7 +199,7 @@ export default function Profile({
                  
                     <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                      <Link target="_blank" rel="noopener noreferrer" className="inline-flex justify-center px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all" href="https://github.com/vercel/mongodb-starter">
-                      {/* <GitHubIcon /> */}
+                      <GitHubIcon />
                       <span>LinkedIn Account</span>
                      </Link>
                       <Link
@@ -161,7 +208,7 @@ export default function Profile({
                         rel="noopener noreferrer"
                         className="inline-flex justify-center px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
                       >
-                        {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
+                        <GitHubIcon className="mr-3 h-5 w-5 text-white" />
                         <h3 className='text-white flex'>Instagram Account</h3>
                       </Link>
                     </div> </div>
@@ -174,18 +221,22 @@ export default function Profile({
                         rel="noopener noreferrer"
                         className="inline-flex justify-center px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
                       >
-                        {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
+                        <GitHubIcon className="mr-3 h-5 w-5 text-white" />
                         <span className="text-white flex">Mistery Box</span>
                       </a>
 
                     </div>
-                  )}
+                  )} */}
               </div>
             </div>
           </div>
+
+          <CreateProjectModal showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm} />
+
+           {/* {showTodoForm && <TaskForm userId={session?.user?.id ?? user?._id} showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm}/>} */}
         {/* <ProfileTabs username={user.username} profile={user} session={session} /> */}
         <Profiletabs username={user.username} profile={user} session={session} />      
-          <TabsDemo />
+          {/* <TabsDemo /> */}
           {/* Tabs */}
           <div className="mt-6 sm:mt-2 2xl:mt-5">
             <div className="border-b border-gray-800">
@@ -291,3 +342,43 @@ const tabs = [
   { name: 'Work History' },
   { name: 'Contact' }
 ];
+
+
+
+
+
+export function SelectProjectType() {
+  const projectTypes = [
+    { label: "E-commerce Website", value: "ecommerce" },
+    { label: "Social Media App", value: "socialMedia" },
+    { label: "Blog Website", value: "blog" },
+    { label: "Portfolio Website", value: "portfolio" },
+    { label: "Booking App", value: "booking" },
+    { label: "Fitness App", value: "fitness" },
+    { label: "Real Estate Platform", value: "realEstate" },
+    { label: "Streaming Service", value: "streaming" },
+    { label: "Educational Platform", value: "education" }
+  ];
+
+  return (
+    <Select>
+      <SelectTrigger className="min-w-[180px] max-w-[200px]">
+        <SelectValue placeholder="Select a project type" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Project Types</SelectLabel>
+          {projectTypes.map((type) => (
+            <SelectItem key={type.value} value={type.value} className='data-[focus]:bg-indigo-600 data-[focus]:text-white'>
+              {type.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+
+
+
+

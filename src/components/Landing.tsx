@@ -11,8 +11,8 @@ const BuyButton = () => {
 
 const Header = () => {
   return <header className="flex items-center justify-between py-4 lg:py-8">
-    <Logo />
-    <div className="flex gap-2">
+     <Logo />
+     <div className="flex gap-2">
       <Button variant="link">Login</Button>
       <BuyButton />
     </div>

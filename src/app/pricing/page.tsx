@@ -649,7 +649,7 @@ export default function Pricing({
       <Container>
         <Navbar />
       </Container>
-      <Header />
+      {/* <Header /> */}
       <PricingCards />
       <PricingTable selectedTier={tier} />
       <Testimonial />

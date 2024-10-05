@@ -9,7 +9,7 @@ import {
  
 export function PopoverList() {
   return (
-    <Popover>
+    <Popover className="min-h-[100vh]">
       <PopoverTrigger asChild>
         <Button variant="outline white">Open popover</Button>
       </PopoverTrigger>

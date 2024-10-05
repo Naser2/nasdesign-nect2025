@@ -5,13 +5,10 @@
 // import { createClient } from '@/utils/supabase/client';
 // import Image from 'next/image';
 // import Login from "@/components/auth/Login"
-import AuthComponent from '../../components/auth/index.tsx';
+import AuthComponent from '../../components/auth/index';
 
 const AuthPage = () => {
-    return (
-      <AuthComponent />
-        
-    )
+    return (  <AuthComponent />)
   }
   
 

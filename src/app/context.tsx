@@ -1,8 +1,10 @@
 'use client';
 import Header from '@/components/Header';
-import Login from '@/components/Login';
+// import AuthComponent from '@/components/auth';
+
 import clientSupabase from '@/lib/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { redirect } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 
@@ -12,7 +14,7 @@ export function AppWrapper({ children }: {
   children: React.ReactNode
 }) {
   let [user, setUser] = useState<any>(undefined);
-  let [loading, setLoading] = useState<boolean>(true);
+  let [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -22,7 +24,13 @@ export function AppWrapper({ children }: {
         const { data, error } = await clientSupabase.auth.getUser();
 
         if (data) setUser(data.user)
+          else redirect('/')
+        // (!user) return <AuthComponent />  // This works in server-side context
+          
+      
       } catch (error) {
+        setLoading(false);
+        console.log(error);
         // Handle error here
       } finally {
         setLoading(false);
@@ -36,14 +44,17 @@ export function AppWrapper({ children }: {
     <Loader2 className="animate-spin" />
   </div>
 
-  if (!user) return <Login />
-
+  // if (!user) return <AuthComponent />
+  // if (!user) redirect('/(auth)/login');
+    // Prevent redirect if already on login page
+   
+   
   return (
     <AppContext.Provider value={{
       user,
       setUser
     }}>
-      <Header />
+      {/* <Header /> */}
       {children}
     </AppContext.Provider>
   );

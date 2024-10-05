@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/server"; // Using your already co
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET || "your-secret-here",
   pages: {
-    signIn: "/login",
+    signIn: "/",
   },
   providers: [
     GoogleProvider({

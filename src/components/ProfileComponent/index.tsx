@@ -145,7 +145,7 @@ export const profileWidth = 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8';
 
 
 
-export default function ProfileComponent({ user, userProfile }) {
+export default function ProfileComponent({ user, userProfile, handleChange }) {
   const  session  = useSession(); // Use Supabase session
   const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -207,7 +207,8 @@ export default function ProfileComponent({ user, userProfile }) {
   return (
     <div className="min-h-screen pb-20">
       <Profile
-       handleSave={handleSave}
+        handleChange={handleChange}
+        handleSave={handleSave}
         success={success}
         setSuccess={setSuccess}
         user={user}

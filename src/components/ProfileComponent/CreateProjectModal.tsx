@@ -1,0 +1,680 @@
+import { useState } from "react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Error from "@/components/Error";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+// import { SelectProjectType } from "./Profile";
+// import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
+// import { DialogTitle } from "@headlessui/react";
+// import {
+//   Form,
+//   FormControl,
+//   FormDescription,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+// import { UploadButton } from "@/lib/uploadthing";
+// import BlurImage from "../blur-image";
+// import { toast } from "sonner";
+
+// import { SelectProjectType } from "./Profile";
+import  UploadFileForm  from '../UploadFileForm'; // assuming you've exported it already
+
+
+export default function CreateProjectModal({ ...props }) {
+  const [open, setOpen] = useState(false);
+
+  
+
+const closeDialog = () => {
+    setOpen(false);
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline" onClick={() => setOpen(true)}>Show Dialog</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="h-[90vh] w-full">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            <CreateForm closeDialog={closeDialog} {...props} userId={props.userId} />
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+
+
+export const CreateForm = ({ closeDialog, userId }) => {
+// null to manage no selection at first
+  const [needDesign, setNeedDesign] = useState(false);
+  const [fileUrl, setFileUrl] = useState('');
+  const [projectName, setProjectName] = useState('');
+  const [description, setDescription] = useState('');
+  const [timeline, setTimeline] = useState('');
+  const [budget, setBudget] = useState('');
+  const [errors, setErrors] = useState({});
+  const [wasSubmitted, setWasSubmitted] = useState(false);
+  const  [openUploader, closeUploader] = useState(false);
+
+  const [hasDesign, setHasDesign] = useState<boolean | null>(null); // Allow both null and boolean
+
+const handleDesignChange = (e: { target: { value: string } }) => {
+  const value = e.target.value === 'yes'; // Ensuring value is a boolean
+  setHasDesign(value); // No more error since hasDesign can be boolean or null
+  setNeedDesign(!value); // Toggle needDesign based on the value
+
+  // if  (value === 'yes') { 
+  //   setHasDesign(value)
+  //    closeUploader(true)
+  // } else if (value === 'no') {
+  //    setNeedDesign(!value); 
+  //    closeUploader(true);
+  // }
+};
+
+  
+
+  const validateForm = () => {
+    let newErrors: { [key: string]: string } = {}; // Explicitly typing newErrors
+  
+    if (!projectName) newErrors['projectName'] = 'Project Name is required';
+    if (!description) newErrors['description'] = 'Description is required';
+    if (!timeline) newErrors['timeline'] = 'Project timeline is required';
+    if (!budget) newErrors['budget'] = 'Budget selection is required';
+    if (!fileUrl && hasDesign) newErrors['fileUrl'] = 'Please upload the design';
+    if (!fileUrl && !hasDesign && needDesign) newErrors['fileUrl'] = 'Upload an example is required';
+  
+    return newErrors;
+  };
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setWasSubmitted(true);
+
+    // Assuming saveProject is a function that saves the project to the database
+    const projectData = {
+      userId,
+      projectName,
+      description,
+      timeline,
+      budget,
+      fileUrl,
+      needDesign,
+    };
+
+    // saveProject(projectData);
+
+    // After successful submission
+    closeDialog();
+  };
+
+  return (
+    <div
+      className="z-20 pt-24 bg-white dark:bg-black z-50 bg-dash-sidebar flex flex-col fixed inset-y-0 h-full lg:h-screen border-l shadow-xl w-screen max-w-2xl h-full right-0 transition-all duration-100 ease-in"
+      tabIndex={-1}
+      style={{ pointerEvents: 'auto' }}
+    >
+      <header className="text-foreground text-2xl space-y-1 py-4 px-4 bg-dash-sidebar sm:px-6 border-b">
+        Create Your Project
+      </header>
+      <div className="relative flex-1 overflow-y-auto">
+        <div className="px-4 sm:px-6 space-y-10 py-6">
+          <h5>Select project type</h5>
+          <div className="text-sm grid gap-2 md:grid md:grid-cols-12">
+            <div className="flex flex-col space-y-2 col-span-4">
+              <label className="block text-foreground-light text-sm break-all" htmlFor="project_name">
+                Name
+              </label>
+            </div>
+            <div className="col-span-8">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  className="peer/input block box-border w-full rounded-md shadow-sm transition-all text-foreground"
+                  placeholder="Enter your project name"
+                />
+              </div>
+              {errors.projectName && <p className="text-red-900">{errors.projectName}</p>}
+            </div>
+          </div>
+
+          <div className="text-sm grid gap-2 md:grid md:grid-cols-12">
+            <div className="flex flex-col space-y-2 col-span-4">
+              <label className="block text-foreground-light text-sm break-all" htmlFor="project_description">
+                Description
+              </label>
+            </div>
+            <div className="col-span-8">
+              <div className="relative">
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-[30vh] peer/input block box-border w-full rounded-md shadow-sm transition-all text-foreground"
+                  placeholder="Describe your project"
+                />
+              </div>
+              {errors.description && <p className="text-red-900">{errors.description}</p>}
+            </div>
+          </div>
+
+          <h5>Do you have the design?</h5>
+          <div className="space-y-4">
+            <label>
+              <input
+                type="radio"
+                value="yes"
+                checked={hasDesign === true}
+                onChange={handleDesignChange}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="no"
+                checked={hasDesign === false}
+                onChange={handleDesignChange}
+              />
+              No
+            </label>
+          </div>
+
+          {hasDesign && <UploadFileForm fileUrl={fileUrl} setFileUrl={setFileUrl} title="Upload Design"  openUploader={openUploader} closeUploader={closeUploader}/>}
+          {!hasDesign && needDesign && <UploadFileForm fileUrl={fileUrl} setFileUrl={setFileUrl} title="Upload Example" />}
+          {errors.fileUrl && <p className="text-red-900">{errors.fileUrl}</p>}
+
+          <div className="w-full h-px my-2 bg-border" />
+          <h5>Project Urgency/Timeline</h5>
+          <input
+            type="text"
+            value={timeline}
+            onChange={(e) => setTimeline(e.target.value)}
+            className="block w-full rounded-md shadow-sm"
+            placeholder="e.g. 1 month, ASAP"
+          />
+          {errors.timeline && <p className="text-red-900">{errors.timeline}</p>}
+
+          <div className="w-full h-px my-2 bg-border" />
+          <h5>Approximate Budget</h5>
+          <fieldset className="sm:col-span-2">
+            <legend className="block text-sm font-semibold leading-6 text-gray-900">Approximate budget</legend>
+            <div className="mt-4 space-y-4 text-sm leading-6 text-gray-600">
+              <div className="flex gap-x-2.5">
+                <input
+                  type="radio"
+                  id="budget-under-25k"
+                  name="budget"
+                  value="under_25k"
+                  checked={budget === 'under_25k'}
+                  onChange={(e) => setBudget(e.target.value)}
+                  className="mt-1 h-4 w-4 border-gray-300 text-custom-gradient shadow-sm focus:ring-pink-600"
+                />
+                <label htmlFor="budget-under-25k">Less than $25K</label>
+              </div>
+              <div className="flex gap-x-2.5">
+                <input
+                  type="radio"
+                  id="budget-25k-50k"
+                  name="budget"
+                  value="25k-50k"
+                  checked={budget === '25k-50k'}
+                  onChange={(e) => setBudget(e.target.value)}
+                  className="mt-1 h-4 w-4 border-gray-300 text-custom-gradient shadow-sm focus:ring-pink-600"
+                />
+                <label htmlFor="budget-25k-50k">$25K – $50K</label>
+              </div>
+              <div className="flex gap-x-2.5">
+                <input
+                  type="radio"
+                  id="budget-50k-100k"
+                  name="budget"
+                  value="50k-100k"
+                  checked={budget === '50k-100k'}
+                  onChange={(e) => setBudget(e.target.value)}
+                  className="mt-1 h-4 w-4 border-gray-300 text-custom-gradient shadow-sm focus:ring-pink-600"
+                />
+                <label htmlFor="budget-50k-100k">$50K – $100K</label>
+              </div>
+              <div className="flex gap-x-2.5">
+                <input
+                  type="radio"
+                  id="budget-100k-plus"
+                  name="budget"
+                  value="100k_plus"
+                  checked={budget === '100k_plus'}
+                  onChange={(e) => setBudget(e.target.value)}
+                  className="mt-1 h-4 w-4 border-gray-300 text-custom-gradient shadow-sm focus:ring-pink-600"
+                />
+                <label htmlFor="budget-100k-plus">$100K +</label>
+              </div>
+            </div>
+          </fieldset>
+          {errors.budget && <p className="text-red-900">{errors.budget}</p>}
+
+        </div>
+      </div>
+
+      <div className="flex w-full justify-end space-x-3 border-t border-default px-3 py-4">
+        <button
+          onClick={closeDialog}
+          className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-xs"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-xs"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// export const CreateForm = ({ closeDialog }) => {
+//   const handleSubmit = (e: { preventDefault: () => void; }) => {
+//     e.preventDefault();
+//     // Perform form actions, then close the dialog
+//     closeDialog();
+//   };
+
+//   return ( <div  className="z-20 pt-24 bg-white dark:bg-black  z-50 bg-dash-sidebar flex flex-col fixed inset-y-0 h-full lg:h-screen border-l shadow-xl  w-screen max-w-2xl h-full  right-0 data-open:animate-panel-slide-right-out data-closed:animate-panel-slide-right-in  transition-all duration-100 ease-in "
+//     tabIndex={-1}
+//     style={{ pointerEvents: "auto" }}
+//   >
+//     <header className="text-foreground text-2xl space-y-1 py-4 px-4 bg-dash-sidebar sm:px-6 border-b ">
+//       Create  Your Project
+//     </header>
+//     <div className=" relative flex-1 overflow-y-auto ">
+//       <div className="px-4 sm:px-6  space-y-10 py-6">
+//       <h5>Select project type</h5>
+//       <SelectProjectType/>
+//         <div className="text-sm grid gap-2 md:grid md:grid-cols-12">
+//           <div className="flex flex-col space-y-2 col-span-4">
+//             <label
+//               className="block text-foreground-light text-sm break-all"
+//               htmlFor="project_name"
+//             >
+//               Name
+//             </label>
+//           </div>
+//           <div className="col-span-8">
+//             <div className="">
+//               <div className="relative">
+//                 <input
+//                   data-size="medium"
+//                   id=""
+//                   name=""
+//                   type="text"
+//                   className="peer/input block box-border w-full rounded-md shadow-sm transition-all text-foreground focus-visible:shadow-md outline-none focus:ring-current focus:ring-2 focus-visible:border-foreground-muted focus-visible:ring-background-control placeholder-foreground-muted group bg-foreground/[.026] border border-control text-sm px-4 py-2"
+//                   data-testid="table-name-input"
+//                   defaultValue="Enter your project name"
+//                 />
+//               </div>
+//             </div>
+//             <p
+//               data-state="hide"
+//               className="bg-alternative
+//               text-red-900
+//               transition-all
+//               data-show:mt-2
+//               data-show:animate-slide-down-normal
+//               data-hide:animate-slide-up-normal
+//               text-sm"
+//             />
+//           </div>
+//         </div>
+//         <div className="text-sm grid gap-2 md:grid md:grid-cols-12">
+//           <div className="flex flex-col space-y-2 col-span-4">
+//             <label
+//               className="block text-foreground-light text-sm break-all"
+//               htmlFor="project_description"
+//             >
+//               Description
+//             </label>
+//           </div>
+//           <div className="col-span-8">
+//             <div className="">
+//               <div className="relative">
+//                 <textarea
+//                   data-size="medium"
+//                   id=""
+//                   name=""
+//                   placeholder="Optional"
+//                   type="text"
+//                   className="min-h-[30vh] peer/input block box-border w-full rounded-md shadow-sm transition-all text-foreground focus-visible:shadow-md outline-none focus:ring-current focus:ring-2 focus-visible:border-foreground-muted focus-visible:ring-background-control placeholder-foreground-muted group bg-foreground/[.026] border border-control text-sm px-4 py-2"
+//                   defaultValue="Describe your project"
+//                 />
+//               </div>
+//             </div>
+//             <p
+//               data-state="hide"
+//               className="
+//                 text-red-900
+//                 transition-all
+//                 data-show:mt-2
+//                 data-show:animate-slide-down-normal
+//                 data-hide:animate-slide-up-normal
+//               text-sm"
+//             />
+//           </div>
+//         </div>
+//       </div>
+//       <div className=" w-full h-px my-2 bg-border " />
+  
+//       {/* -----> */}
+  
+//       <div className=" w-full h-px my-2 bg-border " />
+//   {/* ------------ */}
+         
+//       <div className=" w-full h-px my-2 bg-border " />
+//       <div className="px-4 sm:px-6  py-6">
+//         <div className="w-full space-y-4 ">
+//           <h5>Upload use-case or User-story</h5>
+        
+//           <div>
+//             <div className="items-center justify-between gap-x-2 flex border border-strong px-4 py-4 border-b-0 last:border-b first:rounded-t-md last:rounded-b-md">
+//               <div className="flex flex-col gap-y-2">
+//                 <div className="flex flex-col gap-y-1">
+//                   <p
+//                     title="user_profiles_user_id_fkey"
+//                     className="text-xs text-foreground font-mono"
+//                   >
+//                     A user story explains what a user can do in your app
+//                   </p>
+//                   <div className="flex items-center gap-x-2">
+//                     <p className="text-sm text-foreground-light text-gray-500">
+//                     View some expamples:
+//                     </p>
+//                     <a
+//                       data-size="tiny"
+//                       type="button"
+//                       title="auth.users"
+//                       className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs h-[26px] py-0.5 px-1.5 font-mono"
+//                       href="/dashboard/user-stories-examples"
+//                     >
+//                       <div className="[&_svg]:h-[14px] [&_svg]:w-[14px] text-foreground-lighter">
+//                         <svg
+//                           className="table-icon"
+//                           width="20px"
+//                           height="20px"
+//                           viewBox="0 0 20 20"
+//                           version="1.1"
+//                           xmlns="http://www.w3.org/2000/svg"
+//                           xmlnsXlink="http://www.w3.org/1999/xlink"
+//                           style={{ width: 16, height: 16, strokeWidth: 1 }}
+//                         >
+//                           <g
+//                             stroke="none"
+//                             strokeWidth={1}
+//                             fill="none"
+//                             fillRule="evenodd"
+//                             strokeLinecap="round"
+//                             strokeLinejoin="round"
+//                           >
+//                             <g transform="translate(1.000000, 1.000000)">
+//                               <rect
+//                                 fill="#349969"
+//                                 stroke="#133929"
+//                                 strokeWidth={2}
+//                                 x={0}
+//                                 y={0}
+//                                 width={18}
+//                                 height={18}
+//                                 rx={2}
+//                               />
+//                               <line
+//                                 x1={0}
+//                                 y1={6}
+//                                 x2={18}
+//                                 y2={6}
+//                                 stroke="#133929"
+//                                 strokeWidth={2}
+//                               />
+//                               <line
+//                                 x1={0}
+//                                 y1={12}
+//                                 x2={18}
+//                                 y2={12}
+//                                 stroke="#133929"
+//                                 strokeWidth={2}
+//                               />
+//                               <line
+//                                 x1={6}
+//                                 y1={18}
+//                                 x2={6}
+//                                 y2={6}
+//                                 stroke="#133929"
+//                                 strokeWidth={2}
+//                               />
+//                               <line
+//                                 x1={12}
+//                                 y1={18}
+//                                 x2={12}
+//                                 y2={6}
+//                                 stroke="#133929"
+//                                 strokeWidth={2}
+//                               />
+//                             </g>
+//                           </g>
+//                         </svg>
+//                       </div>
+//                       <span className="truncate">user.stories</span>
+//                     </a>
+//                   </div>
+//                 </div>
+//                 <div className="flex flex-col gap-y-1">
+//                   <div className="flex items-center gap-x-2">
+//                     <code className="text-xs">user_id</code>
+//                     <svg
+//                       xmlns="http://www.w3.org/2000/svg"
+//                       width={16}
+//                       height={16}
+//                       viewBox="0 0 24 24"
+//                       fill="none"
+//                       stroke="currentColor"
+//                       strokeWidth={2}
+//                       strokeLinecap="round"
+//                       strokeLinejoin="round"
+//                       className="lucide lucide-arrow-right"
+//                     >
+//                       <path d="M5 12h14" />
+//                       <path d="m12 5 7 7-7 7" />
+//                     </svg>
+//                     <code className="text-xs">auth.users.id</code>
+//                   </div>
+//                 </div>
+//               </div>
+//               <div className="flex items-center gap-x-2">
+//                 <button
+//                   data-size="tiny"
+//                   type="button"
+//                   className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs px-2.5 py-1 h-[26px]"
+//                 >
+//                   {" "}
+//                   <span className="truncate">view</span>{" "}
+//                 </button>
+      
+//               </div>
+//             </div>
+//           </div>
+//           <div className="flex items-center justify-center rounded border border-strong border-dashed py-3">
+//             <button
+//               data-size="tiny"
+//               type="button"
+//               className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs px-2.5 py-1 h-[26px]"
+//             >
+//               {" "}
+//               <span className="truncate">Add foreign key relation</span>{" "}
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//     <div className="flex w-full justify-end space-x-3 border-t border-default px-3 py-4">
+//       <button onClick={()=>closeDialog()}
+//         data-size="tiny"
+//         type="button"
+//         className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs px-2.5 py-1 h-[26px]"
+//       >
+//         {" "}
+//         <span className="truncate">Cancel</span>{" "}
+//       </button>
+//       <button
+//         data-size="tiny"
+//         type="button"
+//         className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border bg-brand-400 dark:bg-brand-500 hover:bg-brand/80 dark:hover:bg-brand/50 text-foreground border-brand-500/75 dark:border-brand/30 hover:border-brand-600 dark:hover:border-brand focus-visible:outline-brand-600 data-[state=open]:bg-brand-400/80 dark:data-[state=open]:bg-brand-500/80 data-[state=open]:outline-brand-600 text-xs px-2.5 py-1 h-[26px]"
+//       >
+//         {" "}
+//         <span className="truncate">Save</span>{" "}
+//       </button>
+//     </div>
+//   </div>
+//   );
+// };
+
+
+
+
+// export function UploadFileForm() {
+//   const pathname = usePathname();
+//   const isCreatePage = pathname === "/dashboard/create";
+//   const router = useRouter();
+//   const mount = useMount();
+//   const form = useForm<z.infer<typeof CreatePost>>({
+//     resolver: zodResolver(CreatePost),
+//     defaultValues: {
+//       caption: "",
+//       fileUrl: undefined,
+//     },
+//   });
+//   const fileUrl = form.watch("fileUrl");
+
+//   if (!mount) return null;
+
+//   return (
+//     <div>
+//       <Dialog
+//         open={isCreatePage}
+//         onOpenChange={(open) => !open && router.back()}
+//       >
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>Create new post</DialogTitle>
+//           </DialogHeader>
+
+//           <Form {...form}>
+//             <form
+//               onSubmit={form.handleSubmit(async (values) => {
+//                 const res = await createPost(values);
+//                 if (res) {
+//                   return toast.error(<Error res={res} />);
+//                 }
+//               })}
+//               className="space-y-4"
+//             >
+//               {!!fileUrl ? (
+//                 <div className="h-96 md:h-[450px] overflow-hidden rounded-md">
+//                   <AspectRatio ratio={1 / 1} className="relative h-full">
+//                     <BlurImage
+//                       src={fileUrl}
+//                       alt="Post preview"
+//                       fill
+//                       className="rounded-md object-cover"
+//                       width={500} height={500}
+//                     />
+//                   </AspectRatio>
+//                 </div>
+//               ) : (
+//                 <FormField
+//                   control={form.control}
+//                   name="fileUrl"
+//                   render={({ field, fieldState }) => (
+//                     <FormItem>
+//                       <FormLabel htmlFor="picture">Picture</FormLabel>
+//                       <FormControl>
+//                         <UploadButton
+//                           endpoint="imageUploader"
+//                           onClientUploadComplete={(res) => {
+//                             form.setValue("fileUrl", res[0].url);
+//                             toast.success("Upload complete");
+//                           }}
+//                           onUploadError={(error: Error) => {
+//                             console.error(error);
+//                             toast.error("Upload failed");
+//                           }}
+//                         />
+//                       </FormControl>
+//                       <FormDescription>
+//                         Upload a picture to post.
+//                       </FormDescription>
+//                       <FormMessage />
+//                     </FormItem>
+//                   )}
+//                 />
+//               )}
+
+//               {!!fileUrl && (
+//                 <FormField
+//                   control={form.control}
+//                   name="caption"
+//                   render={({ field }) => (
+//                     <FormItem>
+//                       <FormLabel htmlFor="caption">Additonal Notes</FormLabel>
+//                       <FormControl>
+//                         <Input
+//                           type="caption"
+//                           id="caption"
+//                           placeholder="Adda note if needed"
+//                           {...field}
+//                         />
+//                       </FormControl>
+//                       <FormMessage />
+//                     </FormItem>
+//                   )}
+//                 />
+//               )}
+
+//               <Button type="submit" disabled={form.formState.isSubmitting}>
+//                 Save
+//               </Button>
+//             </form>
+//           </Form>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//   );
+// }
+
