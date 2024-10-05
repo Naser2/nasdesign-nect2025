@@ -64,19 +64,19 @@ const tabs = [
 
 export function InstagramTabs() {
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="account" className="min-w-[400px] w-full">
       <TabsList className="grid w-full grid-cols-3">
         {tabs.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value}>
-            {tab.label}  
-           {/* <div className="flex">
+            {/* {tab.label}   */}
+           <div className="flex">
              <div className="flex items-center gap-x-1">
                <tab.Icon className="h-3 w-3" />
                   <p className="font-bold text-xs tracking-widest uppercase">
                     {tab.title}
                   </p>
                   </div>
-               </div>   */}
+               </div>  
           </TabsTrigger>
         ))}
       </TabsList>

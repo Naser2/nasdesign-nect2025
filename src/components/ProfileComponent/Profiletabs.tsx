@@ -1,29 +1,29 @@
 // import { auth } from "@/auth";
-import FollowButton from "@/components/ProfileComponent/FollowButton";
-import ProfileAvatar from "./ProfileAvatar";
-import ProfileHeader from "./ProfileHeader";
+// import FollowButton from "@/components/ProfileComponent/FollowButton";
+// import ProfileAvatar from "./ProfileAvatar";
+// import ProfileHeader from "./ProfileHeader";
 import InstagramTabs from "./InstagramTabs";
-import UserAvatar from "./UserAvatar";
-import { Button} from "../button";
-import buttonVariants  from "../ButtonComponent";
-import type { SupabaseUserProfile } from "../../lib/Types";
+// import UserAvatar from "./UserAvatar";
+// import { Button} from "../button";
+// import buttonVariants  from "../ButtonComponent";
+import type { SupabaseUserProfile } from "@/lib/Types";
 // import { fetchProfile } from "@/lib/data";
 import { MoreHorizontal, Settings} from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { unstable_noStore } from "next/cache";
-import {PopoverList} from "./PopoverList";
+// import {PopoverList} from "./PopoverList";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 // import  LoadingDots  from "@/components/ProfileComponent/";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
-import TaskForm from "./TaskForm";
+// import { signIn } from "next-auth/react";
+// import TaskForm from "./TaskForm";
 
 // import TestSliderComponent from "@/components/mindConnect/Modals/TestSliderComponent"
 type Props = {
    username: string;
    children: React.ReactNode;
-   profile: SupabaseUserProfile; // Use the defined `UserProfile` type here
+  //  profile: SupabaseUserProfile; // Use the defined `UserProfile` type here
    session: {
      user: {
        id: string;
@@ -34,37 +34,37 @@ type Props = {
    };
 };
 
-export async function generateMetadata(
-  profile: SupabaseUserProfile,
-  { username }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const userName = username;
-  unstable_noStore()
+// export async function generateMetadata(
+//   profile: SupabaseUserProfile,
+//   { username }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const userName = username;
+//   unstable_noStore()
 
 
-  return {
-    title: `${profile?.name} (@${profile?.username})`,
-  };
-}
+//   return {
+//     title: `${profile?.first_name} (@${profile?.username})`,
+//   };
+// }
 
- const ProfiletabsCustom=({ children, profile, session }: Props)=> {
+ const ProfiletabsCustom=({ children, profile, session })=> {
   const [showTodoForm, setShowTodoForm] = useState(false);
 //   const profile = await fetchProfile(username);
 //   const session = await auth();
 const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 const [loading, setLoading] = useState(false);
   // const isCurrentUser = session?.user.id === profile?.id;
-  const isCurrentUser =  profile?.id;
+  const isCurrentUser =  profile?.id === session?.user.id;
   console.log("IS_CURRENT_USER", isCurrentUser, "SESSION_ID", session, "USER_PROFILE", profile);
   //   the followerId here is the id of the user who is following the profile
-  const isFollowing = (profile?.followedBy || []).some( (follower) => follower?.followerId === session?.user.id);
-
+  // const isFollowing = (profile?.followedBy || []).some( (follower) => follower?.followerId === session?.user.id);
+const isFollowing = false
   console.log("IS_FOLLOWING", isFollowing);
   console.log("POFILE_TABS_CUSTOM", profile);
-  if (!profile) {
-    notFound();
-  }
+  // if (!profile) {
+  //   notFound();
+  // }
   const handleAddClick = () => {
     setShowTodoForm((prevState) => !prevState);
   };
@@ -137,13 +137,13 @@ const handlesetIsHeadlessModal = () => {
                     isFollowing={isFollowing}
                     profileId={profile.id}
                   /> */}
-                  <Button
+                  {/* <Button
                     variant={"secondary"}
                     className="font-bold"
                     size={"sm"}
                   >
                     Message
-                  </Button>
+                  </Button> */}
                 </>
               )}
             </div>

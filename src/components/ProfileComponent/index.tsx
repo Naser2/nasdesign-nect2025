@@ -145,10 +145,12 @@ export const profileWidth = 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8';
 
 
 
-export default function ProfileComponent({ user, userProfile, handleChange }) {
-  const  session  = useSession(); // Use Supabase session
+export default function ProfileComponent({ user, userProfile, handleChange, session }) {
+  const [ userSession, setUserSession ] = useState(session); // Use Supabase session
   const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
+
+
   const [data, setData] = useState({
     username: user?.username || 'Pick a username',
     image: user?.image,
@@ -160,8 +162,11 @@ export default function ProfileComponent({ user, userProfile, handleChange }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  console.log("USER_SESSION_1", session)
+
   useEffect(() => {
     setIsMounted(true);
+    if (session) {setUserSession(session)}
     console.log("SESSION", session); // This will print the session once it is available
   }, [session]);
 
@@ -218,8 +223,9 @@ export default function ProfileComponent({ user, userProfile, handleChange }) {
         setSaving={setSaving}
         error={error}
         saving={saving}
-        settings={true}
-        session={session}
+        settingsPage={false}
+        settings={false}
+        session={userSession}
         sessionUserName={userProfile?.first_name}
         profileWidth={profileWidth}
       />

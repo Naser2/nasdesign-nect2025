@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 import Link from 'next/link'
 import clsx from 'clsx'
-import React, { forwardRef, Fragment, useState } from 'react'
+import React, { forwardRef, Fragment, useState, type Ref } from 'react'
 
 import { useRouter } from 'next/router'
 import { Transition } from '@headlessui/react'
@@ -72,16 +72,17 @@ export function ButtonArrow({
   children,
   arrow,
   rounded,
+  href, // Ensure href is passed
   ...props
 }) {
-  let Component = props.href ? Link : 'button'
+  let Component = href ? Link : 'button';
 
   className = clsx(
     className && className,
     rounded ?? 'rounded-full',
     'inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition',
     variant && variantStyles[variant]
-  )
+  );
 
   let arrowIcon = (
     <ArrowIcon
@@ -92,19 +93,20 @@ export function ButtonArrow({
         arrow === 'right' && '-mr-1'
       )}
     />
-  )
+  );
 
   return (
     <Component
       className={className}
       {...props}
       id={variant ? variant : 'default-btn'}
+      href={href} // Make sure to pass href to Link if used
     >
       {arrow === 'left' && arrowIcon}
       {children}
       {arrow === 'right' && arrowIcon}
     </Component>
-  )
+  );
 }
 
 export function ButtonRoundedMd({ href, className, ...props }) {
@@ -189,7 +191,7 @@ export const ActionAbleButton = ({
           disabled={showSendingBtn && true}
           onClick={() => handleSubmit(event)}
         >
-          {btnText ?? 'Send'} <ArrowRight color="text-white" />
+          {btnText ?? 'Send'} <ArrowRight color="text-white" className={undefined} />
         </button>
       )}
 
@@ -221,39 +223,53 @@ export const ActionAbleButton = ({
             ></path>
           </svg>
           {fetchingBtnText ?? ' Sending...'}
-          <ArrowRight color="text-white" />
+          <ArrowRight color="text-white" className={undefined} />
         </button>
       )}
     </div>
   )
 }
 
-export const ButtonTwins = ({ textR, hrefL, hrefR, textL }) => {
+
+export const ButtonTwins = ({
+  textR,
+  hrefL,
+  hrefR,
+  textL,
+  children,
+}: {
+  textR: string;
+  hrefL: string;
+  hrefR: string;
+  textL: string;
+  children?: React.ReactNode;
+}) => {
   return (
     <div className="not-prose mb-16 mt-6 flex gap-3">
-      <Button href={hrefL} arrow="right">
+      {/* Use ButtonArrow instead of Button */}
+      <ButtonArrow href={hrefL} arrow="right" className={undefined}  rounded={undefined}>
         {textR}
         {children}
-      </Button>
-      <Button href={hrefR} variant="outline">
+      </ButtonArrow>
+      <ButtonArrow href={hrefR} variant="outline" className={undefined}  rounded={undefined}>
         {textL}
         {children}
-      </Button>
+      </ButtonArrow>
     </div>
-  )
-}
+  );
+};
 
 export const NextButton = ({ text, href, customize, textStyle }) => {
   return (
     <Link
       href={href}
-      class="bg-gray-yt nline-flex justify-center rounded-full  py-1 px-4 pl-5 text-sm font-semibold text-white"
+      className="bg-gray-yt nline-flex justify-center rounded-full  py-1 px-4 pl-5 text-sm font-semibold text-white"
     >
       <span>
-        <span class="flex items-center">
+        <span className="flex items-center">
           Next
           <svg
-            class={clsx(
+            className={clsx(
               textStyle
                 ? [textStyle, 'h-5 w-5 py-0.5 pl-1']
                 : ' h-5 w-5 py-0.5 pl-1 text-gray-700 dark:text-slate-400'
@@ -328,7 +344,7 @@ export const PageCommonPaginators = ({ text, href, previousPathname }) => {
 
 // import { courseNavigation } from '@/components/Navigation'
 
-function CheckIcon(props) {
+function CheckIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
       <circle cx="10" cy="10" r="10" strokeWidth="0" />
@@ -343,7 +359,7 @@ function CheckIcon(props) {
   )
 }
 
-export function FeedbackButton(props) {
+export function FeedbackButton(props: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLButtonElement> & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       type="submit"
@@ -353,10 +369,12 @@ export function FeedbackButton(props) {
   )
 }
 
+
+
+// FeedbackForm with correct typing for ref
 const FeedbackForm = forwardRef(function FeedbackForm(
-  { onSubmit, message, question },
-  ref,
-  props
+  { onSubmit, message, question }: { onSubmit: any; message: string; question?: string },
+  ref: Ref<HTMLDivElement>
 ) {
   return (
     <div id="FEEDBACK-FORM" ref={ref}>
@@ -367,7 +385,7 @@ const FeedbackForm = forwardRef(function FeedbackForm(
         >
           <button
             type="submit"
-            className="hover:bg-zinc-900/2.5 justify-center px-3  py-1 text-sm font-medium text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white"
+            className="hover:bg-zinc-900/2.5 justify-center px-3 py-1 text-sm font-medium text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white"
             data-response="yes"
           >
             {question}
@@ -379,35 +397,32 @@ const FeedbackForm = forwardRef(function FeedbackForm(
           className="flex items-center justify-center gap-6 md:justify-start"
         >
           <p className="text-sm text-zinc-600 dark:text-zinc-400">{message}</p>
-
           <div className="group grid h-8 grid-cols-[1fr,1px,1fr] overflow-hidden rounded-full border border-zinc-900/10 dark:border-white/10">
             <FeedbackButton data-response="yes">Yes</FeedbackButton>
             <div className="bg-zinc-900/10 dark:bg-white/10" />
-            <FeedbackButton data-response="no">No</FeedbackButton>{' '}
+            <FeedbackButton data-response="no">No</FeedbackButton>
           </div>
         </form>
       )}
     </div>
-  )
-})
+  );
+});
 
-export const FeedbackMessage = forwardRef(function FeedbackMessage(
-  _props,
-  ref,
-  feedbackStatus
+// FeedbackMessage with correct forwardRef usage
+const FeedbackMessage = forwardRef(function FeedbackMessage(
+  { feedbackStatus }: { feedbackStatus: string },
+  ref: Ref<HTMLDivElement>
 ) {
-  let colors = {}
-  const statusMessageColor = colors[feedbackStatus]
-  console.log('MESSAGE props.FeedbackStatus', _props.feedbackStatus)
   return (
-    <div ref={ref} className=" justify-center md:justify-start">
+    <div ref={ref} className="justify-center md:justify-start">
       <div className="flex items-center gap-3 rounded-full bg-emerald-50/50 py-1 pr-3 pl-1.5 text-sm text-emerald-900 ring-1 ring-inset ring-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-200 dark:ring-emerald-500/30">
         <CheckIcon className="h-5 w-5 flex-none fill-emerald-500 stroke-white dark:fill-emerald-200/20 dark:stroke-emerald-200" />
-        {_props.feedbackStatus}
+        {feedbackStatus}
       </div>
     </div>
-  )
-})
+  );
+});
+
 
 export const Feedback = React.forwardRef(
   ({ message, feedbackStatus, question }, props) => {

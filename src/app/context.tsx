@@ -4,58 +4,56 @@ import Header from '@/components/Header';
 
 import clientSupabase from '@/lib/supabase/client';
 import { Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+// import { redirect } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 
 const AppContext = createContext<any>(undefined);
 
-export function AppWrapper({ children }: {
-  children: React.ReactNode
-}) {
+export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [user, setUser] = useState<any>(undefined);
+  let [profile, setProfile] = useState<any>(null);
+  let [session, setSession] = useState<any>(null);  // Add session state
   let [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
+    const fetchCurrentUserAndSession = async () => {
       try {
         setLoading(true);
 
-        const { data, error } = await clientSupabase.auth.getUser();
+        // Fetch session
+        const { data: sessionData, error: sessionError } = await clientSupabase.auth.getSession();
+        if (sessionError) throw sessionError;
+        setSession(sessionData.session);
 
-        if (data) setUser(data.user)
-          else redirect('/')
-        // (!user) return <AuthComponent />  // This works in server-side context
-          
-      
+        // Fetch user
+        const { data: userData, error: userError } = await clientSupabase.auth.getUser();
+        if (userError) throw userError;
+        setUser(userData.user);
+
+        // Fetch profile
+        const { data: profileData, error: profileError } = await clientSupabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', userData.user.id)
+          .single();
+        
+        if (profileError) throw profileError;
+        setProfile(profileData);
+
       } catch (error) {
-        setLoading(false);
-        console.log(error);
-        // Handle error here
+        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCurrentUser();
+    fetchCurrentUserAndSession();  // Fetch both session and user
   }, []);
 
-  if (loading) return <div className="dark:bg-black w-full h-screen flex items-center justify-center">
-    <Loader2 className="animate-spin" />
-  </div>
-
-  // if (!user) return <AuthComponent />
-  // if (!user) redirect('/(auth)/login');
-    // Prevent redirect if already on login page
-   
-   
   return (
-    <AppContext.Provider value={{
-      user,
-      setUser
-    }}>
-      {/* <Header /> */}
-      {children}
+    <AppContext.Provider value={{ user, profile, session, setUser, setProfile, setSession }}>  {/* Pass session and setSession */}
+      {loading ? <Loader2 className="animate-spin" /> : children}
     </AppContext.Provider>
   );
 }

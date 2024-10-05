@@ -6,12 +6,15 @@ import type { UserProps } from '@/api/apiHelper';
 import {
 CheckInCircleIcon,
 CheckIcon,
-EditIcon,
-GitHubIcon,
+// EditIcon,
+// GitHubIcon,
 LoadingDots,
 UploadIcon,
 XIcon
 } from '@/components/icons';
+
+
+// import  EditIcon from '@/components/icons/edit';
 // import TextareaAutosize from 'react-textarea-autosize';
 import Link from "next/link";
  import BlurImage from '@/components/blur-image';
@@ -21,7 +24,7 @@ import Profiletabs from './Profiletabs';
 import {TabsDemo }from '../tabs/tabs';
 // import ProfileTabs from '../tabs/ProfileTabs';
 import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
 import buttonVariants, { ButtonRoundedMd }  from "../ButtonComponent";
@@ -32,7 +35,7 @@ import TaskForm from './TaskForm';
 import {PopoverList} from "./PopoverList";
 
 import * as React from "react"
- 
+
 import {
   Select,
   SelectContent,
@@ -43,7 +46,39 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import CreateProjectModal from './CreateProjectModal';
- 
+import type { Metadata, ResolvingMetadata } from 'next';
+import { unstable_noStore } from 'next/cache';
+import { useEffectOnce } from 'react-use';
+import InstagramTabs from './InstagramTabs';
+
+
+
+export async function generateMetadata(
+  profile: SupabaseUserProfile): Promise<Metadata> {
+  unstable_noStore()
+
+
+  return {
+    title: `${profile?.first_name} (@${profile?.username})`,
+  };
+}
+
+
+// interface SupabaseUserProfile {
+//   id: string;
+//   user_id: string;
+//   username: string;
+//   display_name: string;
+//   first_name: string | null;
+//   last_name: string | null;
+//   bio: string | null;
+//   email_notifications: boolean;
+//   user_role: string;
+//   created_at: string;
+//   updated_at: string;
+//   image: string | null;
+//   website: string | null;
+// }
 
 export default function Profile({
   user,
@@ -62,9 +97,8 @@ export default function Profile({
   sessionUserName,
   profileWidth,
   session,
-  
+  profile,
   handleSave,
-
   setSuccess
 }: {
   user: UserProps;
@@ -77,7 +111,14 @@ export default function Profile({
   error: string;
   saving: boolean;
   settings?: boolean;
-  session?:object;
+  session?: {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      image: string;
+    };
+  };
   sessionUserName: string;
   profileWidth: string;
   settingsPage?: boolean;
@@ -85,26 +126,34 @@ export default function Profile({
   editProfilePage?: boolean;
   handleSave: Function;
   success: string;
-  
+  profile: SupabaseUserProfile; // Type is updated here
 }) {
   const [loading, setLoading] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [userProfile, setUserProfile] = useState<SupabaseUserProfile | null>(null); // Ensure type safety
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showTodoForm, setShowTodoForm] = useState(false);
 
+  // Set the profile if it's available
+  useEffect(() => {
+    if (profile) {
+      setUserProfile(profile); // This is now typed correctly
+    }
+  }, [profile]);
 
   const handleAddClick = () => {
     setShowTodoForm((prevState) => !prevState);
   };
-  console.log("USER-Profile-IN PRIVATE", user)
-  console.log(CheckInCircleIcon, GitHubIcon, LoadingDots, UploadIcon);
-  // console.log("DYNAMIC_PROFILE_SESSION", session)
-  // const userattr = extractSubabaseUserInfo(user);
-  const isCurrentUser =  user !==null 
-  // console.log("DYNAMIC_PROFILE_SESSION", user?.username === session?.user?.username)
-  return ( <div className="min-h-screen pb-20">
+
+// Ensure that user.user_id and session?.user?.id are compared as strings
+const isCurrentUser = user?.user_id && session?.user?.id && String(user.user_id) === String(session.user.id);
+
+console.log("USER-Profile-user?.id", user.user_id, "session?.user?.id", session?.user?.id);
+console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
+
+
+  return ( <div className="min-h-screen  mb-4 lg:mb-24">
            <div>
-            <div className={`h-48 w-full lg:h-64  ${getGradient(user.username)}`}
+            <div className={`h-48 w-full lg:h-64  ${getGradient(user?.username)}`}
               />
             <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}>
               <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32">
@@ -128,7 +177,7 @@ export default function Profile({
               <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                 <div className="flex min-w-0 flex-1 items-center space-x-2 mt-1">
                   <h1 className="text-2xl font-semibold darrk:text-white truncate">
-                    {user?.username  && user.username  || user.user_metadata?.first_name &&  user.user_metadata.first_name}
+                    {user?.username  && user.username  || user?.user_metadata?.first_name &&  user.user_metadata.first_name}
                   </h1>
                   {user?.verified && (
                     <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
@@ -232,10 +281,10 @@ export default function Profile({
           </div>
 
           <CreateProjectModal showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm} />
-
+          <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} />
            {/* {showTodoForm && <TaskForm userId={session?.user?.id ?? user?._id} showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm}/>} */}
         {/* <ProfileTabs username={user.username} profile={user} session={session} /> */}
-        <Profiletabs username={user.username} profile={user} session={session} />      
+        {/* <Profiletabs username={user.username} profile={userProfile} session={session} />       */}
           {/* <TabsDemo /> */}
           {/* Tabs */}
           <div className="mt-6 sm:mt-2 2xl:mt-5">
@@ -322,15 +371,15 @@ export default function Profile({
             </div>
             //  ) : user.username === session?.user?.username ?  (
           ) : user.username  ?  (
-            <a
-              href={{ query: { settings: true } }}
-              as="/settings"
-              shallow
+            <a href='/settings'
+              // href={{ query: { settings: settings } }}
+              // as="/settings"
+              // shallow
               replace
               scroll={false}
             >
               <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
-                <EditIcon className="h-4 w-4 text-white" />
+              Edit  {/* <EditIcon className="h-4 w-4 text-white" /> */}
               </div>
             </a>
         ) : null}

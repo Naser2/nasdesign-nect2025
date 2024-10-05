@@ -48,7 +48,7 @@ const closeDialog = () => {
       <AlertDialogTrigger asChild>
         <Button variant="outline" onClick={() => setOpen(true)}>Show Dialog</Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="h-[90vh] w-full">
+      <AlertDialogContent className="h-[98vh] w-full">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>

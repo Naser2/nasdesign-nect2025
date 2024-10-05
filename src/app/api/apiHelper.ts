@@ -13,6 +13,8 @@ import { revalidatePath, unstable_noStore as noStore, unstable_noStore } from 'n
 
 
 export interface UserProps {
+  user_id(arg0: string, user_id: any, arg2: string, id: string | undefined): unknown;
+  id: string | undefined;
   name: string;
   username: string;
   user_metadata: UserMetadata;

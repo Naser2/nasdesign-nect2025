@@ -14,7 +14,7 @@ import { Link, ViewTransitions } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { Navbar } from "@/components/navbar";
+// import { Navbar } from "@/components/navbar";
 
 const PROFILE_OPTIONS = [
   {
@@ -65,7 +65,7 @@ export default function ProfileLayout({ children }: any) {
   return <section>
     <div className="border-b dark:border-neutral-800">
       <div className="container py-4 lg:py-8">
-          <Navbar />
+          {/* <Navbar /> */}
       </div>
   
       {/* <header className="container py-4 lg:py-8">

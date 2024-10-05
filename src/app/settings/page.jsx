@@ -1,4 +1,4 @@
-import  fetchExercices  from '../../../api/fetchExercices'
+// import  fetchExercices  from '../../../api/fetchExercices'
 
 import Link from 'next/link'
 
