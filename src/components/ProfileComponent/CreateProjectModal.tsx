@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type SetStateAction } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Error from "@/components/Error";
 import {
@@ -13,6 +13,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useHelpers } from "../../hooks/useHelpers"; 
+import SelectButton from '@/components/Select/SelectButton';
+
+// Centralized actions
 // import { SelectProjectType } from "./Profile";
 // import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
 // import { DialogTitle } from "@headlessui/react";
@@ -32,23 +36,24 @@ import { Button } from "@/components/ui/button";
 
 // import { SelectProjectType } from "./Profile";
 import  UploadFileForm  from '../UploadFileForm'; // assuming you've exported it already
+import { Select } from "@headlessui/react";
 
 
 export default function CreateProjectModal({ ...props }) {
   const [open, setOpen] = useState(false);
 
-  
-
-const closeDialog = () => {
-    setOpen(false);
-  };
+  const closeDialog = () => {
+      setOpen(false);
+    };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" onClick={() => setOpen(true)}>Show Dialog</Button>
+        <Button variant="outline" onClick={() => setOpen(true)} className="bg-gray-200/90 rounded-md">
+        <span className='text-md font-bold pr-2'>+ </span>
+        Create Project</Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="h-[98vh] w-full">
+      <AlertDialogContent className="h-[99.9vh] w-full">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -66,61 +71,84 @@ const closeDialog = () => {
 
 
 
+
 export const CreateForm = ({ closeDialog, userId }) => {
-// null to manage no selection at first
-  const [needDesign, setNeedDesign] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
   const [timeline, setTimeline] = useState('');
   const [budget, setBudget] = useState('');
   const [errors, setErrors] = useState({});
-  const [wasSubmitted, setWasSubmitted] = useState(false);
-  const  [openUploader, closeUploader] = useState(false);
+  const [hasDesign, setHasDesign] = useState<boolean | null>(null);
+  const [needDesign, setNeedDesign] = useState(false);
+  const [projectType, setProjectType] = useState(''); 
 
-  const [hasDesign, setHasDesign] = useState<boolean | null>(null); // Allow both null and boolean
-
-const handleDesignChange = (e: { target: { value: string } }) => {
-  const value = e.target.value === 'yes'; // Ensuring value is a boolean
-  setHasDesign(value); // No more error since hasDesign can be boolean or null
-  setNeedDesign(!value); // Toggle needDesign based on the value
-
-  // if  (value === 'yes') { 
-  //   setHasDesign(value)
-  //    closeUploader(true)
-  // } else if (value === 'no') {
-  //    setNeedDesign(!value); 
-  //    closeUploader(true);
-  // }
-};
-
+  const projectTypes = [
+    'Website (default)',
+    'Mobile App (iOS)',
+    'Mobile App (Android)',
+    'Native App',
+    'E-commerce Platform',
+    'SaaS Application',
+    'Web Application',
+    'Desktop Application',
+    'API Development',
+    'Blockchain Application',
+    'Machine Learning Model',
+    'AI Chatbot',
+    'Data Science Project',
+    'IoT Solution',
+    'Augmented Reality App',
+    'Virtual Reality App',
+    'Game Development',
+    'CRM System',
+    'ERP System',
+    'Content Management System',
+    'Digital Marketing Platform',
+    'Custom Plugin or Extension',
+    'Social Media Platform',
+    'Video Streaming App',
+    'Automation Tool',
+    'Inventory Management System',
+    'Financial Software',
+    'Healthcare App',
+    'Education/Learning Platform',
+    'Personal Portfolio'
+  ];
   
+
+  const { createProject, setLoading, loading, setError, error } = useHelpers(); // Use centralized API helpers
+
+  const handleDesignChange = (e: { target: { value: string } }) => {
+    const value = e.target.value === 'yes';
+    setHasDesign(value);
+    setNeedDesign(!value);
+  };
 
   const validateForm = () => {
-    let newErrors: { [key: string]: string } = {}; // Explicitly typing newErrors
-  
+    let newErrors: { [key: string]: string } = {};
     if (!projectName) newErrors['projectName'] = 'Project Name is required';
     if (!description) newErrors['description'] = 'Description is required';
     if (!timeline) newErrors['timeline'] = 'Project timeline is required';
     if (!budget) newErrors['budget'] = 'Budget selection is required';
     if (!fileUrl && hasDesign) newErrors['fileUrl'] = 'Please upload the design';
     if (!fileUrl && !hasDesign && needDesign) newErrors['fileUrl'] = 'Upload an example is required';
-  
     return newErrors;
   };
-  
+  console.log("PROJECT_FILE_URL", fileUrl, projectName, description, timeline, budget, hasDesign, needDesign);
 
-  const handleSubmit = (e) => {
+  const handleProjectType = (selectedProjectType: SetStateAction<string>) => {
+    setProjectType(selectedProjectType); // Correctly update the role state
+  };
+
+
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
-    setWasSubmitted(true);
-
-    // Assuming saveProject is a function that saves the project to the database
     const projectData = {
       userId,
       projectName,
@@ -130,25 +158,56 @@ const handleDesignChange = (e: { target: { value: string } }) => {
       fileUrl,
       needDesign,
     };
-
-    // saveProject(projectData);
-
-    // After successful submission
-    closeDialog();
+    
+    const result = await createProject(projectData);  // Use centralized createProject function
+    if (result) {
+      closeDialog();
+    }
   };
-
   return (
     <div
-      className="z-20 pt-24 bg-white dark:bg-black z-50 bg-dash-sidebar flex flex-col fixed inset-y-0 h-full lg:h-screen border-l shadow-xl w-screen max-w-2xl h-full right-0 transition-all duration-100 ease-in"
+      className="pt-6 z-20 lg:pt-4 bg-white dark:bg-black z-50 bg-dash-sidebar flex flex-col fixed inset-y-0 h-full lg:h-screen border-l shadow-xl w-screen max-w-2xl h-full right-0 transition-all duration-100 ease-in"
       tabIndex={-1}
       style={{ pointerEvents: 'auto' }}
     >
+      <div className="flex flex-row justify-between items-center"><div className="flex flex-row gap-3 items-center"><div className="ai-icon-animation-style_ai-icon__container__2aXBS [&amp;>div>div]:border-black dark:[&amp;>div>div]:border-white"><div className="ai-icon-animation-style_ai-icon__grid__Qrwxf"><div className="ai-icon-animation-style_ai-icon__grid__square__YU8EZ ai-icon-animation-style_ai-icon__grid__square--static__1tOM_"></div><div className="ai-icon-animation-style_ai-icon__grid__square__YU8EZ ai-icon-animation-style_ai-icon__grid__square--static__1tOM_"></div><div className="ai-icon-animation-style_ai-icon__grid__square__YU8EZ ai-icon-animation-style_ai-icon__grid__square--static__1tOM_"></div>
+      <div className="ai-icon-animation-style_ai-icon__grid__square__YU8EZ ai-icon-animation-style_ai-icon__grid__square--static__1tOM_"></div></div>
+      </div>
+      <span  className="text-sm">
+        <button onClick={closeDialog}
+         data-size="tiny" type="button" className="hover:bg-gray-400 mr-4 relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs px-2.5 py-1 h-[26px]">
+           <span className="truncate text-sm  text-gray-600  hover:text-white">Preview draft</span> </button></span></div> 
+      <div className="flex gap-2">
+        <button onClick={closeDialog}
+         data-size="tiny" type="button" 
+         className="mr-4 relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs px-2.5 py-1 h-[26px]">
+           <span className="truncate">Cancel</span> </button></div></div>
       <header className="text-foreground text-2xl space-y-1 py-4 px-4 bg-dash-sidebar sm:px-6 border-b">
         Create Your Project
       </header>
+      
       <div className="relative flex-1 overflow-y-auto">
         <div className="px-4 sm:px-6 space-y-10 py-6">
-          <h5>Select project type</h5>
+          
+            <div className="text-sm grid gap-2 md:grid md:grid-cols-12">
+            <div className="flex flex-col space-y-2 col-span-4">
+              <label className="block text-foreground-light text-sm break-all" htmlFor="project_name">
+              <h5>Select project type</h5>
+              </label>
+            </div>
+            <div className="col-span-8">
+              <div className="relative">
+              <SelectButton 
+                label="Website (default)"
+                name="projectType"
+                items={['Select project type', ...projectTypes]} // Pass the array of user types
+                handleInputChange={handleProjectType} // This correctly updates the role state
+                value={projectType} // Bind the selected role to the state
+              />
+              </div>
+              {errors.projectName && <p className="text-red-900">{errors.projectName}</p>}
+            </div>
+          </div>
           <div className="text-sm grid gap-2 md:grid md:grid-cols-12">
             <div className="flex flex-col space-y-2 col-span-4">
               <label className="block text-foreground-light text-sm break-all" htmlFor="project_name">
@@ -188,9 +247,12 @@ const handleDesignChange = (e: { target: { value: string } }) => {
             </div>
           </div>
 
-          <h5>Do you have the design?</h5>
-          <div className="space-y-4">
-            <label>
+          <div className="w-full h-px my-2 bg-border" />
+          <legend className="block my-0 text-sm font-semibold leading-6 text-gray-900">
+            Do you have a design already</legend>
+          <h5 className="!mt-2">We'll make one for you if no</h5>
+          <div className="!mt-4 space-y-1 space-x-4">
+            <label className="inline-flex gap-x-2">
               <input
                 type="radio"
                 value="yes"
@@ -199,7 +261,7 @@ const handleDesignChange = (e: { target: { value: string } }) => {
               />
               Yes
             </label>
-            <label>
+            <label className="inline-flex gap-x-2">
               <input
                 type="radio"
                 value="no"
@@ -210,12 +272,33 @@ const handleDesignChange = (e: { target: { value: string } }) => {
             </label>
           </div>
 
-          {hasDesign && <UploadFileForm fileUrl={fileUrl} setFileUrl={setFileUrl} title="Upload Design"  openUploader={openUploader} closeUploader={closeUploader}/>}
-          {!hasDesign && needDesign && <UploadFileForm fileUrl={fileUrl} setFileUrl={setFileUrl} title="Upload Example" />}
-          {errors.fileUrl && <p className="text-red-900">{errors.fileUrl}</p>}
+         
+        {hasDesign && (
+          <UploadFileForm
+            fileUrl={fileUrl}
+            setFileUrl={setFileUrl}
+            title="Upload Design"
+            openUploader={true}
+            closeUploader={() => {}}
+          />
+        )}
+
+        {!hasDesign && needDesign && (
+          <UploadFileForm
+            fileUrl={fileUrl}
+            setFileUrl={setFileUrl}
+            title="Upload Example"
+            openUploader={true}
+            closeUploader={() => {}}
+          />
+        )}
+
+        {errors.fileUrl && <p className="error-text">{errors.fileUrl}</p>}
 
           <div className="w-full h-px my-2 bg-border" />
-          <h5>Project Urgency/Timeline</h5>
+          <legend className="block my-0 text-sm font-semibold leading-6 text-gray-900">
+            Deadline | Estimate urgency</legend>
+          <h5 className="!my-2">Approximatly</h5>
           <input
             type="text"
             value={timeline}
@@ -226,7 +309,7 @@ const handleDesignChange = (e: { target: { value: string } }) => {
           {errors.timeline && <p className="text-red-900">{errors.timeline}</p>}
 
           <div className="w-full h-px my-2 bg-border" />
-          <h5>Approximate Budget</h5>
+    
           <fieldset className="sm:col-span-2">
             <legend className="block text-sm font-semibold leading-6 text-gray-900">Approximate budget</legend>
             <div className="mt-4 space-y-4 text-sm leading-6 text-gray-600">
@@ -286,18 +369,24 @@ const handleDesignChange = (e: { target: { value: string } }) => {
       </div>
 
       <div className="flex w-full justify-end space-x-3 border-t border-default px-3 py-4">
-        <button
-          onClick={closeDialog}
-          className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-xs"
-        >
-          Cancel
-        </button>
-        <button
+         <Button  onClick={closeDialog} className="mt-6 bg-gray-100 text-[#333] hover:bg-red-600 hover:text-white justify-center cursor-pointer text-xs" 
+               type="submit">
+               Cancel
+        </Button>
+    
+        <Button onClick={closeDialog} className="mt-6 bg-gray-100  bg-black hover:text-white justify-center cursor-pointer text-xs" 
+               type="submit">
+              {loading ? "Saving..." : "Create Project"}
+        </Button>
+        {/* <button type="submit" disabled={loading}  className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-xs">
+          {loading ? "Saving..." : "Create Project"}
+        </button> */}
+        {/* <button
           onClick={handleSubmit}
           className="relative justify-center cursor-pointer inline-flex items-center space-x-2 text-xs"
         >
           Save
-        </button>
+        </button> */}
       </div>
     </div>
   );

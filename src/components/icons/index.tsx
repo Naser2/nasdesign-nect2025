@@ -23,5 +23,5 @@ export { default as TrashIcon } from './trash';
 export { default as UploadIcon } from './upload';
 export { default as UserIcon } from './user';
 export { default as PlaceholderImage } from './placeholder-image';
-export { PersonalIcon } from './PersonalIcon';
+export { default as PersonalIcon } from './PersonalIcon';
 export { default as MapPin } from './map-pin';

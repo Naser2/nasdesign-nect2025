@@ -64,7 +64,7 @@ const tabs = [
 
 export function InstagramTabs() {
   return (
-    <Tabs defaultValue="account" className="min-w-[400px] w-full">
+    <Tabs defaultValue="account" className="min-w-[400px] w-full mt-12 lg:mt-24">
       <TabsList className="grid w-full grid-cols-3">
         {tabs.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value}>

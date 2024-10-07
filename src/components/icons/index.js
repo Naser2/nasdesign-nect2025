@@ -5,7 +5,7 @@ import {CheckIcon} from './CheckIcon'
 import ArrowRight from './arrow-right'
 import Back from './back'
 import Ideal from './bancontact'
-import {LifetimeIcon} from './LifetimeIcon'
+// import {LifetimeIcon} from './LifetimeIcon'
 // import progress from './schemaTypes/progress'
 import Eye from './eye'
 import EyeOff from './eye-off'
@@ -19,4 +19,4 @@ import EyeOff from './eye-off'
 // import testimonialsSection from './schemaTypes/testimonialsSection';
 // import gallerySection from './schemaTypes/gallerySection';
 // import contactSection from './schemaTypes/contactSection';
-export  {PersonalIcon, DesktopIcon, LotsOfContentIcon, CheckIcon, LifetimeIcon, Ideal , Back, ArrowRight, Eye, EyeOff}
+export  {PersonalIcon, DesktopIcon, LotsOfContentIcon, CheckIcon,Ideal , Back, ArrowRight, Eye, EyeOff}

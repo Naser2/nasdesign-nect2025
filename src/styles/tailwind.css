@@ -48,9 +48,11 @@
   font-size: 12px;
   color: #1b1a1a;
 }
+.border-dashed {
+  border-style: dashed;
+}
 /* [data-radix-popper-content-wrapper] */
 /* .data-\[-radix\-popper\--content\-wrapper\] { */
-
 
 /* .data-\[state\=open\]\:zoom-in-95[data-state="open"] {
   position: absolute;

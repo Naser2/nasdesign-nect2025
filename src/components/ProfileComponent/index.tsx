@@ -145,7 +145,9 @@ export const profileWidth = 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8';
 
 
 
-export default function ProfileComponent({ user, userProfile, handleChange, session }) {
+export default function ProfileIndex({ user, userProfile, handleChange, session, userMeta }) {
+  console.log("USER_PROFILE_INDEX_PROFILE", userProfile, "USER-PROFILE_INDEX_USER",  user, "USER-PROFILE_INDEX_SESSION", session, );
+
   const [ userSession, setUserSession ] = useState(session); // Use Supabase session
   const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -156,13 +158,14 @@ export default function ProfileComponent({ user, userProfile, handleChange, sess
     image: user?.image,
     bio: user?.bio || '',
     bioMdx: user?.bioMdx,
+    ...userMeta
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  console.log("USER_SESSION_1", session)
+  console.log("USER_Profile_IN", userProfile)
 
   useEffect(() => {
     setIsMounted(true);
@@ -171,38 +174,38 @@ export default function ProfileComponent({ user, userProfile, handleChange, sess
   }, [session]);
 
   const handleSave = useCallback(async () => {
-    setError('');
-    setSaving(true);
-    // Use Supabase session to get user data
-    if (session) {
-      try {
-        const response = await fetch('/api/users', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: user.username,
-            bio: data.bio,
-          }),
-        });
+    // setError('');
+    // setSaving(true);
+    // // Use Supabase session to get user data
+    // if (session) {
+    //   try {
+    //     const response = await fetch('/api/users', {
+    //       method: 'PUT',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         username: user.username,
+    //         bio: data.bio,
+    //       }),
+    //     });
 
-        if (response.ok) {
-          const bioMdx = await response.json();
-          setData((prevData) => ({
-            ...prevData,
-            bioMdx,
-          }));
-          redirect(`/${user.username}`);
-        } else {
-          setError('Error saving profile.');
-        }
-      } catch (error) {
-        console.error('Error saving profile:', error);
-        setError('Error saving profile.');
-      }
-    }
-    setSaving(false);
+    //     if (response.ok) {
+    //       const bioMdx = await response.json();
+    //       setData((prevData) => ({
+    //         ...prevData,
+    //         bioMdx,
+    //       }));
+    //       redirect(`/${user.username}`);
+    //     } else {
+    //       setError('Error saving profile.');
+    //     }
+    //   } catch (error) {
+    //     console.error('Error saving profile:', error);
+    //     setError('Error saving profile.');
+    //   }
+    // }
+    // setSaving(false);
   }, [data, session, user?.username]);
 
   if (!isMounted) {
@@ -212,10 +215,13 @@ export default function ProfileComponent({ user, userProfile, handleChange, sess
   return (
     <div className="min-h-screen pb-20">
       <Profile
+        userProfile={userProfile}
         handleChange={handleChange}
-        handleSave={handleSave}
-        success={success}
-        setSuccess={setSuccess}
+        // handleSave={handleSave}
+        // success={success}
+        // setSuccess={setSuccess}
+        // userMeta={userMeta}
+        
         user={user}
         data={data}
         setData={setData}
@@ -226,7 +232,6 @@ export default function ProfileComponent({ user, userProfile, handleChange, sess
         settingsPage={false}
         settings={false}
         session={userSession}
-        sessionUserName={userProfile?.first_name}
         profileWidth={profileWidth}
       />
     </div>

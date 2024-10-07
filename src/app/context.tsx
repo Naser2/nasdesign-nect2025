@@ -6,7 +6,8 @@ import clientSupabase from '@/lib/supabase/client';
 import { Loader2 } from 'lucide-react';
 // import { redirect } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
-
+import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
+import { extractSessionUserInfo } from '@/utils/extractSessionUserInfo';
 
 const AppContext = createContext<any>(undefined);
 
@@ -24,11 +25,18 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         // Fetch session
         const { data: sessionData, error: sessionError } = await clientSupabase.auth.getSession();
         if (sessionError) throw sessionError;
+         const userMetadata = extractSessionUserInfo(sessionData.session);
         setSession(sessionData.session);
 
         // Fetch user
         const { data: userData, error: userError } = await clientSupabase.auth.getUser();
+        console.log("APP_CONTEXT_USER_AUTH", sessionData);
         if (userError) throw userError;
+     
+        // console.log("APP_CONTEXT_EXTRACTED_USER_METADATA_FROM_SESSION", userMetadata);
+        // console.log("APP_CONTEXT_USER_DATA_DOT_USER", userData.user);
+    
+  
         setUser(userData.user);
 
         // Fetch profile
@@ -39,6 +47,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
           .single();
         
         if (profileError) throw profileError;
+        console.log("APP_CONTEXT_USER_PROFILE", profileData);
         setProfile(profileData);
 
       } catch (error) {

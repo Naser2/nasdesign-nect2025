@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppContext } from '../../context';
-import ProfileComponent from '@/components/ProfileComponent';
+import ProfileComponent from '@/components/ProfileComponent/index';
 import { useHelpers } from '@/hooks/useHelpers';
 import { useEffect, useState } from 'react';
 
@@ -9,8 +9,26 @@ export default function PrivatePage() {
   const { user, profile, session } = useAppContext(); // Access from AppContext
   const { loading, setLoading, setError, setSuccess } = useHelpers(); // Use helpers for error, success, etc.
   const [userData, setUserData] = useState({
-    display_name: '',
-    username: '',
+    display_name: '',  // Example: "Nas23"
+    username: '',      // Example: "babaggram3"
+    accessToken: '',   // JWT token
+    email: '',         // Example: "nassersanou23@gmail.com"
+    phone: '',    
+    emailConfirmedAt: '', // Example: "2024-10-02T17:49:00.497704Z"
+    emailVerified: false, // Example: false
+    first_name: '',
+    last_name: '',  
+    expiresAt: '',     // Example: 1728264383
+    expiresIn: '',     // Example: 3600
+    isAnonymous: false,  // Example: false
+    lastSignInAt: '',  // Example: "2024-10-07T00:26:23.80547708Z"
+    phoneVerified: false, // Example: false
+    refreshToken: '',  // Example: "aARlCcuSzxcLmK9zMY0j4Q"
+    role: '',  // Example: "authenticated"  
+     // aud: '',           // Example: "authenticated"
+    // confirmedAt: '',   // Example: "2024-10-02T17:49:00.497704Z"
+    // createdAt: '',     // Example: "2024-10-02T17:47:31.392599Z"
+
   });
 
   useEffect(() => {
@@ -19,6 +37,25 @@ export default function PrivatePage() {
       setUserData({
         display_name: user_metadata.display_name,
         username: user_metadata.username,
+        accessToken: user.accessToken || '',
+        email: user_metadata.email || '',
+        phone: user_metadata.phone || '',
+        last_name: user_metadata.last_name || '',
+        first_name: user_metadata.first_name ,
+        emailConfirmedAt: user_metadata.emailConfirmedAt || '',
+        emailVerified: user_metadata.emailVerified || false,
+        // emailVerified: user_metadata.identities[0].identity_data.emailVerified || false,
+        expiresAt: user_metadata.expiresAt || '',
+        expiresIn: user_metadata.expiresIn || '',
+        isAnonymous: user_metadata.isAnonymous || false,
+        lastSignInAt: user_metadata.lastSignInAt || '',
+        // lastSignInAt: user_metadata.identities[0].last_sign_in_at.lastSignInAt || '',
+        phoneVerified: user_metadata.phone_verified || false,
+        // phoneVerified: user_metadata.identities[0].identity_data.phone_verified || false,
+        refreshToken: user_metadata.refreshToken || '',    
+        role: user_metadata.role || '',
+        
+
       });
       setLoading(false); // Stop loading after data is set
     } else {
@@ -43,6 +80,7 @@ export default function PrivatePage() {
       }}
       userProfile={profile}
       session={session}
+      userMeta={userData}
     />
   );
 }

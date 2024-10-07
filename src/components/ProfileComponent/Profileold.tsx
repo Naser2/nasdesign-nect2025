@@ -4,14 +4,16 @@
 // import { useCallback, useEffect } from 'react';
 import type { UserProps } from '@/api/apiHelper';
 import {
+CheckInCircleIcon,
+CheckIcon,
 // EditIcon,
 // GitHubIcon,
 LoadingDots,
+UploadIcon,
 XIcon
 } from '@/components/icons';
-import UploadIcon from '@/components/icons/upload';
-import CheckInCircleIcon from '@/components/icons/check-in-circle';
-  
+
+
 // import  EditIcon from '@/components/icons/edit';
 // import TextareaAutosize from 'react-textarea-autosize';
 import Link from "next/link";
@@ -31,8 +33,6 @@ import type { SupabaseUserProfile } from "../../lib/Types";
 import { MoreHorizontal, Settings} from "lucide-react";
 import TaskForm from './TaskForm';
 import {PopoverList} from "./PopoverList";
-
-import UserNavPopup from '../UserNavPopup';
 
 import * as React from "react"
 
@@ -82,7 +82,6 @@ export async function generateMetadata(
 
 export default function Profile({
   user,
-  userProfile,
   handleChange,
   data,
   setData,
@@ -103,7 +102,6 @@ export default function Profile({
   setSuccess
 }: {
   user: UserProps;
-  userProfile: SupabaseUserProfile;
   data: any;
   handleChange: (e: any) => void;
   setData: (data: any) => void;
@@ -130,103 +128,64 @@ export default function Profile({
   success: string;
   profile: SupabaseUserProfile; // Type is updated here
 }) {
-  console.log("USER-PROFILES_USER", user, "USER-PROFILE_DATA", data ,"USER-PROFILES_SESSION", session, "USER-PROFILES_PROFILE", profile, "USER-PROFILES_SESSION_USER_NAME", sessionUserName);
   const [loading, setLoading] = useState(false);
-  // const [userProfile, setUserProfile] = useState<SupabaseUserProfile | null>(null); // Ensure type safety
+  const [userProfile, setUserProfile] = useState<SupabaseUserProfile | null>(null); // Ensure type safety
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showTodoForm, setShowTodoForm] = useState(false);
- const [showUserNav, setShowUserNav] = useState(true);
+
   // Set the profile if it's available
-  // useEffect(() => {
-  //   if (profile) {
-  //     setUserProfile(profile); // This is now typed correctly
-  //   }
-  // }, [profile]);
+  useEffect(() => {
+    if (profile) {
+      setUserProfile(profile); // This is now typed correctly
+    }
+  }, [profile]);
 
   const handleAddClick = () => {
     setShowTodoForm((prevState) => !prevState);
   };
 
-  const isCurrentUser = userProfile?.user_id == session?.user?.id && String(userProfile.user_id) === String(session.user.id);
+// Ensure that user.user_id and session?.user?.id are compared as strings
+const isCurrentUser = user?.user_id && session?.user?.id && String(user.user_id) === String(session.user.id);
 
-  console.log("USER-Profile-USER_ID", userProfile.user_id, "USER-Profile-SESSION.id", session?.user?.id);
-  console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
+console.log("USER-Profile-user?.id", user.user_id, "session?.user?.id", session?.user?.id);
+console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
 
 
   return ( <div className="min-h-screen  mb-4 lg:mb-24">
-            <div>
-              <div className={`h-48 w-full lg:h-64  ${getGradient(user?.username)}`}/>
-               <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}>
-                <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32">
-                  {isCurrentUser && userProfile.image  == null  &&  (
-                    <button
-                    className="not-visible hover:not-invisible absolute bg-gray-800 bg-opacity-10 hover:bg-opacity-70 w-full h-full z-10 transition-all flex items-center justify-center"
-                      onClick={() =>
-                        alert('Image upload has been disabled for dev purposes.')
-                      }
-                    >
-                      <UploadIcon className="h-6 w-6 text-white" />
-                    </button>
-                  )}
-
-                  { user?.image 
-                      ? 
-                    <BlurImage
-                      src={user.image}
-                      alt={user?.name}
-                      width={300}
-                      height={300}
-                      /> 
-                      :  
-                    <DefaultAvatar/>
+           <div>
+            <div className={`h-48 w-full lg:h-64  ${getGradient(user?.username)}`}
+              />
+            <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}>
+              <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32">
+                {settingsPage && (
+                  <button
+                    className="absolute bg-gray-800 bg-opacity-50 hover:bg-opacity-70 w-full h-full z-10 transition-all flex items-center justify-center"
+                    onClick={() =>
+                      alert('Image upload has been disabled for demo purposes.')
                     }
-               
-                  <div className="flex min-w-0 flex-1 items-center space-x-2">
-                    <h1 className="text-2xl font-semibold darrk:text-white truncate">
-                      {user?.username  && user.username  || user?.user_metadata?.first_name &&  user.user_metadata.first_name}
-                    </h1>
-                    {!user?.verified && (
-                      <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
-                    )}
-                  </div>
-                </div>
-                <div className="mt-2 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-                  <div className="flex min-w-0 flex-1 items-center space-x-2">
-                    <h1 className="text-2xl font-semibold darrk:text-white truncate">
-                      {user?.username  && user.username  || user?.user_metadata?.first_name &&  user.user_metadata.first_name}
-                    </h1>
-                    {!user?.verified && (
-                      <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
-                    )}
-                  </div>
-                  {isCurrentUser && (
-                  <>
-                 <div className="inline-flex space-x-6">
-                  <ButtonRoundedMd href='/archive'
-                    variant={"secondary"}
-                    className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 rounded-md"
-                    size={"sm"}
                   >
-                    See dashboard
-                  </ButtonRoundedMd>
-                  <CreateProjectModal />
+                    <UploadIcon className="h-6 w-6 text-white" />
+                  </button>
+                )}
+                <BlurImage
+                  src={user?.image ||'https://lh3.googleusercontent.com/a/ACg8ocK8u7goFLEyN64th7_pVzvLB9S_oc2nUizijmSc_6voqn0ryxUw=s96-c'}
+                  alt={user?.name}
+                  width={300}
+                  height={300}
+                />
+              </div>
+              <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
+                <div className="flex min-w-0 flex-1 items-center space-x-2 mt-1">
+                  <h1 className="text-2xl font-semibold darrk:text-white truncate">
+                    {user?.username  && user.username  || user?.user_metadata?.first_name &&  user.user_metadata.first_name}
+                  </h1>
+                  {user?.verified && (
+                    <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
+                  )}
+                </div>
+                {isCurrentUser && (
+                <>
 
-                  <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                      
-                      <a
-                        href="https://github.com/vercel/mongodb-starter"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex justify-center px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
-                      >
-                        {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
-                        <span className="text-white flex">Mistery Box</span>
-                      </a>
-
-                    </div>
-                    </div>
-              
-                  <UserNavPopup userProfile={userProfile}/>
                   {/* <Button
                     size={"icon"}
                     variant={"ghost"}
@@ -235,7 +194,7 @@ export default function Profile({
                     <Settings />
                   </Button> */}
                   {/* <Link
-                    href={`/profile/edit-profile`}
+                    href={`/dashboard/edit-profile`}
                     className={buttonVariants({
                       className: "!font-bold",
                       variant: "secondary",
@@ -244,8 +203,14 @@ export default function Profile({
                   >
                     Edit profile
                   </Link> */}
-                  
-                  {/* <button 
+                  <ButtonRoundedMd href='/archive'
+                    variant={"outline"}
+                    className="font-bold !bg-blue-500 rounded-md"
+                    size={"sm"}
+                  >
+                    See dashboard
+                  </ButtonRoundedMd>
+                  <button 
                     type="button"
                     onClick={() =>handleAddClick}
                     className="inline-flex justify-center gap-x-1.5  border-1 border-black !bg-gray-200 
@@ -253,9 +218,15 @@ export default function Profile({
                     shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     <span className='text-md font-bold '>+ </span> Create project 
-                  </button> */}
-                
-                  {/* <PopoverList /> */}
+                  </button>
+                  <Button
+                    size={"icon"}
+                    variant={"ghost"}
+                    className="md:order-last bg-gray-100 py-2 px-2 rounded-full hover:bg-gray-300"
+                  >
+                    <MoreHorizontal />
+                  </Button>
+                  <PopoverList />
                   </>)
               }
                 {/* {user?.last_sign_in_at ? (
@@ -309,7 +280,7 @@ export default function Profile({
             </div>
           </div>
 
-         
+          <CreateProjectModal showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm} />
           <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} />
            {/* {showTodoForm && <TaskForm userId={session?.user?.id ?? user?._id} showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm}/>} */}
         {/* <ProfileTabs username={user.username} profile={user} session={session} /> */}
@@ -346,9 +317,9 @@ export default function Profile({
                 {/* <MDXRemote {...data.bioMdx} /> */}
               {data?.bio} 
               </article>
-            {!settingsPage ? (
+            {settingsPage ? (
               <>
-                {/* <TextareaAutosize
+                <TextareaAutosize
                   name="description"
                   onInput={(e) => {
                     setData({
@@ -359,7 +330,7 @@ export default function Profile({
                   className="mt-1 w-full max-w-2xl px-0 text-sm tracking-wider leading-6 text-white bg-black font-mono border-0 border-b border-gray-800 focus:border-white resize-none focus:outline-none focus:ring-0"
                   placeholder="Enter a short bio about yourself... (Markdown supported)"
                   value={data?.bio ? data?.bio :  "Update your bio"}
-                /> */}
+                />
                 <div className="flex justify-end w-full max-w-2xl">
                   <p className="text-gray-400 font-mono text-sm">
                     {data?.bio?.length}/256
@@ -460,21 +431,3 @@ export function SelectProjectType() {
 
 
 
-
-
-export const DefaultAvatar = ()=> {
-  return (   <BlurImage
-    src={'/67038775.png'}
-    alt={'Default Avatar'}
-    width={300}
-    height={300}
-  /> 
-  
-  //  <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32 min-h-24 w-24 object-cover">
-  //   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-  //   <path d="M6.67948 1.50115L11 7L0 7L4.32052 1.50115C4.92109 0.736796 6.07891 0.736795 6.67948 1.50115Z" fill="gray">
-  //     </path>
-  //     </svg>
-  //  </div>
-  )
-}

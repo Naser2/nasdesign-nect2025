@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from 'react';
-import { saveUser } from '../page';
+import { saveUser } from '../../profile/general/page';
 
 export default function SettingsPage() {
   const { user, setUser } = useAppContext();

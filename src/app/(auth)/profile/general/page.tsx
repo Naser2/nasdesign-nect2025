@@ -16,8 +16,10 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export const saveUser = async ({ metadata, setLoading, setUser }: any) => {
+  console.log("SAVE_USER ", metadata)
   try {
     if (setLoading) setLoading(true);
+    // console.log("SAVE_USER ", metadata)
     const { data, error } = await clientSupabase
       .auth
       .updateUser({
@@ -25,13 +27,16 @@ export const saveUser = async ({ metadata, setLoading, setUser }: any) => {
           ...metadata
         }
       })
+      console.log("SAVE_USER_data_fetched_after_update", data);
 
     if (data) {
       if (setUser) {
-        const { user } = data;
+        const  {user} = data;
+        console.log("SAVE_USER_Returning_set_user_fetched by_auth_after_update", user);
         setUser(user);
       }
       toast.success('Profile saved successfully!')
+      console.log("DATA saved successfully", data);
       return data;
     }
   } catch (error: any) {

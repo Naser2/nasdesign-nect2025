@@ -88,6 +88,7 @@ export interface UserProps {
   // Define the UserProfile type based on the profile data
   export type SupabaseUserProfile = {
     id: string;
+    user_id: string;
     username: string | null;
     bio: string | null;
     website: string | null;

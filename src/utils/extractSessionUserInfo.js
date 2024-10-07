@@ -1,5 +1,3 @@
-// utils/extractSessionUserInfo.js
-
 export function extractSessionUserInfo(session) {
   if (!session || !session.user) {
     return null;
@@ -25,9 +23,6 @@ export function extractSessionUserInfo(session) {
   const updatedAt = user.updated_at;
   const isAnonymous = user.is_anonymous;
 
-  // Extract app_metadata
-  const appMetadata = user.app_metadata; // Contains provider and providers array
-
   // Extract user_metadata
   const userMetadata = user.user_metadata || {};
   const firstName = userMetadata.first_name || '';
@@ -36,17 +31,15 @@ export function extractSessionUserInfo(session) {
   const phoneVerified = userMetadata.phone_verified || false;
   const emailVerified = userMetadata.email_verified || false;
   const sub = userMetadata.sub || '';
-  const userRole = userMetadata.userRole || '';
-  const userMetaRole = userMetadata.role || '';
+  const userRole = userMetadata.userRole || ''; // Cleaned up user role
+  // const userMetaRole = userMetadata.role || ''; // Additional user role from metadata
 
-  // Extract identities and related data
+  // Extract identities and related data for phone (if needed)
   const identities = user.identities || [];
   const identityData = identities[0]?.identity_data || {}; // Get the first identity data
-
-  // Extract phone from both user and identity data
   const phone = identityData.phone || user.phone || ''; // Prioritize identity data
 
-  // Return an object containing all extracted data
+  // Return an object containing all extracted and cleaned-up data
   return {
     // Session-level data
     accessToken,
@@ -69,19 +62,15 @@ export function extractSessionUserInfo(session) {
     isAnonymous,
 
     // Metadata
-    appMetadata,
-    userMetadata: {
-      firstName,
-      lastName,
-      license,
-      phoneVerified,
-      emailVerified,
-      sub,
-      userRole,
-      role: userMetaRole,
-    },
+    firstName,
+    lastName,
+    license,
+    phoneVerified,
+    emailVerified,
+    sub,
+    userRole,
+    // userMetaRole, // Additional role
 
-    // Identities
-    identities,
+    // No longer return appMetadata or identities (they are discarded)
   };
 }
