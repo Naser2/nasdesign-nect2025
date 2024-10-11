@@ -145,7 +145,7 @@ export const profileWidth = 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8';
 
 
 
-export default function ProfileIndex({ user, userProfile, handleChange, session, userMeta }) {
+export default function ProfileIndex({ user, userProfile, handleChange, session, userMeta,  handleSave}) {
   console.log("USER_PROFILE_INDEX_PROFILE", userProfile, "USER-PROFILE_INDEX_USER",  user, "USER-PROFILE_INDEX_SESSION", session, );
 
   const [ userSession, setUserSession ] = useState(session); // Use Supabase session
@@ -173,40 +173,40 @@ export default function ProfileIndex({ user, userProfile, handleChange, session,
     console.log("SESSION", session); // This will print the session once it is available
   }, [session]);
 
-  const handleSave = useCallback(async () => {
-    // setError('');
-    // setSaving(true);
-    // // Use Supabase session to get user data
-    // if (session) {
-    //   try {
-    //     const response = await fetch('/api/users', {
-    //       method: 'PUT',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //         username: user.username,
-    //         bio: data.bio,
-    //       }),
-    //     });
+  // const handleSave = useCallback(async () => {
+  //   setError('');
+  //   setSaving(true);
+  //   // Use Supabase session to get user data
+  //   if (session) {
+  //     try {
+  //       const response = await fetch('/api/users', {
+  //         method: 'PUT',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           username: user.username,
+  //           bio: data.bio,
+  //         }),
+  //       });
 
-    //     if (response.ok) {
-    //       const bioMdx = await response.json();
-    //       setData((prevData) => ({
-    //         ...prevData,
-    //         bioMdx,
-    //       }));
-    //       redirect(`/${user.username}`);
-    //     } else {
-    //       setError('Error saving profile.');
-    //     }
-    //   } catch (error) {
-    //     console.error('Error saving profile:', error);
-    //     setError('Error saving profile.');
-    //   }
-    // }
-    // setSaving(false);
-  }, [data, session, user?.username]);
+  //       if (response.ok) {
+  //         const bioMdx = await response.json();
+  //         setData((prevData) => ({
+  //           ...prevData,
+  //           bioMdx,
+  //         }));
+  //         redirect(`/${user.username}`);
+  //       } else {
+  //         setError('Error saving profile.');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error saving profile:', error);
+  //       setError('Error saving profile.');
+  //     }
+  //   }
+  //   setSaving(false);
+  // }, [data, session, user?.username]);
 
   if (!isMounted) {
     return null;
@@ -217,7 +217,7 @@ export default function ProfileIndex({ user, userProfile, handleChange, session,
       <Profile
         userProfile={userProfile}
         handleChange={handleChange}
-        // handleSave={handleSave}
+        handleSave={handleSave}
         // success={success}
         // setSuccess={setSuccess}
         // userMeta={userMeta}
