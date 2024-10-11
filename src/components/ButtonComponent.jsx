@@ -12,43 +12,43 @@ import { Transition } from '@headlessui/react'
 import { ArrowLeftIcon, ArrowRight } from './icons/Arrows'
 // import { Button } from '@/components/Button'
 
-interface ButtonComponentProps {
-  loading?: boolean;
-  disabled?: boolean;
-  onClick?: () => void;
-  label?: string;
-  children?: ReactNode;
-  variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'ghost' | 'link';
-  className?: string;
-  href?: string; // Add href prop to support links
-  size?: 'sm' | 'lg' | 'default' | 'icon'; // Define size if needed
-}
-interface ButtonArrowProps {
-  variant?: string;
-  className?: string;
-  children?: ReactNode;
-  arrow?: "left" | "right";
-  rounded?: string | null;
-  href?: string;
-}
+// interface ButtonComponentProps {
+//   loading?: boolean;
+//   disabled?: boolean;
+//   onClick?: () => void;
+//   label?: string;
+//   children?: ReactNode;
+//   variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'ghost' | 'link';
+//   className?: string;
+//   href?: string; // Add href prop to support links
+//   size?: 'sm' | 'lg' | 'default' | 'icon'; // Define size if needed
+// }
+// interface ButtonArrowProps {
+//   variant?: string;
+//   className?: string;
+//   children?: ReactNode;
+//   arrow?: "left" | "right";
+//   rounded?: string | null;
+//   href?: string;
+// }
 
-interface CommomButtonMdProps {
-  text: string;
-  srText?: string;
-  arrow?: "left" | "right";
-  className?: string;
-  theme: {
-    bg?: string;
-    text?: string;
-  };
-}
+// interface CommomButtonMdProps {
+//   text: string;
+//   srText?: string;
+//   arrow?: "left" | "right";
+//   className?: string;
+//   theme: {
+//     bg?: string;
+//     text?: string;
+//   };
+// }
 
-interface ActionAbleButtonProps {
-  handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  showSendingBtn: boolean;
-  btnText?: string;
-  fetchingBtnText?: string;
-}
+// interface ActionAbleButtonProps {
+//   handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+//   showSendingBtn: boolean;
+//   btnText?: string;
+//   fetchingBtnText?: string;
+// }
 
 
 export default function ButtonComponent({
@@ -59,7 +59,7 @@ export default function ButtonComponent({
   children,
   variant,
   className,
-}: ButtonComponentProps) {
+}) {
   return (
     <Button
       className={`${!variant ? 'bg-black dark:bg-neutral-900' : 'text-black-500'} dark:text-white ${className}`}
@@ -82,7 +82,7 @@ export default function ButtonComponent({
 
 
 
-function ArrowIcon(props: React.SVGProps<SVGSVGElement>) {
+function ArrowIcon(props) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
       <path
@@ -120,7 +120,7 @@ export function ButtonArrow({
   rounded,
   href,
   ...props
-}: ButtonArrowProps) {
+}) {
   const Component = href ? Link : 'button';
 
   className = clsx(
@@ -218,7 +218,7 @@ export const ActionAbleButton = ({
   showSendingBtn,
   btnText,
   fetchingBtnText,
-}: ActionAbleButtonProps) => {
+}) => {
   return (
     <div className="mt-6 flex items-center justify-center">
       {!showSendingBtn && (
@@ -273,13 +273,8 @@ export const ButtonTwins = ({
   hrefR,
   textL,
   children,
-}: {
-  textR: string;
-  hrefL: string;
-  hrefR: string;
-  textL: string;
-  children?: React.ReactNode;
-}) => {
+}
+) => {
   return (
     <div className="not-prose mb-16 mt-6 flex gap-3">
       {/* Use ButtonArrow instead of Button */}
@@ -295,37 +290,37 @@ export const ButtonTwins = ({
   );
 };
 
-// export const NextButton = ({ text, href, customize, textStyle }) => {
-//   return (
-//     <Link
-//       href={href}
-//       className="bg-gray-yt nline-flex justify-center rounded-full  py-1 px-4 pl-5 text-sm font-semibold text-white"
-//     >
-//       <span>
-//         <span className="flex items-center">
-//           Next
-//           <svg
-//             className={clsx(
-//               textStyle
-//                 ? [textStyle, 'h-5 w-5 py-0.5 pl-1']
-//                 : ' h-5 w-5 py-0.5 pl-1 text-gray-700 dark:text-slate-400'
-//             )}
-//             x-description="Heroicon name: mini/chevron-right"
-//             xmlns="http://www.w3.org/2000/svg"
-//             viewBox="0 0 20 20"
-//             fill="currentColor"
-//             aria-hidden="true"
-//           >
-//             <path
-//               fill-rule="evenodd"
-//               d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-//               clip-rule="evenodd"
-//             ></path>
-//           </svg>
-//         </span>
-//       </span>
-//     </Link>)
-// }
+export const NextButton = ({ text, href, customize, textStyle }) => {
+  return (
+    <Link
+      href={href}
+      className="bg-gray-yt nline-flex justify-center rounded-full  py-1 px-4 pl-5 text-sm font-semibold text-white"
+    >
+      <span>
+        <span className="flex items-center">
+          Next
+          <svg
+            className={clsx(
+              textStyle
+                ? [textStyle, 'h-5 w-5 py-0.5 pl-1']
+                : ' h-5 w-5 py-0.5 pl-1 text-gray-700 dark:text-slate-400'
+            )}
+            x-description="Heroicon name: mini/chevron-right"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </span>
+      </span>
+    </Link>)
+}
 
 // export const GoBack = ({ previousPathname, text }) => {
 
@@ -361,26 +356,26 @@ export const ButtonTwins = ({
 //   )
 // }
 
-// export const PageCommonPaginators = ({ text, href, previousPathname }) => {
-//   let router = useRouter()
-//   let previousPath = previousPathname ?? 'router.previousPathname'
-//   console.log('COOMPAGE PROPS:', text, href, ' useRouter().pathname')
-//   return (
-//     <div
-//       id="section-top-item-and-go-back"
-//       className="my-6 flex grid max-w-4xl grid-cols-[1fr,auto]  items-center md:mr-10 md:max-w-4xl lg:mt-10 lg:mb-20"
-//     ><></>
-//       {/* <GoBack previousPathname={previousPath} />
-//       <NextButton text={text} href={href} /> */}
-//     </div>
-//   )
-// }
+export const PageCommonPaginators = ({ text, href, previousPathname }) => {
+  let router = useRouter()
+  let previousPath = previousPathname ?? 'router.previousPathname'
+  console.log('COOMPAGE PROPS:', text, href, ' useRouter().pathname')
+  return (
+    <div
+      id="section-top-item-and-go-back"
+      className="my-6 flex grid max-w-4xl grid-cols-[1fr,auto]  items-center md:mr-10 md:max-w-4xl lg:mt-10 lg:mb-20"
+    ><></>
+      {/* <GoBack previousPathname={previousPath} />
+      <NextButton text={text} href={href} /> */}
+    </div>
+  )
+}
 
 
 
 // import { courseNavigation } from '@/components/Navigation'
 
-function CheckIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
+function CheckIcon(props) {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
       <circle cx="10" cy="10" r="10" strokeWidth="0" />
@@ -395,7 +390,7 @@ function CheckIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGE
   )
 }
 
-export function FeedbackButton(props: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLButtonElement> & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+export function FeedbackButton(props) {
   return (
     <button
       type="submit"
@@ -409,8 +404,8 @@ export function FeedbackButton(props: React.JSX.IntrinsicAttributes & React.Clas
 
 // FeedbackForm with correct typing for ref
 const FeedbackForm = forwardRef(function FeedbackForm(
-  { onSubmit, message, question }: { onSubmit: any; message: string; question?: string },
-  ref: Ref<HTMLDivElement>
+  { onSubmit, message, question },
+  ref
 ) {
   return (
     <div id="FEEDBACK-FORM" ref={ref}>
@@ -446,8 +441,8 @@ const FeedbackForm = forwardRef(function FeedbackForm(
 
 // FeedbackMessage with correct forwardRef usage
 const FeedbackMessage = forwardRef(function FeedbackMessage(
-  { feedbackStatus }: { feedbackStatus: string },
-  ref: Ref<HTMLDivElement>
+  { feedbackStatus },
+  ref
 ) {
   return (
     <div ref={ref} className="justify-center md:justify-start">
