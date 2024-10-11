@@ -38,19 +38,22 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
-
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    // List of allowed variants
+    const allowedVariants = ["link", "default", "secondary", "outline", "destructive", "ghost"];
+
+    // Ensure the variant is valid; if not, fallback to 'default'
+    const validVariant = allowedVariants.includes(variant ?? "") ? variant : "default";
+
     const Comp = asChild ? Slot : "button";
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant: validVariant, size, className }))}
         ref={ref}
         {...props}
       />
     );
   }
 );
-Button.displayName = "Button";
-
-export { Button, buttonVariants };

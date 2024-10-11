@@ -4,39 +4,84 @@ import { Button } from "./ui/button";
 
 import Link from 'next/link'
 import clsx from 'clsx'
-import React, { forwardRef, Fragment, useState, type Ref } from 'react'
+import React, { forwardRef, Fragment, useState, ReactNode, type Ref } from 'react'
+
 
 import { useRouter } from 'next/router'
 import { Transition } from '@headlessui/react'
 import { ArrowLeftIcon, ArrowRight } from './icons/Arrows'
 // import { Button } from '@/components/Button'
 
+interface ButtonComponentProps {
+  loading: boolean;
+  disabled?: boolean;
+  onClick: () => void;
+  label?: string;
+  children?: ReactNode;
+  variant?: string;
+  className?: string;
+}
+
+interface ButtonArrowProps {
+  variant?: string;
+  className?: string;
+  children?: ReactNode;
+  arrow?: "left" | "right";
+  rounded?: string | null;
+  href?: string;
+}
+
+interface CommomButtonMdProps {
+  text: string;
+  srText?: string;
+  arrow?: "left" | "right";
+  className?: string;
+  theme: {
+    bg?: string;
+    text?: string;
+  };
+}
+
+interface ActionAbleButtonProps {
+  handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  showSendingBtn: boolean;
+  btnText?: string;
+  fetchingBtnText?: string;
+}
 
 
 export default function ButtonComponent({
-  loading, disabled, onClick, label, children, variant, className
-}: any) {
-  return <Button
-    className={`${!variant ? 'bg-black dark:bg-neutral-900' : 'text-black-500'} dark:text-white ${className}`}
-    variant={variant}
-    disabled={loading || disabled}
-    onClick={onClick}
-  >
-    {!loading && <>
-      {children}
-      {label}
-    </>}
-    {loading && <Loader2 className="animate-spin" />}
-  </Button>;
-
+  loading,
+  disabled = false,
+  onClick,
+  label,
+  children,
+  variant,
+  className,
+}: ButtonComponentProps) {
+  return (
+    <Button
+      className={`${!variant ? 'bg-black dark:bg-neutral-900' : 'text-black-500'} dark:text-white ${className}`}
+      variant={variant}
+      disabled={loading || disabled}
+      onClick={onClick}
+    >
+      {!loading && (
+        <>
+          {children}
+          {label}
+        </>
+      )}
+      {loading && <Loader2 className="animate-spin" />}
+    </Button>
+  );
 }
 
 
 
 
 
-
-function ArrowIcon(props) {
+function ArrowIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
       <path
@@ -46,7 +91,7 @@ function ArrowIcon(props) {
         d="m11.5 6.5 3 3.5m0 0-3 3.5m3-3.5h-9"
       />
     </svg>
-  )
+  );
 }
 
 const variantStyles = {
@@ -72,19 +117,19 @@ export function ButtonArrow({
   children,
   arrow,
   rounded,
-  href, // Ensure href is passed
+  href,
   ...props
-}) {
-  let Component = href ? Link : 'button';
+}: ButtonArrowProps) {
+  const Component = href ? Link : 'button';
 
   className = clsx(
-    className && className,
+    className,
     rounded ?? 'rounded-full',
     'inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition',
     variant && variantStyles[variant]
   );
 
-  let arrowIcon = (
+  const arrowIcon = (
     <ArrowIcon
       className={clsx(
         'mt-0.5 h-5 w-5',
@@ -99,8 +144,8 @@ export function ButtonArrow({
     <Component
       className={className}
       {...props}
-      id={variant ? variant : 'default-btn'}
-      href={href} // Make sure to pass href to Link if used
+      id={variant || 'default-btn'}
+      href={href}
     >
       {arrow === 'left' && arrowIcon}
       {children}
@@ -109,18 +154,7 @@ export function ButtonArrow({
   );
 }
 
-export function ButtonRoundedMd({ href, className, ...props }) {
-  className = clsx(
-    'inline-flex justify-center rounded-3xl bg-slste-600 px-4 py-2 text-base font-semibold text-white hover:bg-black focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:text-white/70',
-    className
-  )
 
-  return href ? (
-    <Link href={href} className={className} {...props} />
-  ) : (
-    <button className={className} {...props} />
-  )
-}
 
 export function CommomButtonMd({ href, className, ...props }) {
   // console.log('BTN PPROPS', props)
@@ -176,12 +210,14 @@ export function CommomButtonMd({ href, className, ...props }) {
   )
 }
 
+
+
 export const ActionAbleButton = ({
   handleSubmit,
   showSendingBtn,
   btnText,
   fetchingBtnText,
-}) => {
+}: ActionAbleButtonProps) => {
   return (
     <div className="mt-6 flex items-center justify-center">
       {!showSendingBtn && (
@@ -189,13 +225,12 @@ export const ActionAbleButton = ({
           type="button"
           className="inline-flex w-32 items-center rounded-md bg-slate-900 px-10 py-2 text-center text-sm font-semibold leading-6 text-white shadow hover:bg-black"
           disabled={showSendingBtn && true}
-          onClick={() => handleSubmit(event)}
+          onClick={handleSubmit}
         >
           {btnText ?? 'Send'} <ArrowRight color="text-white" className={undefined} />
         </button>
       )}
 
-      {/* isFetching &&  */}
       {showSendingBtn && (
         <button
           type="button"
@@ -227,8 +262,8 @@ export const ActionAbleButton = ({
         </button>
       )}
     </div>
-  )
-}
+  );
+};
 
 
 export const ButtonTwins = ({
@@ -259,86 +294,86 @@ export const ButtonTwins = ({
   );
 };
 
-export const NextButton = ({ text, href, customize, textStyle }) => {
-  return (
-    <Link
-      href={href}
-      className="bg-gray-yt nline-flex justify-center rounded-full  py-1 px-4 pl-5 text-sm font-semibold text-white"
-    >
-      <span>
-        <span className="flex items-center">
-          Next
-          <svg
-            className={clsx(
-              textStyle
-                ? [textStyle, 'h-5 w-5 py-0.5 pl-1']
-                : ' h-5 w-5 py-0.5 pl-1 text-gray-700 dark:text-slate-400'
-            )}
-            x-description="Heroicon name: mini/chevron-right"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </span>
-      </span>
-    </Link>)
-}
+// export const NextButton = ({ text, href, customize, textStyle }) => {
+//   return (
+//     <Link
+//       href={href}
+//       className="bg-gray-yt nline-flex justify-center rounded-full  py-1 px-4 pl-5 text-sm font-semibold text-white"
+//     >
+//       <span>
+//         <span className="flex items-center">
+//           Next
+//           <svg
+//             className={clsx(
+//               textStyle
+//                 ? [textStyle, 'h-5 w-5 py-0.5 pl-1']
+//                 : ' h-5 w-5 py-0.5 pl-1 text-gray-700 dark:text-slate-400'
+//             )}
+//             x-description="Heroicon name: mini/chevron-right"
+//             xmlns="http://www.w3.org/2000/svg"
+//             viewBox="0 0 20 20"
+//             fill="currentColor"
+//             aria-hidden="true"
+//           >
+//             <path
+//               fill-rule="evenodd"
+//               d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+//               clip-rule="evenodd"
+//             ></path>
+//           </svg>
+//         </span>
+//       </span>
+//     </Link>)
+// }
 
-export const GoBack = ({ previousPathname, text }) => {
+// export const GoBack = ({ previousPathname, text }) => {
 
-  let router = useRouter()
+//   let router = useRouter()
 
-  return (
-    <>
-      {previousPathname && (
-        <div className=" not-prose  relative mb-16 mt-6 gap-3">
-          <Button
-            onClick={() => router.back()}
-            href={previousPathname}
-            arrow="left"
-            className={'bg-gray-yt'}
-          >
-            {text ?? ''}
-          </Button>
-        </div>
-      )}
-      {!previousPathname && (
-        <div className="max-w-10xl mt-2 lg:ml-4">
-          <Link
-            type="link"
-            href={'/projects/'}
-            aria-label="No-previous-pathname-go-to-project"
-            className="bg-gray-yt group h-10 w-10 items-center justify-center rounded-full"
-          >
-            <ArrowLeftIcon className="h-4 w-4 stroke-black text-sky-600 transition group-hover:stroke-zinc-700 dark:stroke-white dark:stroke-zinc-100 dark:group-hover:stroke-zinc-400 lg:h-8 lg:w-8" />
-          </Link>
-        </div>
-      )}
-    </>
-  )
-}
+//   return (
+//     <>
+//       {previousPathname && (
+//         <div className=" not-prose  relative mb-16 mt-6 gap-3">
+//           <Button
+//             onClick={() => router.back()}
+//             href={previousPathname}
+//             arrow="left"
+//             className={'bg-gray-yt'}
+//           >
+//             {text ?? ''}
+//           </Button>
+//         </div>
+//       )}
+//       {!previousPathname && (
+//         <div className="max-w-10xl mt-2 lg:ml-4">
+//           <Link
+//             type="link"
+//             href={'/projects/'}
+//             aria-label="No-previous-pathname-go-to-project"
+//             className="bg-gray-yt group h-10 w-10 items-center justify-center rounded-full"
+//           >
+//             <ArrowLeftIcon className="h-4 w-4 stroke-black text-sky-600 transition group-hover:stroke-zinc-700 dark:stroke-white dark:stroke-zinc-100 dark:group-hover:stroke-zinc-400 lg:h-8 lg:w-8" />
+//           </Link>
+//         </div>
+//       )}
+//     </>
+//   )
+// }
 
-export const PageCommonPaginators = ({ text, href, previousPathname }) => {
-  let router = useRouter()
-  let previousPath = previousPathname ?? 'router.previousPathname'
-  console.log('COOMPAGE PROPS:', text, href, ' useRouter().pathname')
-  return (
-    <div
-      id="section-top-item-and-go-back"
-      className="my-6 flex grid max-w-4xl grid-cols-[1fr,auto]  items-center md:mr-10 md:max-w-4xl lg:mt-10 lg:mb-20"
-    ><></>
-      {/* <GoBack previousPathname={previousPath} />
-      <NextButton text={text} href={href} /> */}
-    </div>
-  )
-}
+// export const PageCommonPaginators = ({ text, href, previousPathname }) => {
+//   let router = useRouter()
+//   let previousPath = previousPathname ?? 'router.previousPathname'
+//   console.log('COOMPAGE PROPS:', text, href, ' useRouter().pathname')
+//   return (
+//     <div
+//       id="section-top-item-and-go-back"
+//       className="my-6 flex grid max-w-4xl grid-cols-[1fr,auto]  items-center md:mr-10 md:max-w-4xl lg:mt-10 lg:mb-20"
+//     ><></>
+//       {/* <GoBack previousPathname={previousPath} />
+//       <NextButton text={text} href={href} /> */}
+//     </div>
+//   )
+// }
 
 
 
