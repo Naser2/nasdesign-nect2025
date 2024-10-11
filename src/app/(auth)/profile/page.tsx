@@ -6,8 +6,9 @@ import { useHelpers } from '@/hooks/useHelpers';
 import { useEffect, useState } from 'react';
 
 export default function PrivatePage() {
-  const { user, profile, session } = useAppContext(); // Access from AppContext
+  const { user, profile, session, setUser } = useAppContext(); // Access from AppContext
   const { loading, setLoading, setError, setSuccess, saveUser } = useHelpers(); // Include saveUser
+  
   const [userData, setUserData] = useState({
     display_name: '',  // Example: "Nas23"
     username: '',      // Example: "babaggram3"
