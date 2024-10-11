@@ -2,15 +2,15 @@
 // import FollowButton from "@/components/ProfileComponent/FollowButton";
 // import ProfileAvatar from "./ProfileAvatar";
 // import ProfileHeader from "./ProfileHeader";
-import InstagramTabs from "./InstagramTabs";
+// import InstagramTabs from "./InstagramTabs";
 // import UserAvatar from "./UserAvatar";
 // import { Button} from "../button";
 // import buttonVariants  from "../ButtonComponent";
-import type { SupabaseUserProfile } from "@/lib/Types";
+// import type { SupabaseUserProfile } from "@/lib/Types";
 // import { fetchProfile } from "@/lib/data";
-import { MoreHorizontal, Settings} from "lucide-react";
-import type { Metadata, ResolvingMetadata } from "next";
-import { unstable_noStore } from "next/cache";
+// import { MoreHorizontal, Settings} from "lucide-react";
+// import type { Metadata, ResolvingMetadata } from "next";
+// import { unstable_noStore } from "next/cache";
 // import {PopoverList} from "./PopoverList";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -48,20 +48,20 @@ type Props = {
 //   };
 // }
 
- const ProfiletabsCustom=({ children, profile, session })=> {
+ const ProfiletabsCustom=({ })=> {
   const [showTodoForm, setShowTodoForm] = useState(false);
 //   const profile = await fetchProfile(username);
 //   const session = await auth();
 const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 const [loading, setLoading] = useState(false);
   // const isCurrentUser = session?.user.id === profile?.id;
-  const isCurrentUser =  profile?.id === session?.user.id;
-  console.log("IS_CURRENT_USER", isCurrentUser, "SESSION_ID", session, "USER_PROFILE", profile);
+  // const isCurrentUser =  profile?.id === session?.user.id;
+  // console.log("IS_CURRENT_USER", isCurrentUser, "SESSION_ID", session, "USER_PROFILE", profile);
   //   the followerId here is the id of the user who is following the profile
   // const isFollowing = (profile?.followedBy || []).some( (follower) => follower?.followerId === session?.user.id);
 const isFollowing = false
   console.log("IS_FOLLOWING", isFollowing);
-  console.log("POFILE_TABS_CUSTOM", profile);
+  // console.log("POFILE_TABS_CUSTOM", profile);
   // if (!profile) {
   //   notFound();
   // }
@@ -73,6 +73,8 @@ const handlesetIsHeadlessModal = () => {
   // alert("Modal is not yet implemented")
 }
   console.log("showTodoForm", showTodoForm)
+
+ const isCurrentUser = false;
   return (
     <>
       {/* <ProfileHeader username={profile?.username} /> */}
@@ -88,7 +90,7 @@ const handlesetIsHeadlessModal = () => {
           <div className="md:px-10 space-y-4">
             <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-3">
               
-              {isCurrentUser ? (
+              {!isCurrentUser ? (
                 <>
                   {/* <Button
                     size={"icon"}
@@ -150,9 +152,9 @@ const handlesetIsHeadlessModal = () => {
 
             <div className="flex items-center gap-x-7">
               <p className="font-medium">
-                <strong>{profile.posts?.length || 0} posts</strong>
+                {/* <strong>{profile.posts?.length || 0} posts</strong> */}
               </p>
-
+{/* 
               <Link
                 href={`/dashboard/${profile?.username}/followers`}
                 className="font-medium"
@@ -165,7 +167,7 @@ const handlesetIsHeadlessModal = () => {
                 className="font-medium"
               >
                 <strong>{profile.following?.length || 6 }</strong> following
-              </Link>
+              </Link> */}
             </div>
 
              {/*   <div className="text-sm">
@@ -175,7 +177,7 @@ const handlesetIsHeadlessModal = () => {
           </div>
         </div>
 
-        <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} />
+        {/* <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} /> */}
  {/* {CLIDREN} */}
  {/* {showTodoForm && <TaskForm userId={session?.user?.id} showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm}/>} */}
         {/* <div class="rounded-[16px] bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 w-11/12 sm:w-[581px] h-[160px] sm:h-[80px] p-0.5 absolute z-10 bottom-10 left-0 right-0 mx-auto">

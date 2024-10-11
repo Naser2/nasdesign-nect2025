@@ -16,24 +16,24 @@ XIcon
 
 // import  EditIcon from '@/components/icons/edit';
 import TextareaAutosize from 'react-textarea-autosize';
-import Link from "next/link";
+// import Link from "next/link";
  import BlurImage from '@/components/blur-image';
 import { getGradient } from '../../lib/gradients';
 // import { MDXRemote } from 'next-mdx-remote';
-import Profiletabs from './Profiletabs';
+// import Profiletabs from './Profiletabs';
 // import {TabsDemo }from '../tabs/tabs';
 // import ProfileTabs from '../tabs/ProfileTabs';
-import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
+// import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
 import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
 
 
-import ButtonRoundedMd  from "../ButtonComponent";
+// import ButtonRoundedMd  from "../ButtonComponent";
 import type { SupabaseUserProfile } from "../../lib/Types";
 // import { fetchProfile } from "@/lib/data";
 import { MoreHorizontal, Settings} from "lucide-react";
-import TaskForm from './TaskForm';
+// import TaskForm from './TaskForm';
 import {PopoverList} from "./PopoverList";
 
 import * as React from "react"
@@ -51,7 +51,7 @@ import CreateProjectModal from './CreateProjectModal';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { unstable_noStore } from 'next/cache';
 import { useEffectOnce } from 'react-use';
-import InstagramTabs from './InstagramTabs';
+// import InstagramTabs from './InstagramTabs';
 
 
 
@@ -205,13 +205,13 @@ console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
                   >
                     Edit profile
                   </Link> */}
-                  <ButtonRoundedMd href='/archive'
+                  <Button href='/archive'
                     variant={"outline"}
                     className="font-bold !bg-blue-500 rounded-md"
-                    size={"sm"}
+                    // size={"sm"}
                   >
                     See dashboard
-                  </ButtonRoundedMd>
+                  </Button>
                   <button 
                     type="button"
                     onClick={() =>handleAddClick}
@@ -222,8 +222,8 @@ console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
                     <span className='text-md font-bold '>+ </span> Create project 
                   </button>
                   <Button
-                    size={"icon"}
-                    variant={"ghost"}
+                    // size={"icon"}
+                    // variant={"ghost"}
                     className="md:order-last bg-gray-100 py-2 px-2 rounded-full hover:bg-gray-300"
                   >
                     <MoreHorizontal />
@@ -283,7 +283,7 @@ console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
           </div>
 
           <CreateProjectModal showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm} />
-          <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} />
+          {/* <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} /> */}
            {/* {showTodoForm && <TaskForm userId={session?.user?.id ?? user?._id} showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm}/>} */}
         {/* <ProfileTabs username={user.username} profile={user} session={session} /> */}
         {/* <Profiletabs username={user.username} profile={userProfile} session={session} />       */}
@@ -357,7 +357,7 @@ console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
                   saving ? 'cursor-not-allowed' : ''
                 } rounded-full border border-[#0070F3] hover:border-2 w-12 h-12 flex justify-center items-center transition-all`}
                 disabled={saving}
-                onClick={handleSave}
+                // onClick={handleSave}
               >
                 {saving ? (
                   <LoadingDots color="white" />
@@ -365,7 +365,9 @@ console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
                   <CheckIcon className="h-4 w-4 text-white" />
                 )}
               </button>
-              <a href={`/${user.username}`} shallow replace scroll={false}>
+              <a href={`/${user.username}`} 
+              // shallow replace scroll={false}
+              >
                 <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
                   <XIcon className="h-4 w-4 text-white" />
                 </div>
@@ -377,8 +379,8 @@ console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
               // href={{ query: { settings: settings } }}
               // as="/settings"
               // shallow
-              replace
-              scroll={false}
+              // replace
+              // scroll={false}
             >
               <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
               Edit  {/* <EditIcon className="h-4 w-4 text-white" /> */}

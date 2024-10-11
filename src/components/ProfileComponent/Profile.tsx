@@ -23,7 +23,7 @@ import { getGradient } from '../../lib/gradients';
 import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
-import ButtonRoundedMd   from "../ButtonComponent";
+// import ButtonRoundedMd   from "../ButtonComponent";
 import type { SupabaseUserProfile } from "../../lib/Types";
 // import { fetchProfile } from "@/lib/data";
 import { MoreHorizontal, Settings} from "lucide-react";
@@ -201,13 +201,13 @@ export default function Profile({
                   {isCurrentUser && (
                   <>
                  <div className="inline-flex space-x-6">
-                  <ButtonRoundedMd href='/archive'
+                  <Button href='/archive'
                     variant={"secondary"}
                     className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 rounded-md"
-                    size={"sm"}
+                   
                   >
                     See dashboard
-                  </ButtonRoundedMd>
+                  </Button>
                   <CreateProjectModal />
 
                   <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
@@ -383,7 +383,7 @@ export default function Profile({
                   saving ? 'cursor-not-allowed' : ''
                 } rounded-full border border-[#0070F3] hover:border-2 w-12 h-12 flex justify-center items-center transition-all`}
                 disabled={saving}
-                onClick={handleSave}
+                 onClick={handleSave}
               >
                 {saving ? (
                   <LoadingDots color="white" />
@@ -391,7 +391,10 @@ export default function Profile({
                   <CheckIcon className="h-4 w-4 text-white" />
                 )}
               </button>
-              <a href={`/${user.username}`} shallow replace scroll={false}>
+              <a href={`/${user.username}`}
+              //  shallow replace 
+              //  scroll={false}
+               >
                 <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
                   <XIcon className="h-4 w-4 text-white" />
                 </div>
@@ -403,8 +406,8 @@ export default function Profile({
               // href={{ query: { settings: settings } }}
               // as="/settings"
               // shallow
-              replace
-              scroll={false}
+              // replace
+              // scroll={false}
             >
               <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
               Edit  {/* <EditIcon className="h-4 w-4 text-white" /> */}
