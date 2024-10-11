@@ -114,7 +114,7 @@ export default function Profile({
   settingsPage?: boolean;
   editProfile?: boolean;
   editProfilePage?: boolean;
-  handleSave: Function;
+  handleSave: React.MouseEventHandler<HTMLButtonElement>;
   success: string;
   profile: SupabaseUserProfile; // Type is updated here
 }) {
@@ -373,7 +373,7 @@ export default function Profile({
                 className={`${
                   saving ? 'cursor-not-allowed' : ''
                 } rounded-full border border-[#0070F3] hover:border-2 w-12 h-12 flex justify-center items-center transition-all`}
-                disabled={saving}
+                 disabled={saving}
                  onClick={handleSave}
               >
                 {saving ? (
