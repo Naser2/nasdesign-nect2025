@@ -21,13 +21,15 @@ import Link from "next/link";
 import { getGradient } from '../../lib/gradients';
 // import { MDXRemote } from 'next-mdx-remote';
 import Profiletabs from './Profiletabs';
-import {TabsDemo }from '../tabs/tabs';
+// import {TabsDemo }from '../tabs/tabs';
 // import ProfileTabs from '../tabs/ProfileTabs';
 import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
 import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
-import buttonVariants, { ButtonRoundedMd }  from "../ButtonComponent";
+
+
+import ButtonRoundedMd  from "../ButtonComponent";
 import type { SupabaseUserProfile } from "../../lib/Types";
 // import { fetchProfile } from "@/lib/data";
 import { MoreHorizontal, Settings} from "lucide-react";

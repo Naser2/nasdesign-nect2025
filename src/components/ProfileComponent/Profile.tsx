@@ -23,7 +23,7 @@ import { getGradient } from '../../lib/gradients';
 import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
-import buttonVariants, { ButtonRoundedMd }  from "../ButtonComponent";
+import ButtonRoundedMd   from "../ButtonComponent";
 import type { SupabaseUserProfile } from "../../lib/Types";
 // import { fetchProfile } from "@/lib/data";
 import { MoreHorizontal, Settings} from "lucide-react";
