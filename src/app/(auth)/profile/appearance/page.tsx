@@ -197,7 +197,7 @@ export default function ProfileGeneral() {
                 tabIndex={-1}
                 type="radio"
                 defaultValue="light"
-                defaultChecked=""
+                defaultChecked={true}
                 style={{
                   transform: "translateX(-100%)",
                   position: "absolute",

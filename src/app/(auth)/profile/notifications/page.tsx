@@ -320,7 +320,7 @@ export default function ProfileGeneral() {
             tabIndex={-1}
             type="checkbox"
             defaultValue="on"
-            defaultChecked=""
+            defaultChecked={false}
             style={{
               transform: "translateX(-100%)",
               position: "absolute",
@@ -352,8 +352,8 @@ export default function ProfileGeneral() {
             role="switch"
             aria-checked="true"
             data-state="checked"
-            data-disabled=""
-            disabled=""
+            data-disabled={false}
+            disabled={false}
             value="on"
             className="peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"
             aria-readonly="true"
@@ -363,17 +363,17 @@ export default function ProfileGeneral() {
           >
             <span
               data-state="checked"
-              data-disabled=""
+              data-disabled={false}
               className="pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0"
             />
           </button>
           <input
             aria-hidden="true"
-            disabled=""
+            disabled={false}
             tabIndex={-1}
             type="checkbox"
             defaultValue="on"
-            defaultChecked=""
+            defaultChecked={false}
             style={{
               transform: "translateX(-100%)",
               position: "absolute",
