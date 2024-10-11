@@ -10,8 +10,16 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 // import { Label } from "@headlessui/react";
-  
-export default function SelectButton({ label, name, items, handleInputChange }) {
+interface SelectButtonProps {
+  label: string;
+  name: string;
+  items: string[];
+  value: string;
+  handleInputChange: (value: string) => void;
+}
+
+
+const SelectButton = ({ label, name, items, value, handleInputChange }: SelectButtonProps) => {
   const handleChange = (e) => {
           console.log("SelectButton onChange", e); // Log the event
           handleInputChange(e); // Call the parent handler
@@ -35,29 +43,6 @@ export default function SelectButton({ label, name, items, handleInputChange }) 
     </Select>
   );
 }
-// export const SelectButton = ({ label, name, items, handleInputChange, value }) => {
-//   return (
-//     <div className="mb-4">
-//       <label htmlFor={name} className="block text-gray-700 font-bold mb-2">
-//         {label}
-//       </label>
-//       <select
-//         id={name}
-//         name={name}
-//         className="border rounded w-full py-2 px-3 xl:py-3 xl:px-4 "
-//         value={value}
-//         onChange={(e) => handleInputChange(e.target.value)} // Pass the selected value (role) as a string
-//       >
-//         {items.map((item, index) => (
-//           <option key={index} value={item} className="px-2">
-//             {item}
-//           </option>
-//         ))}
-//       </select>
-//     </div>
-//   );
-// };
 
 
-
-
+export default SelectButton

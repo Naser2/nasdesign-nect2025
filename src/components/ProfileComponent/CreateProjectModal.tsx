@@ -44,6 +44,19 @@ interface CreateFormProps {
 import  UploadFileForm  from '../UploadFileForm'; // assuming you've exported it already
 import { Select } from "@headlessui/react";
 
+interface CreateFormProps {
+  closeDialog: () => void;
+  userId: string;
+}
+
+interface FormErrors {
+  projectName?: string;
+  description?: string;
+  timeline?: string;
+  budget?: string;
+  fileUrl?: string;
+}
+
 
 export default function CreateProjectModal({ ...props }) {
   const [open, setOpen] = useState(false);
@@ -79,15 +92,15 @@ export default function CreateProjectModal({ ...props }) {
 
 
 export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
-  const [fileUrl, setFileUrl] = useState('');
-  const [projectName, setProjectName] = useState('');
-  const [description, setDescription] = useState('');
-  const [timeline, setTimeline] = useState('');
-  const [budget, setBudget] = useState('');
-  const [errors, setErrors] = useState({});
+  const [fileUrl, setFileUrl] = useState<string>('');
+  const [projectName, setProjectName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [timeline, setTimeline] = useState<string>('');
+  const [budget, setBudget] = useState<string>('');
+  const [errors, setErrors] = useState<FormErrors>({});
   const [hasDesign, setHasDesign] = useState<boolean | null>(null);
-  const [needDesign, setNeedDesign] = useState(false);
-  const [projectType, setProjectType] = useState(''); 
+  const [needDesign, setNeedDesign] = useState<boolean>(false);
+  const [projectType, setProjectType] = useState<string>(''); 
 
   const projectTypes = [
     'Website (default)',
@@ -123,6 +136,15 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
   ];
   
 
+
+  const handleDesignChange = (e: { target: { value: string } }) => {
+    const value = e.target.value === 'yes';
+    setHasDesign(value);
+    setNeedDesign(!value);
+  };
+
+ 
+  
   const { createProject, setLoading, loading, setError, error } = useHelpers(); // Use centralized API helpers
 
   const handleDesignChange = (e: { target: { value: string } }) => {
@@ -131,24 +153,24 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
     setNeedDesign(!value);
   };
 
-  const validateForm = () => {
-    let newErrors: { [key: string]: string } = {};
-    if (!projectName) newErrors['projectName'] = 'Project Name is required';
-    if (!description) newErrors['description'] = 'Description is required';
-    if (!timeline) newErrors['timeline'] = 'Project timeline is required';
-    if (!budget) newErrors['budget'] = 'Budget selection is required';
-    if (!fileUrl && hasDesign) newErrors['fileUrl'] = 'Please upload the design';
-    if (!fileUrl && !hasDesign && needDesign) newErrors['fileUrl'] = 'Upload an example is required';
+  const validateForm = (): FormErrors => {
+    let newErrors: FormErrors = {};
+    if (!projectName) newErrors.projectName = 'Project Name is required';
+    if (!description) newErrors.description = 'Description is required';
+    if (!timeline) newErrors.timeline = 'Project timeline is required';
+    if (!budget) newErrors.budget = 'Budget selection is required';
+    if (!fileUrl && hasDesign) newErrors.fileUrl = 'Please upload the design';
+    if (!fileUrl && !hasDesign && needDesign) newErrors.fileUrl = 'Upload an example is required';
     return newErrors;
   };
+
   console.log("PROJECT_FILE_URL", fileUrl, projectName, description, timeline, budget, hasDesign, needDesign);
 
-  const handleProjectType = (selectedProjectType: SetStateAction<string>) => {
+  const handleProjectType = (selectedProjectType: string) => {
     setProjectType(selectedProjectType); // Correctly update the role state
   };
 
-
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
