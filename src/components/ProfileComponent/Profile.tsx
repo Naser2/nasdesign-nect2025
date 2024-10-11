@@ -3,12 +3,10 @@
 // import { useRouter } from 'next/router';
 // import { useCallback, useEffect } from 'react';
 import type { UserProps } from '@/api/apiHelper';
-import {
-// EditIcon,
-// GitHubIcon,
-LoadingDots,
-XIcon
-} from '@/components/icons';
+import XIcon
+ from '@/components/icons/x';
+
+import  LoadingDots from '@/components/icons/loading-dots';
 import UploadIcon from '@/components/icons/upload';
 import CheckInCircleIcon from '@/components/icons/check-in-circle';
   
@@ -18,10 +16,10 @@ import Link from "next/link";
  import BlurImage from '@/components/blur-image';
 import { getGradient } from '../../lib/gradients';
 // import { MDXRemote } from 'next-mdx-remote';
-import Profiletabs from './Profiletabs';
-import {TabsDemo }from '../tabs/tabs';
+// import Profiletabs from './Profiletabs';
+// import {TabsDemo }from '../tabs/tabs';
 // import ProfileTabs from '../tabs/ProfileTabs';
-import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
+// import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
 import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
