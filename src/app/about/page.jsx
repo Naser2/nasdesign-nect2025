@@ -1,18 +1,5 @@
 "use client" 
 
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import clsx from 'clsx'
-import { useEffect, useRef, useState } from "react";
-// import ProfileHeader from '@/components/ProfileHeader';
-// import Tabs from '@/components/Tabs';
-// import SocialMediaGallery from '@/components/SocialMediaGallery';
-import { socialMedia } from '@/data/socialMedia';
-import backgroundGif from '@/images/vllo-3.gif';
-import nas_singing_portrait from '@/images/nas_singing_portrait.jpeg';
-
-
 export default  function About({}) {
   const profile = {
     name: 'Nasser Sanou',
@@ -20,78 +7,15 @@ export default  function About({}) {
     coverImageUrl: '/path/to/backgroundGif.gif',
   };
 
-  const [pageData, setPageData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const sectionRef = useRef(null);
-  const section2ImageRef = useRef(null);
-  const Section2TextCompRef = useRef(null); 
-  
-const section3ImageRef = useRef(null);
-const section3TextCompRef = useRef(null); 
-
-
-let section1 
-let section2 
-let section3
-
- const [tabs, setTabs] = useState(tabsPanel);
-  const [currentTab, setCurrent] = useState('Women');
-
-  const setCurrentTab = (tabName) => {
-    const tabsState = tabs.map((tab) => ({
-      ...tab,
-      current: tab.name === tabName
-    }));
-    setTabs(tabsState);
-    setCurrent(tabName);
-  };
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const aboutPageData = await getAboutPage('aboutPage');
-        setPageData(aboutPageData);
-      
-      } catch (error) {
-        console.error("Error fetching About Page data:", error);
-      } finally {
-        setLoading(false); // Set loading to false once data is fetched
-      }
-    };
-
-    if (!pageData) {
-      fetchData();
-    }
-  }, [pageData]);
-        // section1 = pageData?.sections[0];
-        // section2 = pageData?.sections[1];
-        // section3 = pageData?.sections[2];
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-// export default async function About({}) {
-//   const aboutPageData = await getAboutPage('aboutPage')
-//   // console.log("ABOUT_PAGE_DATA 2", aboutPageData)
-// const [pageData, setPageData] = useState(null);
-//   console.log("aboutPageData", aboutPageData)
-//   useEffect(() => {
-//       console.log("ABOUT_PAGE_DATA 2", aboutPageData)
-//       setPageData(aboutPageData) 
-// // }, [aboutPageData]);
-
- 
-
- 
 return  <>
 <div className="mt-14 flex h-full -mb-44">
   <div className="relative flex-1 overflow-hidden">
     <main className="relative flex-1 lg:px-64 overflow-y-auto focus:outline-none xl:order-last">
       <article>
-        <ProfileHeader profile={profile} />
-        <Tabs tabs={tabs} setCurrentTab={setCurrentTab} />
+        {/* <ProfileHeader profile={profile} /> */}
+        {/* <Tabs tabs={tabs} setCurrentTab={setCurrentTab} /> */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-1">
-          <SocialMediaGallery collection={socialMedia} />
+          {/* <SocialMediaGallery collection={socialMedia} /> */}
           <video controls className="md:rounded-xl px-4 md:mt-0 max-[1200px]:hidden aspect-[6/4]" src={'/promo-trimed.mp4'} />
         </div>
       </article>
