@@ -48,6 +48,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { unstable_noStore } from 'next/cache';
 import { useEffectOnce } from 'react-use';
 import InstagramTabs from './InstagramTabs';
+import { CheckIcon } from '@radix-ui/react-icons';
 
 
 

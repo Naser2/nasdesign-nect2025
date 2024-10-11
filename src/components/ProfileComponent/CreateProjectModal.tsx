@@ -250,7 +250,7 @@ export const CreateForm = ({ closeDialog, userId }) => {
           <div className="w-full h-px my-2 bg-border" />
           <legend className="block my-0 text-sm font-semibold leading-6 text-gray-900">
             Do you have a design already</legend>
-          <h5 className="!mt-2">We'll make one for you if no</h5>
+          <h5 className="!mt-2">We&apos;ll make one for you if no</h5>
           <div className="!mt-4 space-y-1 space-x-4">
             <label className="inline-flex gap-x-2">
               <input

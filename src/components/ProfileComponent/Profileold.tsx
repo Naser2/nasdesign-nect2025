@@ -15,7 +15,7 @@ XIcon
 
 
 // import  EditIcon from '@/components/icons/edit';
-// import TextareaAutosize from 'react-textarea-autosize';
+import TextareaAutosize from 'react-textarea-autosize';
 import Link from "next/link";
  import BlurImage from '@/components/blur-image';
 import { getGradient } from '../../lib/gradients';
