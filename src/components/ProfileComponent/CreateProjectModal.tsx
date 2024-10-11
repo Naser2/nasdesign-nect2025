@@ -137,11 +137,11 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
   
 
 
-  const handleDesignChange = (e: { target: { value: string } }) => {
-    const value = e.target.value === 'yes';
-    setHasDesign(value);
-    setNeedDesign(!value);
-  };
+  // const handleDesignChange = (e: { target: { value: string } }) => {
+  //   const value = e.target.value === 'yes';
+  //   setHasDesign(value);
+  //   setNeedDesign(!value);
+  // };
 
  
   
