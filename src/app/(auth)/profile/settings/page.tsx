@@ -20,12 +20,14 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from 'react';
-import { saveUser } from '../../profile/general/page';
+import { useHelpers } from '@/hooks/useHelpers';
 
 export default function SettingsPage() {
   const { user, setUser } = useAppContext();
+  const { loading, setLoading, saveUser } = useHelpers(); // Destructure saveUser from useHelpers
   const [data, setData] = useState<any>({
-    email_notifications: false
+    display_name: '',
+    username: '',
   });
 
   useEffect(() => {

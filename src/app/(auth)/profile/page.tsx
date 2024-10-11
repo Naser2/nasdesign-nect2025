@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 export default function PrivatePage() {
   const { user, profile, session } = useAppContext(); // Access from AppContext
-  const { loading, setLoading, setError, setSuccess } = useHelpers(); // Use helpers for error, success, etc.
+  const { loading, setLoading, setError, setSuccess, saveUser } = useHelpers(); // Include saveUser
   const [userData, setUserData] = useState({
     display_name: '',  // Example: "Nas23"
     username: '',      // Example: "babaggram3"
@@ -25,37 +25,28 @@ export default function PrivatePage() {
     phoneVerified: false, // Example: false
     refreshToken: '',  // Example: "aARlCcuSzxcLmK9zMY0j4Q"
     role: '',  // Example: "authenticated"  
-     // aud: '',           // Example: "authenticated"
-    // confirmedAt: '',   // Example: "2024-10-02T17:49:00.497704Z"
-    // createdAt: '',     // Example: "2024-10-02T17:47:31.392599Z"
-
   });
 
   useEffect(() => {
     if (user && profile) {
       const { user_metadata } = user; // Assuming user contains user_metadata
       setUserData({
-        display_name: user_metadata.display_name,
-        username: user_metadata.username,
+        display_name: user_metadata.display_name || '',
+        username: user_metadata.username || '',
         accessToken: user.accessToken || '',
         email: user_metadata.email || '',
         phone: user_metadata.phone || '',
         last_name: user_metadata.last_name || '',
-        first_name: user_metadata.first_name ,
+        first_name: user_metadata.first_name || '',
         emailConfirmedAt: user_metadata.emailConfirmedAt || '',
         emailVerified: user_metadata.emailVerified || false,
-        // emailVerified: user_metadata.identities[0].identity_data.emailVerified || false,
         expiresAt: user_metadata.expiresAt || '',
         expiresIn: user_metadata.expiresIn || '',
         isAnonymous: user_metadata.isAnonymous || false,
         lastSignInAt: user_metadata.lastSignInAt || '',
-        // lastSignInAt: user_metadata.identities[0].last_sign_in_at.lastSignInAt || '',
         phoneVerified: user_metadata.phone_verified || false,
-        // phoneVerified: user_metadata.identities[0].identity_data.phone_verified || false,
-        refreshToken: user_metadata.refreshToken || '',    
+        refreshToken: user_metadata.refreshToken || '',
         role: user_metadata.role || '',
-        
-
       });
       setLoading(false); // Stop loading after data is set
     } else {
@@ -63,7 +54,11 @@ export default function PrivatePage() {
     }
   }, [user, profile, setLoading]);
 
-  // Render a loading spinner or a fallback until the data is ready
+  const handleSave = () => {
+    // Call saveUser with all metadata (including the new fields)
+    saveUser({ metadata: userData, setLoading, setUser });
+  };
+
   if (loading) {
     return <div>Loading...</div>; // Add your spinner component here
   }
@@ -81,6 +76,7 @@ export default function PrivatePage() {
       userProfile={profile}
       session={session}
       userMeta={userData}
+      handleSave={handleSave}  // Pass handleSave to ProfileComponent
     />
   );
 }

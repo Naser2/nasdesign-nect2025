@@ -11,46 +11,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 import { useHelpers } from '@/hooks/useHelpers';
-import clientSupabase from '@/lib/supabase/client';
+
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-
-export const saveUser = async ({ metadata, setLoading, setUser }: any) => {
-  try {
-    if (setLoading) setLoading(true);
-    const { data, error } = await clientSupabase
-      .auth
-      .updateUser({
-        data: {
-          ...metadata
-        }
-      })
-
-    if (data) {
-      if (setUser) {
-        const { user } = data;
-        setUser(user);
-      }
-      toast.success('Profile saved successfully!')
-      return data;
-    }
-  } catch (error: any) {
-    toast.error('Sorry, something wrong happened. Please try again.')
-    throw new Error(error);
-  } finally {
-    if (setLoading) setLoading(false);
-  }
-};
 
 
 export default function ProfileGeneral() {
   const { user, setUser } = useAppContext();
-  const { loading, setLoading } = useHelpers();
+  const { loading, setLoading, saveUser } = useHelpers(); // Destructure saveUser from useHelpers
   const [data, setData] = useState<any>({
-    display_name: "",
-    username: ""
+    display_name: '',
+    username: '',
   });
-
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setData((prev: any) => ({
