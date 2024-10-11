@@ -163,7 +163,7 @@ const Login = () => {
               </div>
             </div>
             {error && <div className="text-red-500 text-sm text-center bg-red-50/50 rounded py-1">{error}</div>}
-            <ButtonComponent {...{
+            <Button {...{
               label: !create ? "Login" : "Create a new account",
               loading,
               onClick: () => signIn()
