@@ -30,9 +30,19 @@ export default function ResetPassword() {
     }
 
     // Perform the reset password operation
-    const { error } = await supabase.auth.updateUser({
-      access_token: code, // Use the code extracted from query params
-      password,
+    // const { error } = await supabase.auth.updateUser({
+    //   access_token: code, // Use the code extracted from query params
+    //   password,
+    // });
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
+    // Perform the reset password operation by updating the user's password
+    const { data, error } = await supabase.auth.updateUser({
+      password, // Update the password directly
     });
 
     if (error) {

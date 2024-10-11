@@ -591,7 +591,7 @@ function FrequentlyAskedQuestions() {
           </dl>
           <dl>
             <dt className="text-sm font-semibold">
-              Can I customize the workflow to match our company’s deal process?
+              Can I customize the workflow to match our company&apost;s deal process?
             </dt>
             <dd className="mt-4 text-sm/6 text-gray-600">
               Yes, our platform is highly customizable, although there should be
@@ -611,7 +611,7 @@ function FrequentlyAskedQuestions() {
               We offer comprehensive support through multiple channels,
               including 24/7 live chat, email, and phone support. However, since
               we have full access to your internal network, we will know if
-              you’re having issues before you do.
+              you&apost;re having issues before you do.
             </dd>
           </dl>
           <dl>

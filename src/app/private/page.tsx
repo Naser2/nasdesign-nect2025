@@ -1,19 +1,19 @@
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 
-import { createClient } from '@/utils/supabase/server'
-import ProfileComponent from '@/components/ProfileComponent'
-export default async function PrivatePage() {
-  const supabase = createClient()
+// import { createClient } from '@/utils/supabase/server'
+// import ProfileComponent from '@/components/ProfileComponent'
+// export default async function PrivatePage() {
+//   const supabase = createClient()
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    redirect('/')
-  }
+//   const { data, error } = await supabase.auth.getUser()
+//   if (error || !data?.user) {
+//     redirect('/')
+//   }
 
-  console.log("DATABASE DATA", data)
-  return <>  <ProfileComponent user={data}/> </>
+//   console.log("DATABASE DATA", data)
+//   return <>  <ProfileComponent user={data}/> </>
   
-}
+// }
   
 
 
@@ -27,3 +27,9 @@ export default async function PrivatePage() {
 //     <p className="text-gray-600"><strong>Plan:</strong> {data.user.user_metadata.plan}</p>
 //   </div>
 // </div> */}
+
+
+ function Private(){
+  return <></>
+}
+export default Private 
