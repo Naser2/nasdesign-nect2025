@@ -1,6 +1,6 @@
 
 import ButtonComponent from "@/components/ButtonComponent";
-import {Logo }from "@/components/Logo";
+import {Logo }from "@/components/logo";
 import { Input } from '@/components/ui/input';
 import {
   InputOTP,
@@ -11,8 +11,9 @@ import {
 import { useHelpers } from "@/hooks/useHelpers";
 import clientSupabase from '@/lib/supabase/client';
 import { useRouter } from "next/navigation";
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useLocalStorage } from 'react-use';
+import { Button } from "./ui/button";
 
 export function validateEmail(email: string) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,15 +83,15 @@ export const OTP: FC<{
       </div>
       {error && <div className="alert alert--danger">{error}</div>}
       <footer className="grid items-center gap-2">
-        <ButtonComponent
+        <Button
           onClick={() => verifyCode()}
           loading={loading}
           disabled={token.length < 6}
           className="gradient--allo--bg"
         >
           Verify Code
-        </ButtonComponent>
-        <ButtonComponent {...{
+        </Button>
+        <Button {...{
           label: 'Resend code',
           loading,
           onClick: () => resendCode(),

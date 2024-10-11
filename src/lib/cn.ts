@@ -1,7 +1,7 @@
 // import { auth } from "@/auth";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { getSessionUser } from '@/utils/getSessionUser';
+// import { getSessionUser } from '@/utils/getSessionUser';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

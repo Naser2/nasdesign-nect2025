@@ -466,63 +466,63 @@
 // }
 
 // // Follow or unfollow a user
-export async function followUser(formData: FormData) {
-  await connectDB();
-  const userId = await getUserId();
+// export async function followUser(formData: FormData) {
+//   await connectDB();
+//   const userId = await getUserId();
 
-  const { id } = FollowUser.parse({
-    id: formData.get("id"),
-  });
+//   const { id } = FollowUser.parse({
+//     id: formData.get("id"),
+//   });
 
-  const user = await User.findById(id);
+//   const user = await User.findById(id);
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+//   if (!user) {
+//     throw new Error("User not found");
+//   }
 
-  const follows = await User.findOne({
-    _id: userId,
-    following: id,
-  });
+//   const follows = await User.findOne({
+//     _id: userId,
+//     following: id,
+//   });
 
-  if (follows) {
-    try {
-      await User.updateOne(
-        { _id: userId },
-        { $pull: { following: id } }
-      );
-      await User.updateOne(
-        { _id: id },
-        { $pull: { followedBy: userId } }
-      );
-      revalidatePath(`/${user.username}`);
-      noStore(); // Prevent caching
-      return { message: "Unfollowed User." };
-    } catch (error) {
-      return {
-        message: "Database Error: Failed to Unfollow User.",
-      };
-    }
-  }
+//   if (follows) {
+//     try {
+//       await User.updateOne(
+//         { _id: userId },
+//         { $pull: { following: id } }
+//       );
+//       await User.updateOne(
+//         { _id: id },
+//         { $pull: { followedBy: userId } }
+//       );
+//       revalidatePath(`/${user.username}`);
+//       noStore(); // Prevent caching
+//       return { message: "Unfollowed User." };
+//     } catch (error) {
+//       return {
+//         message: "Database Error: Failed to Unfollow User.",
+//       };
+//     }
+//   }
 
-  try {
-    await User.updateOne(
-      { _id: userId },
-      { $addToSet: { following: id } }
-    );
-    await User.updateOne(
-      { _id: id },
-      { $addToSet: { followedBy: userId } }
-    );
-    revalidatePath(`/${user.username}`);
-    noStore(); // Prevent caching
-    return { message: "Followed User." };
-  } catch (error) {
-    return {
-      message: "Database Error: Failed to Follow User.",
-    };
-  }
-}
+//   try {
+//     await User.updateOne(
+//       { _id: userId },
+//       { $addToSet: { following: id } }
+//     );
+//     await User.updateOne(
+//       { _id: id },
+//       { $addToSet: { followedBy: userId } }
+//     );
+//     revalidatePath(`/${user.username}`);
+//     noStore(); // Prevent caching
+//     return { message: "Followed User." };
+//   } catch (error) {
+//     return {
+//       message: "Database Error: Failed to Follow User.",
+//     };
+//   }
+// }
 
 
 
