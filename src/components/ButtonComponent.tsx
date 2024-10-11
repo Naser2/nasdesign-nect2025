@@ -13,15 +13,16 @@ import { ArrowLeftIcon, ArrowRight } from './icons/Arrows'
 // import { Button } from '@/components/Button'
 
 interface ButtonComponentProps {
-  loading: boolean;
+  loading?: boolean;
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   label?: string;
   children?: ReactNode;
-  variant?: string;
+  variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'ghost' | 'link';
   className?: string;
+  href?: string; // Add href prop to support links
+  size?: 'sm' | 'lg' | 'default' | 'icon'; // Define size if needed
 }
-
 interface ButtonArrowProps {
   variant?: string;
   className?: string;
