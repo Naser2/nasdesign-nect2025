@@ -1,11 +1,12 @@
-"use client";
-
-import type { ButtonProps } from "./button";
+import type { ButtonHTMLAttributes } from "react";
 import { useFormStatus } from "react-dom";
 
-type Props = ButtonProps & {
+// Constrain ButtonProps type to match valid button types
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
 };
+
+type Props = ButtonProps;
 
 function SubmitButton({ children, ...props }: Props) {
   const { pending } = useFormStatus();
