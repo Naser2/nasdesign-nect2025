@@ -1,6 +1,6 @@
 
 
-import type { UserProps } from "@/lib/Types";
+import type { SupabaseUserProfile, UserProps } from "@/lib/Types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,7 +24,10 @@ interface Tab {
   description: string;
   content: string | TabContentField[];
 }
-
+interface InstagramTabsProps {
+  profile: SupabaseUserProfile;
+  isCurrentUser: boolean;
+}
 import {
   Card,
   CardContent,
@@ -41,6 +44,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import React from "react";
 
 // Define the structure for each tab
 const tabs = [
@@ -77,8 +81,7 @@ const tabs = [
     ]
   }
 ]
-
-export function InstagramTabs() {
+ const InstagramTabs: React.FC<InstagramTabsProps>  = ({ profile, isCurrentUser }) => {
   return (
     <Tabs defaultValue="account" className="min-w-[400px] w-full mt-12 lg:mt-24">
       <TabsList className="grid w-full grid-cols-3">

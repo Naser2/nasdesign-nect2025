@@ -1,7 +1,4 @@
-// import { useRouter } from 'next/router';
-// import { useCallback, useEffect } from 'react';
-// import { useRouter } from 'next/router';
-// import { useCallback, useEffect } from 'react';
+
 import type { UserProps } from '@/api/apiHelper';
 import XIcon
  from '@/components/icons/x';
@@ -9,26 +6,18 @@ import XIcon
 import  LoadingDots from '@/components/icons/loading-dots';
 import UploadIcon from '@/components/icons/upload';
 import CheckInCircleIcon from '@/components/icons/check-in-circle';
-  
-// import  EditIcon from '@/components/icons/edit';
-// import TextareaAutosize from 'react-textarea-autosize';
+
 import Link from "next/link";
  import BlurImage from '@/components/blur-image';
 import { getGradient } from '../../lib/gradients';
-// import { MDXRemote } from 'next-mdx-remote';
-// import Profiletabs from './Profiletabs';
-// import {TabsDemo }from '../tabs/tabs';
-// import ProfileTabs from '../tabs/ProfileTabs';
-// import { extractSubabaseUserInfo } from '@/utils/extractSubabaseUserInfo';
+
 import { useState, useEffect } from 'react';
 
 import { Button} from "../button";
-// import ButtonRoundedMd   from "../ButtonComponent";
 import type { SupabaseUserProfile } from "../../lib/Types";
-// import { fetchProfile } from "@/lib/data";
-import { MoreHorizontal, Settings} from "lucide-react";
-import TaskForm from './TaskForm';
-import {PopoverList} from "./PopoverList";
+// import { MoreHorizontal, Settings} from "lucide-react";
+// import TaskForm from './TaskForm';
+// import {PopoverList} from "./PopoverList";
 
 import UserNavPopup from '../UserNavPopup';
 
@@ -142,10 +131,12 @@ export default function Profile({
   //   }
   // }, [profile]);
 
-  const handleAddClick = () => {
+  // const handleAddClick = () => {
+  //   setShowTodoForm((prevState) => !prevState);
+  // };
+  const handleAddClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     setShowTodoForm((prevState) => !prevState);
   };
-
   const isCurrentUser = userProfile?.user_id == session?.user?.id && String(userProfile.user_id) === String(session.user.id);
 
   console.log("USER-Profile-USER_ID", userProfile.user_id, "USER-Profile-SESSION.id", session?.user?.id);
@@ -472,11 +463,5 @@ export const DefaultAvatar = ()=> {
     height={300}
   /> 
   
-  //  <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32 min-h-24 w-24 object-cover">
-  //   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-  //   <path d="M6.67948 1.50115L11 7L0 7L4.32052 1.50115C4.92109 0.736796 6.07891 0.736795 6.67948 1.50115Z" fill="gray">
-  //     </path>
-  //     </svg>
-  //  </div>
   )
 }
