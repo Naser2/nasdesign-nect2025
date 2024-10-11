@@ -38,7 +38,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     // List of allowed variants
     const allowedVariants = ["link", "default", "secondary", "outline", "destructive", "ghost"];
