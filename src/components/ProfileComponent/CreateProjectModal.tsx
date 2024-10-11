@@ -14,7 +14,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useHelpers } from "../../hooks/useHelpers"; 
+
+
 import SelectButton from '@/components/Select/SelectButton';
+interface CreateFormProps {
+  closeDialog: () => void;
+  userId: string;
+}
 
 // Centralized actions
 // import { SelectProjectType } from "./Profile";
@@ -72,7 +78,7 @@ export default function CreateProjectModal({ ...props }) {
 
 
 
-export const CreateForm = ({ closeDialog, userId }) => {
+export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
   const [fileUrl, setFileUrl] = useState('');
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
