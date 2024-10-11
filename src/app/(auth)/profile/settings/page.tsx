@@ -1,7 +1,9 @@
 'use client';
 import { useAppContext } from '../../../context';
-import ButtonComponent from '@/components/ButtonComponent';
+
 import { Button } from "@/components/ui/button";
+
+
 import {
   Card,
   CardDescription,
@@ -77,7 +79,13 @@ export default function SettingsPage() {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <ButtonComponent variant="destructive" onClick={() => { }} label="Delete" />
+            <Button {...{
+                loading,
+                label: "Delete",
+                onClick: () => saveUser({ setLoading, metadata: data }),
+                setUser
+              }} />
+            
             </DialogFooter>
           </DialogContent>
         </Dialog>

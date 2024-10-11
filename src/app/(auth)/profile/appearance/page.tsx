@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { useAppContext } from '../../../context';
 // import ButtonComponent from '@/components/ButtonComponent';
 import {
@@ -44,8 +45,8 @@ import { toast } from 'sonner';
 
 
 export default function ProfileGeneral() {
+  const { loading, setLoading, saveUser } = useHelpers(); // Destructure saveUser from useHelpers
   const { user, setUser } = useAppContext();
-  const { loading, setLoading } = useHelpers();
   const [data, setData] = useState<any>({
     display_name: "",
     username: ""
@@ -285,6 +286,12 @@ export default function ProfileGeneral() {
           </div>
         </div>
       </div>
+      <Button {...{
+        loading,
+        label: " Update preferences",
+        onClick: () => saveUser({ setLoading, metadata: data }),
+        setUser
+      }} />
       <button
         className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
         type="submit"

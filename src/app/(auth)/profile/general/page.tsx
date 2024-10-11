@@ -89,12 +89,12 @@ export default function ProfileGeneral() {
         />
       </CardContent>
       <CardFooter>
-        <ButtonComponent {...{
-          loading,
-          label: "Save",
-          onClick: () => saveUser({ setLoading, metadata: data }),
-          setUser
-        }} />
+      <Button {...{
+        loading,
+        label: "Save",
+        onClick: () => saveUser({ setLoading, metadata: data }),
+        setUser
+      }} />
       </CardFooter>
     </Card>
   </div>
