@@ -1,8 +1,8 @@
-"use server";
+// "use server";
 
 
 // import User from "@/models/User";
-import Post from "@/models/Post";
+// import Post from "@/models/Post";
 // import Like from "@/models/Like";
 // import { getUserId } from "@/utils/utils";
 // import { revalidatePath } from "next/cache";
@@ -20,7 +20,7 @@ import Post from "@/models/Post";
 //   UpdateUser,
 // } from "./schemas";
 
-import connectDB from "@/config/database";
+// import connectDB from "@/config/database";
 // import Comment from '@/models/Comment'; // Import the correct model
 
 
@@ -399,17 +399,17 @@ import connectDB from "@/config/database";
 
 // Fetch all posts with related data
 
-export async function fetchPosts() {
-  await connectDB();
+// export async function fetchPosts() {
+//   await connectDB();
 
-  try {
-    const data = await Post.find({}).sort({ createdAt: -1 });
-    return data;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch posts");
-  }
-}
+//   try {
+//     const data = await Post.find({}).sort({ createdAt: -1 });
+//     return data;
+//   } catch (error) {
+//     console.error("Database Error:", error);
+//     throw new Error("Failed to fetch posts");
+//   }
+// }
 
 // export async function fetchPosts() {
 //   await connectDB();
