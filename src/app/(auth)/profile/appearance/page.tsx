@@ -15,32 +15,32 @@ import clientSupabase from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-export const saveUser = async ({ metadata, setLoading, setUser }: any) => {
-  try {
-    if (setLoading) setLoading(true);
-    const { data, error } = await clientSupabase
-      .auth
-      .updateUser({
-        data: {
-          ...metadata
-        }
-      })
+// export const saveUser = async ({ metadata, setLoading, setUser }: any) => {
+//   try {
+//     if (setLoading) setLoading(true);
+//     const { data, error } = await clientSupabase
+//       .auth
+//       .updateUser({
+//         data: {
+//           ...metadata
+//         }
+//       })
 
-    if (data) {
-      if (setUser) {
-        const { user } = data;
-        setUser(user);
-      }
-      toast.success('Profile saved successfully!')
-      return data;
-    }
-  } catch (error: any) {
-    toast.error('Sorry, something wrong happened. Please try again.')
-    throw new Error(error);
-  } finally {
-    if (setLoading) setLoading(false);
-  }
-};
+//     if (data) {
+//       if (setUser) {
+//         const { user } = data;
+//         setUser(user);
+//       }
+//       toast.success('Profile saved successfully!')
+//       return data;
+//     }
+//   } catch (error: any) {
+//     toast.error('Sorry, something wrong happened. Please try again.')
+//     throw new Error(error);
+//   } finally {
+//     if (setLoading) setLoading(false);
+//   }
+// };
 
 
 export default function ProfileGeneral() {
