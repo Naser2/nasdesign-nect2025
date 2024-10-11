@@ -1,6 +1,6 @@
 'use client';
 import { useAppContext } from '../../../context';
-import ButtonComponent from '@/components/ButtonComponent';
+import {Button} from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -62,7 +62,7 @@ export default function ProfileGeneral() {
         }} />
       </CardContent>
       <CardFooter>
-        <ButtonComponent {...{
+        <Button {...{
           loading,
           label: "Save",
           onClick: () => saveUser({ setLoading, metadata: data }),
