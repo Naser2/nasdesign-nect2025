@@ -7,46 +7,66 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../ui/dialog";
+} from "../ui/dialog";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "../../ui/form";
-import useMount from "../../../hooks/useMount";
-import { updateProfile } from "../../../lib/actions";
-import { UserWithExtras } from "../../../lib/definitions";
-import { UpdateUser } from "../../../lib/schemas";
-import { UploadButton } from "../../../lib/uploadthing";
+} from "../ui/form";
+import useMount from "@/hooks/useMount";
+import { updateProfile } from "../lib/actions";
+import type {SupabaseUserProfile} from "@/lib/Types";
+import { UpdateUser } from "../../lib/schemas";
+import { UploadButton } from "@/lib/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import SubmitButton from "./SubmitButton";
+import SubmitButton from "../SubmitButton";
 import UserAvatar from "./UserAvatar";
-import { Form } from "../../ui/form";
+import { Form } from "@/components/ui/form";
+import { useHelpers } from "@/hooks/useHelpers";
+
+
+interface UserFormData {
+  id: string;             // User's unique ID
+  image: string;          // Profile picture URL
+  name: string;           // Full name of the user
+  username: string;       // Username of the user
+  bio?: string;           // Short bio about the user
+  email?: string;         // Email address of the user
+  website?: string;       // Website link if provided
+  created_at?: string;    // Date when the profile was created
+  updated_at?: string;    // Date when the profile was last updated
+  user_role?: string;     // The role of the user (e.g., admin, member)
+}
+
+
 
 function ProfileAvatar({
   user,
   children,
 }: {
-  user: UserWithExtras;
+  user: SupabaseUserProfile;
   children: React.ReactNode;
 }) {
   const { data: session } = useSession();
+  const { saveUser } = useHelpers(); // Use saveUser from useHelpers
   const isCurrentUser = session?.user.id === user.id;
-  const form = useForm<z.infer<typeof UpdateUser>>({
-    resolver: zodResolver(UpdateUser),
+
+  // UseForm with appropriate initial values
+  const form = useForm<UserFormData>({
     defaultValues: {
       id: user.id,
       image: user.image || "",
-      name: user.name || "",
+      name: user.first_name || "",
       username: user.username || "",
     },
   });
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const mount = useMount();
@@ -71,7 +91,7 @@ function ProfileAvatar({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(async (values) => {
-                const { message } = await updateProfile(values);
+                const { message } = await saveUser(values);
                 toast(message);
 
                 setOpen(false);
