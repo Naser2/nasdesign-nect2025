@@ -96,7 +96,11 @@ export default function UploadFileForm({ fileUrl, setFileUrl, title, openUploade
       ) : (<>
        <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(async (values) => setFileUrl(values))}
+              onSubmit={form.handleSubmit(async (values) => {
+                if (values.fileUrl) {
+                  setFileUrl(values.fileUrl); // Only pass fileUrl if it is defined
+                }
+              })}
               className="space-y-4"
             >
               {fileUrl ? (
