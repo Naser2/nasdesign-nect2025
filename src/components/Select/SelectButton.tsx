@@ -1,15 +1,14 @@
-
 import * as React from "react";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
-// import { Label } from "@headlessui/react";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 interface SelectButtonProps {
   label: string;
   name: string;
@@ -18,13 +17,19 @@ interface SelectButtonProps {
   handleInputChange: (value: string) => void;
 }
 
+interface CustomEvent {
+  target: {
+    name: string;
+    value: string;
+  };
+}
 
 const SelectButton = ({ label, name, items, value, handleInputChange }: SelectButtonProps) => {
-  const handleChange = (e) => {
-          console.log("SelectButton onChange", e); // Log the event
-          handleInputChange(e); // Call the parent handler
-        };
-      
+  const handleChange = (e: CustomEvent) => {
+    console.log("SelectButton onChange", e); // Log the event
+    handleInputChange(e.target.value); // Call the parent handler
+  };
+
   return (
     <Select onValueChange={(value) => handleChange({ target: { name, value } })}>
       <SelectTrigger className="gap-x-4 space-between h-14 lg:h-10 text-xl bg-white !max-w-34 text-sm peer/input w-full rounded-md shadow-sm transition-all text-foreground">
@@ -42,7 +47,6 @@ const SelectButton = ({ label, name, items, value, handleInputChange }: SelectBu
       </SelectContent>
     </Select>
   );
-}
+};
 
-
-export default SelectButton
+export default SelectButton;
