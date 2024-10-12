@@ -1,6 +1,7 @@
 import React from "react"
 
-import { IconProps } from "../customTypes/icon"
+import type { IconProps } from "../customTypes/icon"
+
 
 const NextJs: React.FC<IconProps> = ({
   size = "20",

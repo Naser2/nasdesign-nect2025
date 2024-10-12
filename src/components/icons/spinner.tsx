@@ -1,6 +1,6 @@
 import React from "react"
 
-import { IconProps } from "../customTypes/icon"
+import type { IconProps } from "../customTypes/icon"
 
 const Spinner: React.FC<IconProps> = ({
   size = "16",
