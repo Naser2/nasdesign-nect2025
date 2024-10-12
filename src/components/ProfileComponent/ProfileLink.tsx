@@ -1,16 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type { User } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { buttonVariants } from "../../ui/button";
+import { buttonVariants } from "../ui/button";
 import UserAvatar from "./UserAvatar";
-
-function ProfileLink({ user }: { user: User }) {
+import type { SupabaseUserProfile } from "../../lib/Types";
+function ProfileLink({ user }: { user: SupabaseUserProfile }) {
   const pathname = usePathname();
 
-  const href = `/dashboard/${user?.username}`;
+  const href = `/profile/${user?.username}`;
   const isActive = pathname === href;
 
   return (

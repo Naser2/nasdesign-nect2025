@@ -1,5 +1,5 @@
 import { ChevronDown, Settings, UserPlus } from "lucide-react";
-import { Button } from "../../ui/button";
+import { Button } from "../ui/button";
 
 function ProfileHeader({ username }: { username: string | null }) {
   console.log("Profile header is required", username )

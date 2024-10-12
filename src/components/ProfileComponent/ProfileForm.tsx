@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "../../ui/button";
+import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -9,33 +9,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
+} from "../ui/form";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../ui/select";
-import { Textarea } from "../../ui/textarea";
-import { updateProfile } from "../../../lib/actions";
-import { UserWithExtras } from "../../../lib/definitions";
-import { UserSchema } from "../../../lib/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from "../ui/select";
+import { Textarea } from "../ui/textarea";
+import type { SupabaseUserProfile } from "../../lib/Types";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 import ProfileAvatar from "./ProfileAvatar";
 import UserAvatar from "./UserAvatar";
+import { useHelpers } from "@/hooks/useHelpers"; // Import the helper hook
+import { useState } from "react";
 
-function ProfileForm({ profile }: { profile: UserWithExtras }) {
-  const form = useForm<z.infer<typeof UserSchema>>({
-    resolver: zodResolver(UserSchema),
+function ProfileForm({ profile }: { profile: SupabaseUserProfile }) {
+  // Initialize the form with react-hook-form
+  const form = useForm<SupabaseUserProfile>({
     defaultValues: {
       id: profile.id,
       image: profile.image || "",
-      name: profile.name || "",
+      name: profile.first_name || "",
       username: profile.username || "",
       bio: profile.bio || "",
       gender: profile.gender || "",
@@ -44,6 +42,24 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
   });
 
   const { isDirty, isSubmitting, isValid } = form.formState;
+  const { saveUser } = useHelpers(); // Destructure saveUser from useHelpers
+  const [loading, setLoading] = useState(false);
+
+  // Custom saveUser function handler
+  const handleSaveUser = async (values: SupabaseUserProfile) => {
+    setLoading(true);
+    try {
+      await saveUser({
+        setLoading,
+        metadata: values,
+      });
+      toast.success("Profile saved successfully!"); // Show success message
+    } catch (error) {
+      toast.error("Failed to save profile. Please try again."); // Show error message
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-8 py-10 lg:p-10 max-w-xl">
@@ -65,10 +81,7 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(async (values) => {
-            const { message } = await updateProfile(values);
-            toast(message);
-          })}
+          onSubmit={form.handleSubmit(handleSaveUser)} // Use handleSaveUser here
           className="space-y-8"
         >
           <FormField
@@ -82,7 +95,7 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
                     Website
                   </FormLabel>
                   <FormControl aria-disabled>
-                    <Input placeholder="Website" disabled {...field} />
+                    <Input placeholder="Website" disabled {...field} value={field.value ?? undefined}/>
                   </FormControl>
                 </div>
                 <FormDescription className="md:ml-24 text-xs">
@@ -105,8 +118,8 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
                     Bio
                   </FormLabel>
                   <FormControl>
-                    <Textarea className="resize-none" {...field} />
-                  </FormControl>
+                  <Textarea className="resize-none" {...field} value={field.value ?? ''} /> 
+                </FormControl>
                 </div>
                 <FormDescription className="md:ml-24 text-xs">
                   {field.value?.length} / 150
@@ -127,7 +140,7 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    defaultValue={field.value ?? undefined} // Coerce null to undefined
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -144,7 +157,7 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
                   </Select>
                 </div>
                 <FormDescription className="md:ml-24 text-xs">
-                  This wont be part of your public profile.
+                  This won't be part of your public profile.
                 </FormDescription>
                 <FormMessage className="md:ml-24" />
               </FormItem>
@@ -154,9 +167,9 @@ function ProfileForm({ profile }: { profile: UserWithExtras }) {
           <Button
             type="submit"
             className="md:ml-24"
-            disabled={!isDirty || !isValid || isSubmitting}
+            disabled={!isDirty || !isValid || isSubmitting || loading} // Added loading state
           >
-            Submit
+            {loading ? "Saving..." : "Submit"}
           </Button>
         </form>
       </Form>
