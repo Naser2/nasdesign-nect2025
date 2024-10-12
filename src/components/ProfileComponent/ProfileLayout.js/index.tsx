@@ -1,13 +1,13 @@
-import { useState, ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Sidebar from './sidebar';
 // import Navbar from './navbar';
 import Directory from './directory';
-import { ResultProps } from '@/lib/api/user';
-import Toast from '@/components/layout/toast';
-import Meta, { MetaProps } from '@/components/layout/meta';
+import type { ResultProps } from '../../../app/api/apiHelper';
+import Toast from './toast';
+import Meta, { type MetaProps } from './meta';
 import { useRouter } from 'next/router';
 import { LoadingDots } from '@/components/icons';
-import ClusterProvisioning from '@/components/layout/cluster-provisioning';
+import ClusterProvisioning from './cluster-provisioning';
 
 export default function Layout({
   meta,

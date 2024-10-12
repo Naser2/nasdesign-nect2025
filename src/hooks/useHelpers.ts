@@ -63,7 +63,7 @@ export const useHelpers = () => {
   const createProject = async (projectData: any) => {
     try {
       setLoading(true);
-
+      console.log("PROJECT about to POST form Helpers: " + projectData)
       const { data, error } = await clientSupabase
         .from("projects")
         .insert([projectData]);

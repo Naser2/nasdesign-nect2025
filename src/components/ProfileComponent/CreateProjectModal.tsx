@@ -15,6 +15,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useHelpers } from "../../hooks/useHelpers"; 
 
+import ProjectSubmission from './ProjectSubmission';
+
 
 import SelectButton from '@/components/Select/SelectButton';
 interface CreateFormProps {
@@ -22,25 +24,7 @@ interface CreateFormProps {
   userId: string;
 }
 
-// Centralized actions
-// import { SelectProjectType } from "./Profile";
-// import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
-// import { DialogTitle } from "@headlessui/react";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// import { UploadButton } from "@/lib/uploadthing";
-// import BlurImage from "../blur-image";
-// import { toast } from "sonner";
 
-// import { SelectProjectType } from "./Profile";
 import  UploadFileForm  from './UploadFileForm'; // assuming you've exported it already
 import { Select } from "@headlessui/react";
 
@@ -137,13 +121,6 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
   
 
 
-  // const handleDesignChange = (e: { target: { value: string } }) => {
-  //   const value = e.target.value === 'yes';
-  //   setHasDesign(value);
-  //   setNeedDesign(!value);
-  // };
-
- 
   
   const { createProject, setLoading, loading, setError, error } = useHelpers(); // Use centralized API helpers
 
@@ -192,6 +169,8 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
       closeDialog();
     }
   };
+
+  
   return (
     <div
       className="pt-6 z-20 lg:pt-4 bg-white dark:bg-black z-50 bg-dash-sidebar flex flex-col fixed inset-y-0 h-full lg:h-screen border-l shadow-xl w-screen max-w-2xl h-full right-0 transition-all duration-100 ease-in"

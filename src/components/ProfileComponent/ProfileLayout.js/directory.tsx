@@ -2,7 +2,9 @@ import { ResultProps, UserProps } from '@/lib/api/user';
 import Link from 'next/link';
 import useSWR from 'swr';
 import fetcher from '@/lib/fetcher';
-import { useDebounce } from '@/lib/hooks/use-debounce';
+import { useDebounce } from '@/hooks/use-debounce';
+
+
 import { Fragment, useState } from 'react';
 import { DirectoryIcon, SearchIcon } from '@/components/icons';
 import DirectoryResults from './directory-results';

@@ -27,6 +27,7 @@ import UserAvatar from "./UserAvatar";
 import { useHelpers } from "@/hooks/useHelpers"; // Import the helper hook
 import { useState } from "react";
 
+
 function ProfileForm({ profile }: { profile: SupabaseUserProfile }) {
   // Initialize the form with react-hook-form
   const form = useForm<SupabaseUserProfile>({
