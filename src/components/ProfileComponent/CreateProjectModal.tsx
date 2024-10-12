@@ -41,7 +41,7 @@ interface CreateFormProps {
 // import { toast } from "sonner";
 
 // import { SelectProjectType } from "./Profile";
-import  UploadFileForm  from '../UploadFileForm'; // assuming you've exported it already
+import  UploadFileForm  from './UploadFileForm'; // assuming you've exported it already
 import { Select } from "@headlessui/react";
 
 interface CreateFormProps {

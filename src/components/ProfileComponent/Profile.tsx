@@ -137,9 +137,10 @@ export default function Profile({
   const handleAddClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     setShowTodoForm((prevState) => !prevState);
   };
+  console.log("USER-Profile-USER_ID", userProfile.user_id, "USER-Profile-SESSION.id", session?.user?.id);
   const isCurrentUser = userProfile?.user_id == session?.user?.id && String(userProfile.user_id) === String(session.user.id);
 
-  console.log("USER-Profile-USER_ID", userProfile.user_id, "USER-Profile-SESSION.id", session?.user?.id);
+  // console.log("USER-Profile-USER_ID", userProfile.user_id, "USER-Profile-SESSION.id", session?.user?.id);
   console.log("DYNAMIC_PROFILE_SESSION", isCurrentUser);
 
 
