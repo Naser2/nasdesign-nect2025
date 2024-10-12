@@ -157,7 +157,7 @@ function ProfileForm({ profile }: { profile: SupabaseUserProfile }) {
                   </Select>
                 </div>
                 <FormDescription className="md:ml-24 text-xs">
-                  This won't be part of your public profile.
+                  This won&apos;t be part of your public profile.
                 </FormDescription>
                 <FormMessage className="md:ml-24" />
               </FormItem>
