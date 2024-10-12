@@ -28,6 +28,6 @@
     },
     "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/ButtonComponent.jsx", "src/components/UploadFileForm.jsx", "src/components/ProfileComponent/UserAvatar.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/ButtonComponent.jsx", "src/components/UploadFileForm.jsx", "src/components/ProfileComponent/UserAvatar.tsx"],
   "exclude": ["node_modules"]
 }

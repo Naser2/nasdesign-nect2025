@@ -33,7 +33,7 @@ function ProfileForm({ profile }: { profile: SupabaseUserProfile }) {
     defaultValues: {
       id: profile.id,
       image: profile.image || "",
-      name: profile.first_name || "",
+      name: `${profile.first_name ?? ""} ${profile.last_name ?? ""}`.trim(), // Derive the full name
       username: profile.username || "",
       bio: profile.bio || "",
       gender: profile.gender || "",

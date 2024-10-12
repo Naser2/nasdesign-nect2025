@@ -4,8 +4,12 @@ import  DefaultUserAvatar  from "@/components/mindConnect/ProfileComponent/whats
 import Image from "next/image";
 
 
+interface UserAvatarProps {
+  user: import("@/lib/Types").SupabaseUserProfile; // Adjust the type based on your needs
+  className?: string; // className should be optional
+}
 
-function UserAvatar({ user }) {
+function UserAvatar({ user, className }: UserAvatarProps) {
   console.log("USER_avatar: " + user)
   return (
     <Avatar className="relative h-8 w-8" {...user}>
