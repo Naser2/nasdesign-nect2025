@@ -144,14 +144,22 @@ import type { SupabaseAuthUser } from '@/lib/Types';
 export const profileWidth = 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8';
 
 
-
-export default function ProfileIndex({ user, userProfile, handleChange, session, userMeta,  handleSave}) {
+interface ProfileIndexProps {
+  user: any;                      // You can replace `any` with a more specific type if available
+  userProfile: any;                // Replace with the actual type for userProfile if known
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;  // Type for event handler
+  session: any;                    // Replace with the actual session type
+  userMeta: any;                   // Replace with the actual metadata type
+  handleSave: () => void;          // Type for a function with no parameters and no return value
+}
+export default function ProfileIndex({ user, userProfile, handleChange, session, userMeta,  handleSave}: ProfileIndexProps)  {
   console.log("USER_PROFILE_INDEX_PROFILE", userProfile, "USER-PROFILE_INDEX_USER",  user, "USER-PROFILE_INDEX_SESSION", session, );
 
   const [ userSession, setUserSession ] = useState(session); // Use Supabase session
   const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const sessionUserName = user?.name || '';  // Assuming user has a name field
 
   const [data, setData] = useState({
     username: user?.username || 'Pick a username',
@@ -214,26 +222,28 @@ export default function ProfileIndex({ user, userProfile, handleChange, session,
 
   return (
     <div className="min-h-screen pb-20">
-      <Profile
-        userProfile={userProfile}
-        handleChange={handleChange}
-        handleSave={handleSave}
-        // success={success}
-        // setSuccess={setSuccess}
-        // userMeta={userMeta}
-        
-        user={user}
-        data={data}
-        setData={setData}
-        setError={setError}
-        setSaving={setSaving}
-        error={error}
-        saving={saving}
-        settingsPage={false}
-        settings={false}
-        session={userSession}
-        profileWidth={profileWidth}
-      />
-    </div>
+    <Profile
+      userProfile={userProfile}            // Required
+      handleChange={handleChange}          // Required
+      handleSave={handleSave}              // Required
+      user={user}                          // Required
+      data={data}                          // Required
+      setData={setData}                    // Required
+      setError={setError}                  // Required
+      setSaving={setSaving}                // Required
+      error={error}                        // Required
+      saving={saving}                      // Required
+      settingsPage={false}                 // Optional
+      settings={false}                     // Optional
+      session={userSession}                // Optional
+      profileWidth={profileWidth}          // Required
+
+      // Newly added props based on type definition
+      setSuccess={setSuccess}              // Missing in original code, Required
+      success={success}                    // Missing in original code, Required
+      sessionUserName={sessionUserName}    // Missing in original code, Required
+      profile={userProfile}                // Missing in original code, Required (You can replace `userProfile` with the correct profile if it's different)
+    />
+  </div>
   );
 }
