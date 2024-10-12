@@ -60,19 +60,42 @@ export const useHelpers = () => {
       if (setLoading) setLoading(false);
     }
   };
+  // const createProject = async (projectData: any) => {
+  //   try {
+  //     setLoading(true);
+  //     console.log("PROJECT about to POST form Helpers: " + projectData)
+  //     const { data, error } = await clientSupabase
+  //       .from("projects")
+  //       .insert([projectData]);
+
+  //     if (error) throw error;
+
+  //     setData(data);
+  //     toast.success("Project created successfully!");
+
+  //     return data;
+  //   } catch (error: any) {
+  //     setError(error.message || "An error occurred while creating the project.");
+  //     toast.error("Sorry, something went wrong. Please try again.");
+  //     throw error;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const createProject = async (projectData: any) => {
     try {
       setLoading(true);
-      console.log("PROJECT about to POST form Helpers: " + projectData)
+      console.log("PROJECT about to POST: ", projectData);
+  
       const { data, error } = await clientSupabase
         .from("projects")
-        .insert([projectData]);
-
+        .insert([projectData]);  // Insert only relevant fields at this stage
+  
       if (error) throw error;
-
+  
       setData(data);
       toast.success("Project created successfully!");
-
+  
       return data;
     } catch (error: any) {
       setError(error.message || "An error occurred while creating the project.");
@@ -82,6 +105,8 @@ export const useHelpers = () => {
       setLoading(false);
     }
   };
+  
+  
   return {
     data,
     loading,

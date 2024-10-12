@@ -17,6 +17,35 @@ import { useHelpers } from "../../hooks/useHelpers";
 
 import ProjectSubmission from './ProjectSubmission';
 
+// Convert the timeline input to a valid date format
+const convertTimelineToDate = (timeline: string): string => {
+  const currentDate: Date = new Date();
+
+  // Handle different types of inputs
+  if (timeline.toLowerCase().includes("month")) {
+    const months: number = parseInt(timeline);
+    if (!isNaN(months)) {
+      currentDate.setMonth(currentDate.getMonth() + months);  // Add the number of months
+    }
+  } else if (timeline.toLowerCase().includes("week")) {
+    const weeks: number = parseInt(timeline);
+    if (!isNaN(weeks)) {
+      currentDate.setDate(currentDate.getDate() + weeks * 7);  // Add weeks (7 days per week)
+    }
+  } else if (timeline.toLowerCase().includes("day")) {
+    const days: number = parseInt(timeline);
+    if (!isNaN(days)) {
+      currentDate.setDate(currentDate.getDate() + days);  // Add the number of days
+    }
+  } else if (timeline.toLowerCase().includes("asap")) {
+    return currentDate.toISOString();  // ASAP is just the current date, return ISO string
+  } else {
+    throw new globalThis.Error("Invalid timeline input"); 
+  }
+
+  return currentDate.toISOString();  // Return as a valid ISO timestamp
+};
+
 
 import SelectButton from '@/components/Select/SelectButton';
 interface CreateFormProps {
@@ -76,7 +105,9 @@ export default function CreateProjectModal({ ...props }) {
 
 
 export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
-  const [fileUrl, setFileUrl] = useState<string>('');
+  // const [fileUrl, setFileUrl] = useState<string>('');
+
+  const [projectDesign, setProjectDesign] = useState<string[]>([]);  
   const [projectName, setProjectName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [timeline, setTimeline] = useState<string>('');
@@ -136,16 +167,56 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
     if (!description) newErrors.description = 'Description is required';
     if (!timeline) newErrors.timeline = 'Project timeline is required';
     if (!budget) newErrors.budget = 'Budget selection is required';
-    if (!fileUrl && hasDesign) newErrors.fileUrl = 'Please upload the design';
-    if (!fileUrl && !hasDesign && needDesign) newErrors.fileUrl = 'Upload an example is required';
+    if (!projectDesign && hasDesign) newErrors.fileUrl = 'Please upload the design';
+    if (!projectDesign && !hasDesign && needDesign) newErrors.fileUrl = 'Upload an example is required';
     return newErrors;
   };
 
-  console.log("PROJECT_FILE_URL", fileUrl, projectName, description, timeline, budget, hasDesign, needDesign);
+  console.log("PROJECT_FILE_URL", projectDesign, projectName, description, timeline, budget, hasDesign, needDesign);
 
   const handleProjectType = (selectedProjectType: string) => {
     setProjectType(selectedProjectType); // Correctly update the role state
   };
+
+  // const handleSubmit = async (e: { preventDefault: () => void }) => {
+  //   e.preventDefault();
+  //   const validationErrors = validateForm();
+  //   if (Object.keys(validationErrors).length > 0) {
+  //     setErrors(validationErrors);
+  //     return;
+  //   }
+  //   const projectData = {
+  //     userId,
+  //     projectName,
+  //     description,
+  //     timeline,
+  //     budget,
+  //     projectdesign:projectDesign,  // Use lowercase here
+  //     needdesign:needDesign,     // Use lowercase here
+  //   };
+    
+    
+  //   const result = await createProject(projectData);  // Use centralized createProject function
+  //   if (result) {
+  //     closeDialog();
+  //   }
+  // };
+
+  // Map budget ranges to numeric values
+const getBudgetValue = (budgetRange: string) => {
+  switch (budgetRange) {
+    case "under_25k":
+      return 25000;
+    case "25k-50k":
+      return 50000;
+    case "50k-100k":
+      return 100000;
+    case "100k_plus":
+      return 100001;  // Use a high value to represent "100k+"
+    default:
+      return null;
+  }
+};
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -154,22 +225,35 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
       setErrors(validationErrors);
       return;
     }
+  // Convert the budget range into a numeric value
+  const budgetValue = getBudgetValue(budget);
+
+  if (!budgetValue) {
+    setErrors({ budget: "Invalid budget selection" });
+    return;
+  }
+  const expectedCompletion = convertTimelineToDate(timeline);
+    // Create the projectData object to match your Supabase schema
     const projectData = {
-      userId,
-      projectName,
-      description,
-      timeline,
-      budget,
-      fileUrl,
-      needDesign,
+      project_owner: userId,             // Correctly set project owner to userId
+      title: projectName,                // Project name mapped to title
+      description,                       // Short description
+      long_description: "",              // Optional field for later
+      budget:budgetValue,    
+      expected_completion: expectedCompletion,  // Use the converted date                        // Project budget
+         // Correct mapping for the timeline
+      category: projectType,             // Project type/category
+      projectdesign: projectDesign,      // Design URLs
+      needdesign: needDesign,            // Whether the user needs design help
+      created_at: new Date().toISOString(),  // Automatically set creation date
     };
-    
+  
+    // Send the data to Supabase
     const result = await createProject(projectData);  // Use centralized createProject function
     if (result) {
       closeDialog();
     }
   };
-
   
   return (
     <div
@@ -189,9 +273,9 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
          data-size="tiny" type="button" 
          className="mr-4 relative justify-center cursor-pointer inline-flex items-center space-x-2 text-center font-regular ease-out duration-200 rounded-md outline-none transition-all outline-0 focus-visible:outline-4 focus-visible:outline-offset-1 border text-foreground bg-alternative dark:bg-muted hover:bg-selection border-strong hover:border-stronger focus-visible:outline-brand-600 data-[state=open]:bg-selection data-[state=open]:outline-brand-600 data-[state=open]:border-button-hover text-xs px-2.5 py-1 h-[26px]">
            <span className="truncate">Cancel</span> </button></div></div>
-      <header className="text-foreground text-2xl space-y-1 py-4 px-4 bg-dash-sidebar sm:px-6 border-b">
+      <div className="text-foreground text-2xl space-y-1 py-4 px-4 bg-dash-sidebar sm:px-6 border-b">
         Create Your Project
-      </header>
+      </div>
       
       <div className="relative flex-1 overflow-y-auto">
         <div className="px-4 sm:px-6 space-y-10 py-6">
@@ -282,18 +366,18 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
          
         {hasDesign && (
           <UploadFileForm
-            fileUrl={fileUrl}
-            setFileUrl={setFileUrl}
-            title="Upload Design"
-            openUploader={() => {}}
-            closeUploader={() => {}}
+              projectDesign={projectDesign}
+              setProjectDesign={setProjectDesign}
+              title="Upload Design"
+              openUploader={() => {}}
+              closeUploader={() => {}}
           />
         )}
 
         {!hasDesign && needDesign && (
           <UploadFileForm
-            fileUrl={fileUrl}
-            setFileUrl={setFileUrl}
+          projectDesign={projectDesign}
+          setProjectDesign={setProjectDesign}
             title="Upload Example"
             openUploader={() => {}}
             closeUploader={() => {}}
@@ -381,7 +465,7 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
                Cancel
         </Button>
     
-        <Button onClick={closeDialog} className="mt-6 bg-gray-100  bg-black hover:text-white justify-center cursor-pointer text-xs" 
+        <Button onClick={handleSubmit} className="mt-6 bg-gray-100  bg-black hover:text-white justify-center cursor-pointer text-xs" 
                type="submit">
               {loading ? "Saving..." : "Create Project"}
         </Button>
