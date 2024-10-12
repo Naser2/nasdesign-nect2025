@@ -15,16 +15,16 @@ import {
   FormMessage,
 } from "../ui/form";
 import useMount from "@/hooks/useMount";
-import { updateProfile } from "../lib/actions";
+// import { updateProfile } from "../lib/actions";
 import type {SupabaseUserProfile} from "@/lib/Types";
-import { UpdateUser } from "../../lib/schemas";
+// import { UpdateUser } from "../../lib/schemas";
 import { UploadButton } from "@/lib/uploadthing";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
+// import { z } from "zod";
 import SubmitButton from "../SubmitButton";
 import UserAvatar from "./UserAvatar";
 import { Form } from "@/components/ui/form";
