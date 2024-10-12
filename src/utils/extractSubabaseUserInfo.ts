@@ -1,6 +1,7 @@
 // utils/extractUserInfo.ts
 
-import { User } from '@supabase/supabase-js';
+// utils/extractUserInfo.ts
+import type { User } from '@supabase/supabase-js';
 
 interface UserInfo {
   userId: string;
