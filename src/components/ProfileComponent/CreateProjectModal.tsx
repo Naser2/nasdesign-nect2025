@@ -306,7 +306,7 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
             fileUrl={fileUrl}
             setFileUrl={setFileUrl}
             title="Upload Design"
-            openUploader={true}
+            openUploader={() => {}}
             closeUploader={() => {}}
           />
         )}
@@ -316,7 +316,7 @@ export const CreateForm = ({ closeDialog, userId }: CreateFormProps) => {
             fileUrl={fileUrl}
             setFileUrl={setFileUrl}
             title="Upload Example"
-            openUploader={true}
+            openUploader={() => {}}
             closeUploader={() => {}}
           />
         )}
