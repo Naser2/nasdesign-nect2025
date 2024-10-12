@@ -54,7 +54,7 @@ function ProfileAvatar({
   children: React.ReactNode;
 }) {
   const { data: session } = useSession();
-  const { saveUser } = useHelpers(); // Use saveUser from useHelpers
+  const { saveUser , setLoading} = useHelpers(); // Use saveUser from useHelpers
   const isCurrentUser = session?.user.id === user.id;
 
   // UseForm with appropriate initial values
@@ -91,8 +91,8 @@ function ProfileAvatar({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(async (values) => {
-                const { message } = await saveUser(values);
-                toast(message);
+                saveUser({setLoading, metadata: values});
+                // toast(message);
 
                 setOpen(false);
               })}
