@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/api/*": ["./src/app/api/*"],
+      "@/app/*": ["./src/app/*"],
+      "@/context/*": ["./src/app/context*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/images/*": ["./src/components/images*"],
+      "@/components/*": ["./src/components/*"]
+    },
+    "target": "ES2017"
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/ButtonComponent.jsx", "src/components/UploadFileForm.jsx", "src/components/ProfileComponent/UserAvatar.tsx", "src/app/(auth)/dashboard/layout.tsx"],
+  "exclude": ["node_modules"]
+}
