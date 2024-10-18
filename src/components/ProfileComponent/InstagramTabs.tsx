@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/tabs"
 import React, { useState } from "react";
 import DialogComponent from "./Dialog";
+import clsx from "clsx";
 
 
 interface InstagramTabsProps {
@@ -67,7 +68,7 @@ const tabs = [
   {
     value: "saved",
     label: "Saved",
-    title: "saved Information",
+    title: "Saved ",
     Icon: Bookmark,
     description: "Update your profile details such as bio, website, and gender.",
     content: [
@@ -87,13 +88,40 @@ const InstagramTabs: React.FC<InstagramTabsProps> = ({ profile, isCurrentUser, p
     setSelectedProject(project);
     setOpen(true); // Open the dialog/modal
   };
-
+// small hidden  max-[1100px]:hidden cursor-not-allowed data-[active]:shadow 
   console.log("projects", projects)
   return (
-    <Tabs defaultValue="bio" className="min-w-[400px] w-full mt-12 lg:mt-24">
-      <TabsList className="grid w-full grid-cols-3 gap-x-4 bg-white">
+    <Tabs defaultValue="bio" className="min-w-[400px] w-full mt-12 lg:mt-24 ">
+      <TabsList className="grid w-full grid-cols-3 gap-x-4 bg-white system:.bg-muted dark:bg-black ">
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value} className="bg-muted">
+          <>
+            <TabsTrigger key={tab.value} value={tab.value}
+              className="border-transparent dark:border-gray-800 text-gray-600 border-black  dark:text-gray-400 max-[1100px]:hidden
+               data-[active]:text-black 
+               dark:data-[state=active]:!bg-[#1b1e22]
+               dark:data-[state=active]:!text-white
+               dark:data-[active]:!border-b-2
+               dark:data-[state=active]:!border-[#3d4146]
+               border-gray-400
+               system:border-mutted
+               whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm font-mono"
+            >
+              {tab.title}
+          </TabsTrigger>
+         {/* max-lg:rounded-[0px]  */}
+          <TabsTrigger key={tab.value} value={tab.value} className="min-[1100px]:hidden 
+            bg-muted max-[1100px]:bg-muted  bg-white/15 dark:bg-[rgb(27,30,34)]
+             dark:text-slate-100 dark:hover:text-white
+            dark:data-[active]:!bg-white dark:data-[active]:!text-black 
+            dark:data-[hover]:text-black hover:bg-white/15
+            font-bold text-[#333]
+            relative inline-flex items-center justify-center 
+            px-4 py-[calc(theme(spacing.3)-1px)] rounded-full
+            border border-transparent 
+            shadow-md ring-1 ring-[#D15052]/15 after:absolute after:inset-0 
+            after:rounded-full after:shadow-[inset_0_0_2px_1px_#ffffff4d] 
+            whitespace-nowrap text-base font-medium text-gray-950  
+           ">
             <div className="flex">
               <div className="flex items-center gap-x-1">
                 <tab.Icon className="h-3 w-3" />
@@ -102,7 +130,7 @@ const InstagramTabs: React.FC<InstagramTabsProps> = ({ profile, isCurrentUser, p
                 </p>
               </div>
             </div>
-          </TabsTrigger>
+          </TabsTrigger></>
         ))}
       </TabsList>
       <DialogComponent item={selectedProject} open={open} setOpen={setOpen}/>

@@ -29,7 +29,7 @@ const ThemeButton = function() {
 
   return (
     <li  className={clsx("popover_themeSwitcher__HWbbC !mx-4")}>
-      <p>Theme</p>
+      <p className='text-black dark:text-white'>Theme</p>
       <fieldset 
        className={clsx("!ring-1 !ring-[#4e5155] !border-1 !border-[#4e5155] px-4 tailwind theme-switcher_root__DrzBE popover_themeSwitcherComponent__KfdcZ")}>
         <legend className="sr-only">Select a display theme:</legend>

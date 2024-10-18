@@ -9,7 +9,7 @@ const NotificationIcon = () => {
             aria-controls="radix-:rea:"
             data-state="closed"
             aria-label="681 unseen notifications"
-            className="bell_btn__yil2q bell_shadow__1T7KD lg:!bg-[#f9f9f985] lg:hover:bg-gray-200" 
+            className="bell_btn__yil2q bell_shadow__1T7KD lg:!bg-[#f9f9f985] lg:hover:bg-gray-200 dark:!bg-black" 
             data-testid="notifications/bell"
           >
             <span className="bell_buttonContent__IPiYG">

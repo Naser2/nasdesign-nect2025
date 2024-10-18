@@ -131,13 +131,13 @@ export const listItems = [
     };
   
     return (
-      <div className="block">
+      <div className="block z-30">
         <Button
           onClick={toggleDialog}  // Use toggleDialog to handle the click
           size={"icon"}
           variant={"ghost"}
           // max-[1100px]:absolute top-0 right-4
-          className="md:order-last bg-black hover:bg-blue-500 lg:bg-gray-300 lg:hover:bg-black py-2 px-2 rounded-full hover:bg-gray-300"
+          className="md:order-last bg-black hover:bg-blue-500 lg:bg-gray-300 lg:hover:bg-black dark:bg-black py-2 px-2 rounded-full hover:bg-gray-300"
         >
           <MoreHorizontal className="dark:text-white" />
         </Button>
@@ -169,14 +169,14 @@ export const listItems = [
                   />
                   <div className="lh-condensed overflow-hidden d-flex flex-column flex-justify-center ml-2 f5 mr-auto">
                     <div className="text-bold">
-                      <div title="Naser2" className="px-2 mt-1 text-white Truncate__StyledTruncate-sc-23o1d2-0 fWcxCG">
+                      <div title="Naser2" className="pl-1 mt-1 text-white Truncate__StyledTruncate-sc-23o1d2-0 fWcxCG">
                       { userProfile?.display_name ?? userProfile?.username}
                       </div>
                     </div>
                     <div className="fgColor-muted">
-                      <div title="Nas" className="Truncate__StyledTruncate-sc-23o1d2-0 fWcxCG">
+                      {/* <div title="Nas" className="pl-1 Truncate__StyledTruncate-sc-23o1d2-0 fWcxCG">
                         Nas
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div> 

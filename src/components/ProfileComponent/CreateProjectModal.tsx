@@ -56,6 +56,7 @@ interface CreateFormProps {
 
 import  UploadFileForm  from './UploadFileForm'; // assuming you've exported it already
 import { Select } from "@headlessui/react";
+import { PlusIcon } from "lucide-react";
 
 interface CreateFormProps {
   closeDialog: () => void;
@@ -81,8 +82,9 @@ export default function CreateProjectModal({ ...props }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" onClick={() => setOpen(true)} className="bg-gray-200/90 rounded-md">
-        <span className='text-md font-bold pr-2'>+ </span>
+        <Button variant="outline" onClick={() => setOpen(true)} className="bg-gray-200/90 max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 dark:text-white max-lg:rounded-[0px] relative inline-flex items-center justify-center px-4 py-[calc(theme(spacing.2)-1px)] rounded-full border border-transparent bg-white/15 shadow-md ring-1 ring-[#D15052]/15 after:absolute after:inset-0 after:rounded-full after:shadow-[inset_0_0_2px_1px_#ffffff4d] whitespace-nowrap text-base font-medium text-gray-950 data-[disabled]:bg-white/15 data-[hover]:bg-white/20 data-[disabled]:opacity-40">
+        <PlusIcon aria-hidden="true" className="-ml-0.5 h-4 w-4 font-bold mr-1" />
+        {/* <span className='text-md font-bold pr-2'>+ </span> */}
         Create Project</Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="h-[99.9vh] w-full">

@@ -147,7 +147,7 @@ export default function Profile({
               <div className={`h-48 w-full lg:h-64  ${getGradient(user?.username)}`}/>
                {/* <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}> */}
                <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}>
-                <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32">
+             <div id="USER_PROFILE_AVATAR" className="inline-flex gap-x-4"> <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32">
                   {isCurrentUser && userProfile.avatar_url  == null  &&  (
                     <button
                     className="not-visible hover:not-invisible absolute 
@@ -163,63 +163,97 @@ export default function Profile({
 
                   { userProfile?.avatar_url 
                       ? 
+                 <div className="inline-flex w-full  ">
                     <BlurImage
                       src={userProfile.avatar_url}
                       alt={user?.name}
                       width={300}
                       height={300}
                       /> 
-                      :  
-                    <DefaultAvatar/>
+                    
+                    
+                   </div> 
+                     : 
+                     <div className="inline-flex">
+                        <DefaultAvatar/>
+                       
+                     </div>
+                    
                     }
-               
-                  <div className="flex min-w-0 flex-1 items-center space-x-2">
-                    <h1 className="text-2xl font-semibold darrk:text-white truncate">
-                      {userProfile?.username  && userProfile.username  || userProfile?.display_name &&  userProfile?.display_name || userProfile?.first_name &&  userProfile.first_name}
-                    </h1>
-                    {!user?.verified && (
-                      <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
-                    )}
-                  </div>
                 </div>
-                <div className=" mt-2 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-                  <div className="flex min-w-0 flex-1 items-center space-x-2">
+                <div className="flex min-w-0 flex-1 mt-10 lg:mt-14  items-center space-x-2  min-lg:hidden">
                     <h1 className="text-2xl font-semibold darrk:text-white truncate">
+                      @{userProfile?.username  && userProfile.username  || userProfile?.display_name &&  userProfile?.display_name || userProfile?.first_name &&  userProfile.first_name || "Update info"}
+                    </h1>
+                    {!userProfile?.email_verified && (
+                       <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
+                      )}
+                  </div>
+              </div>  
+     
+              
+                <div className="max-[1100px]:hidden mt-2 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
+                  {/* <div className="flex min-w-0 flex-1 items-center space-x-2  max-lg:hidden">
+                    <h1 className="text-2xl text-black font-semibold dark:text-white truncate">
                     {userProfile?.username  && userProfile.username  || userProfile?.display_name &&  userProfile?.display_name || userProfile?.first_name &&  userProfile.first_name}
                     </h1>
                     {!userProfile?.email_verified && (
                       <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
                     )}
-                  </div>
+                  </div> */}
                   {isCurrentUser && (
                   <>
                  <div className="inline-flex space-x-6">
                   <Button href='/archive'
                     variant={"secondary"}
-                    className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 rounded-md max-lg:rounded-[0px]"
+                    className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 dark:text-white max-lg:rounded-[0px]"
                    
                   >
                     See dashboard
                     </Button>
                     <CreateProjectModal userId={userProfile.id} />
                   {/* <CreateTask /> */}
-
-                {isCurrentUser &&  
+                  {isCurrentUser &&  
                     <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                      <a
+                      <Link
                         href="https://github.com/vercel/mongodb-starter"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
                       >
                         {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
-                        <span className="text-white flex">Mistery Box</span>
-                      </a>
+                        <span className="text-white flex">Edit Profile</span>
+                      </Link>
                     </div>
                    }
-                  { isCurrentUser  &&  <UserNavPopup userProfile={userProfile}/>
-                  }
+                    {isCurrentUser &&  
+                    <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                      <Link
+                        href="https://github.com/vercel/mongodb-starter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
+                      >
+                        {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
+                        <span className="text-white flex">Share Profile</span>
+                      </Link>
                     </div>
+                   }
+                  {isCurrentUser &&  
+                    <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                      <Link
+                        href="https://github.com/vercel/mongodb-starter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
+                      >
+                        {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
+                        <span className="text-white flex">Message</span>
+                      </Link>
+                    </div>
+                   }
+                  { isCurrentUser  &&  <UserNavPopup userProfile={userProfile}/>}
+                 </div>
               
        
                   {/* <Button
@@ -303,17 +337,69 @@ export default function Profile({
               </div>
             </div>
           </div>
-
+          <Followers/>
+          {isCurrentUser && (
+               <div className='min-[1100px]:hidden my-4'>
+                 <div className="inline-flex space-x-2">
+                  <Button href='/archive'
+                    variant={"secondary"}
+                    className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 dark:text-white max-lg:rounded-[0px]"
+                   
+                  >
+                    See dashboard
+                    </Button>
+                    <CreateProjectModal userId={userProfile.id} />
+                  {/* <CreateTask /> */}
+                 
+                    <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                      <Button
+                        // href="https://github.com/vercel/mongodb-starter"
+                        // target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
+                      >
+                        <span className="text-white flex">Edit Profile</span>
+                      </Button>
+                    </div>  
+                   
+                    <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                    <Button
+                        // href="https://github.com/vercel/mongodb-starter"
+                        // target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
+                      >
+                        {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
+                        <span className="text-white flex">Share Profile</span>
+                        </Button>
+                    </div>
+                
+            
+                    <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                    <Button
+                        href="https://github.com/vercel/mongodb-starter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
+                      >
+                        <span className="text-white flex">Message</span>
+                      </Button>
+                    </div> 
+                   <UserNavPopup userProfile={userProfile}/>
+                 </div>
+               </div>)
+            }
           <div className="px-4 md:mx-12 lg:px-6 xl:mx-[7vw]">
           <InstagramTabs profile={profile} isCurrentUser={isCurrentUser} projects={projects} />
            </div>
+      
          
            {/* {showTodoForm && <TaskForm userId={session?.user?.id ?? user?._id} showTodoForm={showTodoForm} setShowTodoForm={setShowTodoForm}/>} */}
         {/* <ProfileTabs username={user.username} profile={user} session={session} /> */}
         {/* <Profiletabs username={user.username} profile={userProfile} session={session} />       */}
           {/* <TabsDemo /> */}
           {/* Tabs */}
-          <div className="mt-6 sm:mt-2 2xl:mt-5">
+          {/* <div className="mt-6 sm:mt-2 2xl:mt-5">
             <div className="border-b border-gray-800">
               <div className={`${profileWidth} mt-10`}>
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">
@@ -323,8 +409,8 @@ export default function Profile({
                       disabled={tab.name !== 'Profile'}
                       className={`${
                         tab.name === 'Profile'
-                          ? 'border-white text-white'
-                          : 'border-transparent text-gray-400 cursor-not-allowed'
+                          ? 'dark:border-white dark:text-white text-black border-black system:border-mutted'
+                          : 'border-transparent text-gray-400 dark:text-gray-400 cursor-not-allowed'
                       }
                         whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm font-mono`}
                     >
@@ -334,7 +420,7 @@ export default function Profile({
                 </nav>
               </div> 
             </div>
-          </div>
+          </div> */}
 
           <BioModal
             bio={userProfile?.bio || "Update your bio"}
@@ -372,7 +458,7 @@ export default function Profile({
             </div>
             //  ) : user.username === session?.user?.username ?  (
           ) : isCurrentUser  ?  (
-            <Link href='/settings'
+            <Link href='/profile/settings'
               // href={{ query: { settings: settings } }}
               // as="/settings"
               // shallow
@@ -431,7 +517,38 @@ export function SelectProjectType() {
 
 
 
-
+export const Followers = () =>{
+  return <div className="relative mx-4 lg:mx-6 mt-2 lg:mt-6">
+      <div className="flex gap-2 items-center text-gray-700 dark:text-gray-300 mb-4">
+          <svg className="h-6 w-6 text-gray-400 dark:text-gray-400" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path className=""
+                  d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z" />
+          </svg>
+          <span><strong className="text-slate-600 dark:text-white">12</strong> Followers you know</span>
+      </div>
+      <div className="flex">
+          <div className="flex justify-end mr-2">
+              <img className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                  src="https://randomuser.me/api/portraits/men/32.jpg" alt=""/>
+              <img className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                  src="https://randomuser.me/api/portraits/women/31.jpg" alt=""/>
+              <img className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                  src="https://randomuser.me/api/portraits/men/33.jpg" alt=""/>
+              <img className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                  src="https://randomuser.me/api/portraits/women/32.jpg" alt=""/>
+              <img className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                  src="https://randomuser.me/api/portraits/men/44.jpg" alt=""/>
+              <img className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                  src="https://randomuser.me/api/portraits/women/42.jpg" alt=""/>
+              <span
+                  className="flex items-center justify-center bg-gray-200 dark:bg-gray-800 text-sm text-gray-600 dark:text-white font-semibold border-2 border-gray-200 dark:border-gray-700 rounded-full h-10 w-10">
+                  +999
+              </span>
+          </div>
+      </div>
+  </div>
+}
 
 
 export const DefaultAvatar = ()=> {

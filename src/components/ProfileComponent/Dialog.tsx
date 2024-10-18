@@ -21,10 +21,12 @@ interface ProjectProps {
   const DialogComponent: React.FC<ProjectProps> = ({ item, open, setOpen }) => {
     return (
       <Dialog open={open} onOpenChange={setOpen}
-       className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
-        <DialogContent className="ixed left-[50%] top-[50%]  lg:top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 
-        data-[state=open]:slide-in-from-top-[48%] h-[100vh] sm:min-h-[99vh] sm:rounded-lg  max-w-[80vw]">
-          <div className="relative max-w-7xl w-full bg-white rounded-lg p-6 f">
+       className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+       >
+        <DialogContent className="ixed left-[50%] top-[50%]  lg:top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] 
+        gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 
+        data-[state=open]:slide-in-from-top-[48%] h-[100vh] sm:min-h-[100vh] sm:rounded-lg  max-w-[100vw]">
+          <div className="relative max-w-7xl w-full bg-white rounded-lg overflow-y-scroll py-12 px-4">
             
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="w-full lg:w-1/2">
@@ -36,7 +38,7 @@ interface ProjectProps {
               </div>
               <div className="w-full lg:w-1/2">
               <DialogHeader>
-              <DialogTitle className="text-2xl font-bold">{item?.title}</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-left py-2 md:py-4">{item?.title}</DialogTitle>
               </DialogHeader>
                 <p className="text-sm text-gray-500">{item?.description || "No description available."}</p>
                 <div className="mt-4">

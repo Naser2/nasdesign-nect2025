@@ -427,7 +427,7 @@ const  SideBar = ({}) => {
 
 //  console.log("OPENED", openMobileNav, "SET_OPPENED", handleLinkClick);
  return <div id="SIDEBAR"
-  className={clsx("fixed inset-y-0 left-0 w-64 max-lg:hidden z-50  min-w-64 lg:w-[14rem] xl:w-[18rem]  mt-34 lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950")}>
+  className={clsx("fixed inset-y-0 left-0 w-64 max-lg:hidden   min-w-64 lg:w-[14rem] xl:w-[18rem]  mt-34 lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950")}>
     <nav className="flex h-full min-h-0 flex-col">
       <div className="flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
         <span className="relative">
@@ -451,8 +451,8 @@ const  SideBar = ({}) => {
       {  isCurrentUser &&  <div className="max-lg:hidden flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
           <AvatarPopoverComponent
             avatar={<img className="size-full" src={profile.avatar_url ?? "/erica.jpeg"} alt="Avatar" />}
-            label="Erica"
-            email={"erica@nasdesign.com"}
+            label={profile.first_name}
+            email={profile.email}
             icon={<img src="/catalyst.svg" alt="Catalyst" className="h-6 w-6" />}
             content={footerPopoverContent}
           />
