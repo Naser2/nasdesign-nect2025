@@ -7,7 +7,7 @@ import { CheckIcon } from '@heroicons/react/16/solid'
 import { clsx } from 'clsx'
 import type { Metadata } from 'next'
 import type { Dispatch, SetStateAction, FormEvent } from 'react'
-import { GoogleButton, MicrosoftButton } from '../auth-buttons'
+import { AppleButton, GoogleButton, MicrosoftButton } from '../auth-buttons'
 
 export const metadata: Metadata = {
   title: 'Login',
@@ -18,23 +18,28 @@ interface LoginProps {
   isRegistering: boolean;
   setIsRegistering: Dispatch<SetStateAction<boolean>>;
   handleLogin: (event: FormEvent<HTMLFormElement>) => void;  //
+  handleGoogleLogin: (event: FormEvent<HTMLFormElement>) => void;  //
   setEmail: Dispatch<SetStateAction<string>>;
   setPassword: Dispatch<SetStateAction<string>>;
   email: string;
   password: string;
   errorMessage?: string;
+  loading: boolean;
 }
 
 
 export default function Login( {
   isRegistering,
+  loading: boolean,
   handleLogin,
   setEmail,
   email,
   password,
   errorMessage,
   setPassword,
-  setIsRegistering
+  setIsRegistering,
+  handleGoogleLogin,
+  loading
 }: LoginProps) {
   return (
     <main className="overflow-hidden bg-gray-50">
@@ -111,8 +116,9 @@ export default function Login( {
               </Button>
             </div>
             <div className="flex-block py-6">
-                <GoogleButton /> 
-                <MicrosoftButton />
+            <GoogleButton loading={loading}  handleLogin={handleGoogleLogin} /> 
+            <AppleButton loading={loading}  handleLogin={handleGoogleLogin} /> 
+            <MicrosoftButton loading={loading}  handleLogin={handleGoogleLogin} />
             </div>
           </form>
            <div className="m-1.5 rounded-lg bg-gray-50 py-4 text-center text-sm/5 ring-1 ring-black/5">

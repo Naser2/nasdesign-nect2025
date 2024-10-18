@@ -30,6 +30,9 @@ export default function PrivatePage() {
 
   useEffect(() => {
     if (user && profile) {
+      console.log("USER_SUPA_AUTH", user)
+      console.log("USER_SUPA_PROFILE", profile)
+
       const { user_metadata } = user; // Assuming user contains user_metadata
       setUserData({
         display_name: user_metadata.display_name || '',

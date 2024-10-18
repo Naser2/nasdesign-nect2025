@@ -137,7 +137,7 @@ export const listItems = [
           size={"icon"}
           variant={"ghost"}
           // max-[1100px]:absolute top-0 right-4
-          className="md:order-last bg-black hover:bg-blue-500 lg:bg-gray-100 py-2 px-2 rounded-full hover:bg-gray-300"
+          className="md:order-last bg-black hover:bg-blue-500 lg:bg-gray-300 lg:hover:bg-black py-2 px-2 rounded-full hover:bg-gray-300"
         >
           <MoreHorizontal className="dark:text-white" />
         </Button>
@@ -162,7 +162,7 @@ export const listItems = [
                     data-component="Avatar"
                     alt=""
                     size={32}
-                    src="https://avatars.githubusercontent.com/u/20908727?v=4&size=64"
+                    src={userProfile.avatar_url ?? "https://avatars.githubusercontent.com/u/20908727?v=4&size=64"}
                     height={32}
                     width={32}
                     className="Avatar__StyledAvatar-sc-2lv0r8-0 evohuZ"

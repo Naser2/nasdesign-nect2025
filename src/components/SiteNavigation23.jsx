@@ -74,7 +74,8 @@ export default function Navbar({}) {
   // const [open, setIsNavOpen] = useState(false); // New state for managing the nav checkbox
 
 
-  const { user, userProfile, openMobileNav, setOpenMobileNav, handleLinkClick, navRef } = useAppContext();
+  const { user, profile, openMobileNav, setOpenMobileNav, handleLinkClick, navRef } = useAppContext();
+  const userProfile = profile
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -143,10 +144,12 @@ export default function Navbar({}) {
            { userProfile && <div className="flex-shrink-0">
               <button
                 type="button"
-                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-black hover:bg-sky-500 px-3 py-2 text-sm 
+                font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500
+                hover:!text-white hover:!bg-blue-500 rounded-md max-lg:rounded-[0px]"
               >
                 <PlusIcon aria-hidden="true" className="-ml-0.5 h-5 w-5" />
-                  New Listing
+                  New Project
               </button>
             </div>
             }
@@ -213,7 +216,7 @@ export default function Navbar({}) {
                           loading
                             ? 'bg-gray-200/20 border-gray-300'
                             : 'bg-white !text-black  border-black hover:bg-[var(--secondary-color)] hover:!text-white hover:border-pink-400'
-                        } w-36  h-8 lg:h-[3em] py-1 text-white border rounded-md text-sm transition-all`}
+                        } w-36  h-8 lg:h-[3em] py-1 text-white border rounded-full text-sm transition-all`}
                       >
                         {loading ? <LoadingDots color="gray" /> : 'Logout'}
                       </button>
@@ -295,7 +298,7 @@ export default function Navbar({}) {
         </div>
         <hr class="text-gray-400"/>
         <div className="border-t border-gray-700 pb-3 pt-4 mt-4">
-          <NavbarUserAvatarComponent user={user}/>
+          <NavbarUserAvatarComponent userProfile={userProfile}/>
           {/* <div className="flex items-center px-5 sm:px-6">
             <div className="flex-shrink-0">
             { userProfile !== null && userProfile?.image ?  <img alt="" src={userProfile.image} className="h-10 w-10 rounded-full" /> :
@@ -420,7 +423,7 @@ export  function SiteNavigation() {
             >
               <img
                 alt=""
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                src={userProfile.avatar_rul ?? "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
                 className="h-8 w-8 rounded-full bg-indigo-700"
               />
               <span className="sr-only">Your profile</span>

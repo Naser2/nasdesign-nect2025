@@ -1,9 +1,8 @@
 
 import type { UserProps } from '@/api/apiHelper';
-import XIcon
- from '@/components/icons/x';
-
-import  LoadingDots from '@/components/icons/loading-dots';
+import XIcon from '@/components/icons/x';
+ import TextareaAutosize from 'react-textarea-autosize';
+import LoadingDots from '@/components/icons/loading-dots';
 import UploadIcon from '@/components/icons/upload';
 import CheckInCircleIcon from '@/components/icons/check-in-circle';
 
@@ -38,8 +37,7 @@ import { unstable_noStore } from 'next/cache';
 import { useEffectOnce } from 'react-use';
 import InstagramTabs from './InstagramTabs';
 import { CheckIcon } from '@radix-ui/react-icons';
-
-
+import BioModal from './BioModal';
 
 export async function generateMetadata(
   profile: SupabaseUserProfile): Promise<Metadata> {
@@ -50,23 +48,6 @@ export async function generateMetadata(
     title: `${profile?.first_name} (@${profile?.username})`,
   };
 }
-
-
-// interface SupabaseUserProfile {
-//   id: string;
-//   user_id: string;
-//   username: string;
-//   display_name: string;
-//   first_name: string | null;
-//   last_name: string | null;
-//   bio: string | null;
-//   email_notifications: boolean;
-//   user_role: string;
-//   created_at: string;
-//   updated_at: string;
-//   image: string | null;
-//   website: string | null;
-// }
 
 export default function Profile({
   user,
@@ -86,7 +67,6 @@ export default function Profile({
   sessionUserName,
   profileWidth,
   session,
-  profile,
   handleSave,
   setSuccess,
   projects  // Add projects as a prop
@@ -118,7 +98,7 @@ export default function Profile({
   editProfilePage?: boolean;
   handleSave: React.MouseEventHandler<HTMLButtonElement>;
   success: string;
-  profile: SupabaseUserProfile; // Type is updated here
+ 
 }) {
   console.log(
     "USER-PROFILES_USER",
@@ -128,17 +108,29 @@ export default function Profile({
     "USER-PROFILES_SESSION",
     session,
     "USER-PROFILES_PROFILE",
-    profile,
+    userProfile,
     "USER-PROFILES_SESSION_USER_NAME",
     sessionUserName,
     "USER-PROJECTS",
     projects  // Log the projects
   );
+
+  const [profile, setUserProfile] = useState(userProfile)
+  const [isBioOpen, setIsBioOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showTodoForm, setShowTodoForm] = useState(false);
   const [showUserNav, setShowUserNav] = useState(true);
 
+  const openBioModal = () => setIsBioOpen(true);
+  const closeBioModal = () => setIsBioOpen(false);
+
+  const saveBio = (newBio: string) => {
+    setUserProfile((prevProfile) => ({
+      ...prevProfile,
+      bio: newBio
+    }));
+  };
 
   const handleAddClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     setShowTodoForm((prevState) => !prevState);
@@ -153,9 +145,10 @@ export default function Profile({
   return ( <div className="min-h-screen  mb-4 lg:mb-24">
             <div>
               <div className={`h-48 w-full lg:h-64  ${getGradient(user?.username)}`}/>
+               {/* <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}> */}
                <div className={`${profileWidth} -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5`}>
                 <div className="relative group h-24 w-24 rounded-full overflow-hidden sm:h-32 sm:w-32">
-                  {isCurrentUser && userProfile.image  == null  &&  (
+                  {isCurrentUser && userProfile.avatar_url  == null  &&  (
                     <button
                     className="not-visible hover:not-invisible absolute 
                     bg-gray-800 bg-opacity-10 hover:bg-opacity-70 w-full h-full z-10
@@ -168,10 +161,10 @@ export default function Profile({
                     </button>
                   )}
 
-                  { user?.image 
+                  { userProfile?.avatar_url 
                       ? 
                     <BlurImage
-                      src={user.image}
+                      src={userProfile.avatar_url}
                       alt={user?.name}
                       width={300}
                       height={300}
@@ -182,7 +175,7 @@ export default function Profile({
                
                   <div className="flex min-w-0 flex-1 items-center space-x-2">
                     <h1 className="text-2xl font-semibold darrk:text-white truncate">
-                      {user?.username  && user.username  || user?.user_metadata?.first_name &&  user.user_metadata.first_name}
+                      {userProfile?.username  && userProfile.username  || userProfile?.display_name &&  userProfile?.display_name || userProfile?.first_name &&  userProfile.first_name}
                     </h1>
                     {!user?.verified && (
                       <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
@@ -192,9 +185,9 @@ export default function Profile({
                 <div className=" mt-2 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                   <div className="flex min-w-0 flex-1 items-center space-x-2">
                     <h1 className="text-2xl font-semibold darrk:text-white truncate">
-                      {user?.username  && user.username  || user?.user_metadata?.first_name &&  user.user_metadata.first_name}
+                    {userProfile?.username  && userProfile.username  || userProfile?.display_name &&  userProfile?.display_name || userProfile?.first_name &&  userProfile.first_name}
                     </h1>
-                    {!user?.verified && (
+                    {!userProfile?.email_verified && (
                       <CheckInCircleIcon className="w-6 h-6 text-[#0070F3]" />
                     )}
                   </div>
@@ -203,7 +196,7 @@ export default function Profile({
                  <div className="inline-flex space-x-6">
                   <Button href='/archive'
                     variant={"secondary"}
-                    className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 rounded-md"
+                    className="max-[1100px]:hidden font-bold text-[#333] hover:!text-white hover:!bg-blue-500 rounded-md max-lg:rounded-[0px]"
                    
                   >
                     See dashboard
@@ -211,19 +204,21 @@ export default function Profile({
                     <CreateProjectModal userId={userProfile.id} />
                   {/* <CreateTask /> */}
 
-                  <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                      
+                {isCurrentUser &&  
+                    <div className="flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                       <a
                         href="https://github.com/vercel/mongodb-starter"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex justify-center px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
+                        className="inline-flex justify-center h-9 px-4 py-2 border border-gray-800 hover:border-white shadow-sm text-sm font-medium rounded-md text-white font-mono bg-black focus:outline-none focus:ring-0 transition-all"
                       >
                         {/* <GitHubIcon className="mr-3 h-5 w-5 text-white" /> */}
                         <span className="text-white flex">Mistery Box</span>
                       </a>
-
                     </div>
+                   }
+                  { isCurrentUser  &&  <UserNavPopup userProfile={userProfile}/>
+                  }
                     </div>
               
        
@@ -341,40 +336,12 @@ export default function Profile({
             </div>
           </div>
 
-          {/* Bio */}
-          <div className={`${profileWidth} mt-16`}>
-            <h2 className="font-semibold font-mono text-2xl text-white">Bio</h2>
-            <article className="mt-3 max-w-2xl text-sm tracking-wider leading-6 text-white font-mono prose prose-headings:text-white prose-a:text-white">
-                {/* <MDXRemote {...data.bioMdx} /> */}
-              {data?.bio} 
-              </article>
-            {!settingsPage ? (
-              <>
-                {/* <TextareaAutosize
-                  name="description"
-                  onInput={(e) => {
-                    setData({
-                      ...data,
-                      bio: (e.target as HTMLTextAreaElement).value
-                    });
-                  }}
-                  className="mt-1 w-full max-w-2xl px-0 text-sm tracking-wider leading-6 text-white bg-black font-mono border-0 border-b border-gray-800 focus:border-white resize-none focus:outline-none focus:ring-0"
-                  placeholder="Enter a short bio about yourself... (Markdown supported)"
-                  value={data?.bio ? data?.bio :  "Update your bio"}
-                /> */}
-                <div className="flex justify-end w-full max-w-2xl">
-                  <p className="text-gray-400 font-mono text-sm">
-                    {data?.bio?.length}/256
-                  </p>
-                </div>
-              </>
-            ) : (
-              <article className="mt-3 max-w-2xl text-sm tracking-wider leading-6 text-white font-mono prose prose-headings:text-white prose-a:text-white">
-            
-              {data?.bio} 
-              </article>
-            )}
-          </div>
+          <BioModal
+            bio={userProfile?.bio || "Update your bio"}
+            isBioOpen={isBioOpen}
+            isBioClosed={closeBioModal}
+            saveBio={saveBio}
+          />
 
           {/* Edit buttons */}
           {settingsPage ? (
@@ -394,18 +361,18 @@ export default function Profile({
                   <CheckIcon className="h-4 w-4 text-white" />
                 )}
               </button>
-              <a href={`/${user.username}`}
+              <Link href={`/${user.username}`}
               //  shallow replace 
               //  scroll={false}
                >
                 <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
                   <XIcon className="h-4 w-4 text-white" />
                 </div>
-              </a>
+              </Link>
             </div>
             //  ) : user.username === session?.user?.username ?  (
-          ) : user.username  ?  (
-            <a href='/settings'
+          ) : isCurrentUser  ?  (
+            <Link href='/settings'
               // href={{ query: { settings: settings } }}
               // as="/settings"
               // shallow
@@ -415,7 +382,7 @@ export default function Profile({
               <div className="rounded-full border border-gray-800 hover:border-white w-12 h-12 flex justify-center items-center transition-all">
               Edit  {/* <EditIcon className="h-4 w-4 text-white" /> */}
               </div>
-            </a>
+            </Link>
         ) : null}
       </div>
   );

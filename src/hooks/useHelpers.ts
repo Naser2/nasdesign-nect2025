@@ -4,7 +4,7 @@ import { useState } from "react";
 import clientSupabase from "@/lib/supabase/client";
 import { useRouter } from 'next/router';
 import { toast } from 'sonner';
-import type { ProjectDataType } from "@/lib/Types";
+import type { ProjectDataType, ProjectPostDataType } from "@/lib/Types";
 
 export const useHelpers = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -62,8 +62,8 @@ export const useHelpers = () => {
     }
     
   }
-  const createProject = async (projectData: ProjectDataType) => {
-    const router = useRouter(); // Initialize router for navigation
+  const createProject = async (projectData: ProjectPostDataType) => {
+    // const router = useRouter(); // Initialize router for navigation
   
     try {
       setLoading(true);

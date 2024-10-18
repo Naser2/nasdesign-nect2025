@@ -62,7 +62,7 @@ export const AvatarPopoverComponent = ({ label, avatar, icon, email, content }) 
             </span>
            {email &&  
            <span className="block truncate text-xs font-normal text-zinc-500 dark:text-zinc-400">
-              erica@example.com
+             { email}
             </span>}
           </span>
           {icon && (

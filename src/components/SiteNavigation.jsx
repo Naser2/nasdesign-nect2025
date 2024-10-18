@@ -95,7 +95,7 @@ export  default function SiteNavigation() {
                   )
                }
             </DisclosureButton>
-            <UserNavPopup userProfile={userProfile}/>
+            {/* <UserNavPopup userProfile={userProfile}/> */}
           </div>
           <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
             <button
@@ -118,7 +118,7 @@ export  default function SiteNavigation() {
                 </MenuButton>
               </div>
               <div>
-              <UserNavPopup userProfile={userProfile} />
+              {/* <UserNavPopup userProfile={userProfile} /> */}
               </div>
               {/* <MenuItems
                 transition

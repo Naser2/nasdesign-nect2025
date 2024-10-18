@@ -197,7 +197,6 @@ const getBudgetValue = (budgetRange: string) => {
       return null;
   }
 };
-
 const handleSubmit = async (e: { preventDefault: () => void }) => {
   e.preventDefault();
 
@@ -232,44 +231,40 @@ const handleSubmit = async (e: { preventDefault: () => void }) => {
       body: JSON.stringify({ projectName, description }),
     });
 
-
     const addStatusFlagsToPhases = (phases: any[]) => {
-          return phases.map(phase => ({
-            ...phase,
-            started: false,
-            in_progress: false,
-            completed: false,
-            tasks: phase.tasks.map((task: any) => ({
-              ...task,
-              started: false,
-              in_progress: false,
-              completed: false,
-            }))
-          }));
-        };
-    
+      return phases.map(phase => ({
+        ...phase,
+        started: false,
+        in_progress: false,
+        completed: false,
+        tasks: phase.tasks.map((task: any) => ({
+          ...task,
+          started: false,
+          in_progress: false,
+          completed: false,
+        }))
+      }));
+    };
+
     const data = await res.json();
     if (!data) {
       setError("Invalid phases data from AI response");
+      return; // Exit if data is invalid
     }
+
     const content = data.choices[0].message.content;
     const parsedContent = JSON.parse(content);
-    const phases = addStatusFlagsToPhases(parsedContent.phases);
+    if (!parsedContent.project || !parsedContent.project.phases) {
+      setError("Unexpected response structure from AI");
+      return; // Exit if the structure is not as expected
+    }
+
+    const phases = addStatusFlagsToPhases(parsedContent.project.phases);
 
     console.log("AI_DATA_PHASES: ", phases);
-   
- 
-    
+
     // Set the phases in the state
     setStages(phases);
-
-    // Access the phases from the AI response
-    // console.log("AI_DATA_PHASES_1: ", data)
-    // const phases = data.project?.phases || [];
-    // console.log("AI_DATA_PHASES: ", phases);
-
-    // Set the phases in the state
-  
 
     // Prepare project data including the phases
     const projectData = {
@@ -284,12 +279,13 @@ const handleSubmit = async (e: { preventDefault: () => void }) => {
       needdesign: needDesign,
       created_at: new Date().toISOString(),
       phases, // Adding the phases from the AI response here
+      developers: []
     };
 
     console.log("PROJECT_DATA: ", projectData);
     // Send the project data to Supabase
     const result = await createProject(projectData);  // Use centralized createProject function
-    if (result) {
+    if (result !== undefined) {
       closeDialog();
     }
   } catch (error) {
@@ -298,6 +294,109 @@ const handleSubmit = async (e: { preventDefault: () => void }) => {
     setLoading(false);
   }
 };
+
+
+// const handleSubmit = async (e: { preventDefault: () => void }) => {
+//   e.preventDefault();
+
+//   // Validate the form fields
+//   const validationErrors = validateForm();
+//   if (Object.keys(validationErrors).length > 0) {
+//     setErrors(validationErrors);
+//     return;
+//   }
+
+//   // Convert budget to numeric value
+//   const budgetValue = getBudgetValue(budget);
+
+//   if (!budgetValue) {
+//     setErrors({ budget: "Invalid budget selection" });
+//     return;
+//   }
+
+//   // Convert the timeline to a date
+//   const expectedCompletion = convertTimelineToDate(timeline);
+
+//   try {
+//     setLoading(true);
+//     console.log("AI_API_CALLING");
+
+//     // Call the API to generate phases and tasks
+//     const res = await fetch('/api/generate-tasks', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ projectName, description }),
+//     });
+
+
+//     const addStatusFlagsToPhases = (phases: any[]) => {
+//           return phases.map(phase => ({
+//             ...phase,
+//             started: false,
+//             in_progress: false,
+//             completed: false,
+//             tasks: phase.tasks.map((task: any) => ({
+//               ...task,
+//               started: false,
+//               in_progress: false,
+//               completed: false,
+//             }))
+//           }));
+//         };
+    
+//     const data = await res.json();
+//     if (!data) {
+//       setError("Invalid phases data from AI response");
+//     }
+//     const content = data.choices[0].message.content;
+//     const parsedContent = JSON.parse(content);
+//     const phases = addStatusFlagsToPhases(parsedContent.phases);
+
+//     console.log("AI_DATA_PHASES: ", phases);
+   
+ 
+    
+//     // Set the phases in the state
+//     setStages(phases);
+
+//     // Access the phases from the AI response
+//     // console.log("AI_DATA_PHASES_1: ", data)
+//     // const phases = data.project?.phases || [];
+//     // console.log("AI_DATA_PHASES: ", phases);
+
+//     // Set the phases in the state
+  
+
+//     // Prepare project data including the phases
+//     const projectData = {
+//       project_owner: userId,
+//       title: projectName,
+//       description,
+//       long_description: "",
+//       budget: budgetValue,
+//       expected_completion: expectedCompletion,
+//       category: projectType,
+//       projectdesign: projectDesign,
+//       needdesign: needDesign,
+//       created_at: new Date().toISOString(),
+//       phases, // Adding the phases from the AI response here
+//       developers:[]
+//     };
+
+//     console.log("PROJECT_DATA: ", projectData);
+//     // Send the project data to Supabase
+//     const result = await createProject(projectData);  // Use centralized createProject function
+//     if (result !== undefined) {
+//       closeDialog();
+//     }
+//   } catch (error) {
+//     console.error('Error:', error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
 
   // const handleSubmit = async (e: { preventDefault: () => void }) => {

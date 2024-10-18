@@ -4,7 +4,7 @@ import { Toaster } from 'sonner';
 import '../globals.scss';
 
 import SiteNavigation23 from '@/components/SiteNavigation23'
-import { AppWrapper } from '../context';
+import { AppWrapper} from '../context';
 
 import SideBar  from "@/components/SideBar";
 

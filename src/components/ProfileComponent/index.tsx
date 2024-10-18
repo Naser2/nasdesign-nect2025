@@ -225,7 +225,7 @@ export default function ProfileIndex({ user, userProfile,projects, handleChange,
     <div className="min-h-screen pb-20">
     <Profile
       userProfile={userProfile}    
-      projects={projects} // Add projects as a prop        // Required
+      projects={projects} 
       handleChange={handleChange}          // Required
       handleSave={handleSave}              // Required
       user={user}                          // Required
@@ -239,12 +239,9 @@ export default function ProfileIndex({ user, userProfile,projects, handleChange,
       settings={false}                     // Optional
       session={userSession}                // Optional
       profileWidth={profileWidth}          // Required
-
-      // Newly added props based on type definition
       setSuccess={setSuccess}              // Missing in original code, Required
       success={success}                    // Missing in original code, Required
       sessionUserName={sessionUserName}    // Missing in original code, Required
-      profile={userProfile}                // Missing in original code, Required (You can replace `userProfile` with the correct profile if it's different)
     />
   </div>
   );

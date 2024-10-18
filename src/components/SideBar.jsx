@@ -6,9 +6,47 @@ import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 import clsx from "clsx";
+import { useAppContext } from "@/app/context";
+import ThemeButton from "./ThemeButton";
 
-const  SideBar = ({openMobileNav, handleLinkClick}) => {
+const  SideBar = ({}) => {
+  const { profile,  session} = useAppContext(); // Access from AppContext
+  const navRef = useRef<HTMLDivElement>(null);
+  let [isCurrentUser,  setIsCurrentUser] = useState(null);
   
+  useEffect(() => {
+    if (profile !== null && session?.user !== null) {
+      const isCurrentUser =
+        profile?.user_id === session.user.id &&
+        String(profile.user_id) === String(session.user.id);
+      setIsCurrentUser(isCurrentUser);
+    } else {
+      setIsCurrentUser(false);
+    }
+  }, [profile, session]);
+
+
+  function handleClickOutside(event) {
+    if (navRef.current && !navRef.current.contains(event.target)) {
+      setOpenMobileNav(false); // Close mobile nav if clicked outside
+    }
+  }
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
+   const handleLinkClick = () => {
+    console.log("LINK_CLKICKED,  nav.", openMobileNav);
+    setOpenMobileNav(false); // Close the Disclosure when any link is clicked
+  };
+
   const upcomingTask = [
     {
       id: 1000,
@@ -193,7 +231,8 @@ const  SideBar = ({openMobileNav, handleLinkClick}) => {
           <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684ZM13.949 13.684a1 1 0 0 0-1.898 0l-.184.551a1 1 0 0 1-.632.633l-.551.183a1 1 0 0 0 0 1.898l.551.183a1 1 0 0 1 .633.633l.183.551a1 1 0 0 0 1.898 0l.184-.551a1 1 0 0 1 .632-.633l.551-.183a1 1 0 0 0 0-1.898l-.551-.184a1 1 0 0 1-.633-.632l-.183-.551Z" />
         </svg>
       )
-    }
+    },
+    
   ];
   const SupportLinks = ({ supportLinks, handleLinkClick, navRef  }) => {
     return (
@@ -213,6 +252,7 @@ const  SideBar = ({openMobileNav, handleLinkClick}) => {
             </Link>
           </span>
         ))}
+        <ThemeButton />
       </div>
     );
   };
@@ -387,7 +427,7 @@ const  SideBar = ({openMobileNav, handleLinkClick}) => {
 
 //  console.log("OPENED", openMobileNav, "SET_OPPENED", handleLinkClick);
  return <div id="SIDEBAR"
-  className={clsx("fixed inset-y-0 left-0 w-64 max-lg:hiddenrelative z-50  min-w-64 lg:w-[14rem] xl:w-[18rem]  mt-34 lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950")}>
+  className={clsx("fixed inset-y-0 left-0 w-64 max-lg:hidden z-50  min-w-64 lg:w-[14rem] xl:w-[18rem]  mt-34 lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950")}>
     <nav className="flex h-full min-h-0 flex-col">
       <div className="flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
         <span className="relative">
@@ -403,28 +443,20 @@ const  SideBar = ({openMobileNav, handleLinkClick}) => {
               dashboardNavLinks={dashboardNavLinks}
               handleLinkClick={handleLinkClick}
               />
-            <UpcomingTasksList
-             upcomingTask={upcomingTask} 
-            
-             handleLinkClick={handleLinkClick}
-            
-             />
+            <UpcomingTasksList upcomingTask={upcomingTask}  handleLinkClick={handleLinkClick} />
             <div aria-hidden="true" className="mt-8 flex-1" />
-            <SupportLinks supportLinks={supportLinks}
-             
-              handleLinkClick={handleLinkClick}
-            
-             />
+            <SupportLinks supportLinks={supportLinks} handleLinkClick={handleLinkClick}/>
           </div>
-         <div className="max-lg:hidden flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
+          
+      {  isCurrentUser &&  <div className="max-lg:hidden flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
           <AvatarPopoverComponent
-            avatar={<img className="size-full" src="/erica.jpeg" alt="Avatar" />}
+            avatar={<img className="size-full" src={profile.avatar_url ?? "/erica.jpeg"} alt="Avatar" />}
             label="Erica"
             email={"erica@nasdesign.com"}
             icon={<img src="/catalyst.svg" alt="Catalyst" className="h-6 w-6" />}
             content={footerPopoverContent}
           />
-      </div>
+      </div>}
     </nav>
   </div>
   
@@ -432,5 +464,7 @@ const  SideBar = ({openMobileNav, handleLinkClick}) => {
 
 
 export default SideBar
+
+
 
 

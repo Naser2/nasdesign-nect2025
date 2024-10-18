@@ -4,21 +4,22 @@ import Link from 'next/link';
 import NotificationIcon from '@/components/icons//NotificationIcon';
 
 
-const NavbarUserAvatarComponent = ({ user }) => {
-    if (!user) {
+const NavbarUserAvatarComponent = ({ userProfile }) => {
+  console.log("AVATAR", userProfile)
+    if (!userProfile) {
       return null; // Return null if userProfile is not provided
     }
   
-    const { user_metadata } = user;
-    // const identityData = identities[0]?.identity_data || {};
-    const firstName = user_metadata.first_name || '';
-    const lastName = user_metadata.last_name || '';
+    // const { user_metadata } = user;
+    // // const identityData = identities[0]?.identity_data || {};
+    const firstName = userProfile.first_name || 'Create a profile';
+    const lastName = userProfile.last_name || 'Create a profile';
   
     return (
       <div className="flex items-center px-5 sm:px-6">
         <Link href="/profile" className="flex-shrink-0">
-          {user_metadata.imageUrl ? (
-            <img alt="User Avatar" src={user_metadata.imageUrl } className="h-10 w-10 rounded-full" />
+          {userProfile.avatar_url ? (
+            <img alt="User Avatar" src={userProfile.avatar_url } className="h-10 w-10 rounded-full" />
           ) : (
             <img alt="Default Avatar" src={'/erica.jpeg'} className="h-16 w-16 rounded-full" />
           )}

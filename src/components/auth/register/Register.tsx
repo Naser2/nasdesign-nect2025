@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 
 interface RegisterProps {
   isRegistering: boolean;
+  handleGoogleLogin: (event: FormEvent<HTMLFormElement>) => void;  //
   setIsRegistering: Dispatch<SetStateAction<boolean>>;
   handleRegister: (event: FormEvent<HTMLFormElement>) => void;  //
   setEmail: Dispatch<SetStateAction<string>>;
@@ -31,10 +32,13 @@ interface RegisterProps {
   email: string;
   password: string;
   errorMessage?: string;
+  loading: boolean;
 }
 
 export default function Register({
   isRegistering,
+  handleGoogleLogin,
+  loading,
   handleRegister,
   setIsRegistering,
   setEmail,
@@ -100,15 +104,7 @@ export default function Register({
                               )}
                             />
                           </Field>
-                            {/* <input
-                            className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            id="firstName"
-                            type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            required
-                            placeholder="John"
-                            /> */}
+                          
                         </div>
                         <div className="space-y-2">
                           
@@ -133,15 +129,7 @@ export default function Register({
                               )}
                             />
                           </Field>
-                           {/* <input
-                            className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            id="lastName"
-                            type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            required
-                            placeholder="Doe"
-                            /> */}
+                         
                         </div>
                       </div>
                         
@@ -182,15 +170,7 @@ export default function Register({
                               )}
                             />
                           </Field>
-                          {/* <input
-                              className="flex h-10 w-full rounded-md focus:ring-indigo-50 border border-input focus:ring-indigo-500 focus:border-black bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                              id="phone"
-                              type="text"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              required
-                              placeholder="(555) 123-4567"
-                          /> */}
+                          
                         </div>
                     
 
@@ -226,31 +206,7 @@ export default function Register({
                             >
                             {/* Password */}
                             </label>
-                         {/* <Field className="mt-0 space-y-3">
-                           <Label className="text-sm/5 font-medium">Password</Label>
-                            <Input
-                              autoFocus
-                              id="password"
-                              type="password"
-                              onChange={(e) => setPassword(e.target.value)}
-                              required
-                              placeholder="•••••••"
-                              className={clsx(
-                                'block w-full rounded-lg border border-transparent shadow ring-1 ring-black/10',
-                                'px-[calc(theme(spacing.2)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base/6 sm:text-sm/6',
-                                'data-[focus]:outline data-[focus]:outline-2 data-[focus]:-outline-offset-1 data-[focus]:outline-black',
-                              )}
-                            />
-                          </Field> */}
-                            {/* <input
-                            className="flex h-10 w-full rounded-md border focus:ring-black border-input focus:border-indigo-50 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="•••••••"
-                            /> */}
+                        
                         </div>
 
                         
@@ -278,51 +234,18 @@ export default function Register({
                           {/* <span className="divider">-Or-</span> */}
                         </div>  
                         <div className="flex-block">
-                            <GoogleButton /> 
-                            <AppleButton /> 
-                            <MicrosoftButton />
+                            <GoogleButton loading={loading}  handleLogin={handleGoogleLogin} /> 
+                            <AppleButton loading={loading}  handleLogin={handleGoogleLogin} /> 
+                            <MicrosoftButton loading={loading}  handleLogin={handleGoogleLogin}  />
                         </div>
                     </div>
                     
                         {errorMessage && <p className="text-red-600">{errorMessage}</p>}
           
                 <div>
-                 {/* <div className="mt-8 flex items-center justify-between text-sm/5">
-                  <Field className="flex items-center gap-3">
-                    <Checkbox
-                    name="remember-me"
-                    className={clsx(
-                        'group block size-4 rounded border border-transparent shadow ring-1 ring-black/10 focus:outline-none',
-                        'data-[checked]:bg-black data-[checked]:ring-black',
-                        'data-[focus]:outline data-[focus]:outline-2 data-[focus]:outline-offset-2 data-[focus]:outline-black',
-                    )}
-                    >
-                    <CheckIcon className="fill-white opacity-0 group-data-[checked]:opacity-100" />
-                    </Checkbox>
-                    <Label>Remember me</Label>
-                  </Field>
-                   <Link href="#" className="font-medium hover:text-gray-600">
-                    Forgot password?
-                </Link>
-                </div> */}
-                
-                </div>
-                    {/* ------------------ AUTH FORM END ---------------- */}
                
-            
-{/* 
-            <div className="relative bg-black xl:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
-                <BlurImage
-                alt=""
-                src="/login_promo_desktop_v20240327.svg"
-                className="aspect-[3/2] w-full h-full  xl:h-[100vh] bg-black object-cover lg:absolute lg:inset-0 lg:aspect-auto lg:h-full"
-                height={800}
-                width={1200}
-                />
-            </div>
-           */}
-          
-        
+                </div>
+         
         </form>
        </div>
        </div>
