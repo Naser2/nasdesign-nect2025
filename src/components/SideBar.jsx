@@ -8,11 +8,14 @@ import Link from "next/link";
 import clsx from "clsx";
 import { useAppContext } from "@/app/context";
 import ThemeButton from "./ThemeButton";
+import { usePathname } from "next/navigation";
 
 const  SideBar = ({}) => {
   const { profile,  session} = useAppContext(); // Access from AppContext
-  const navRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef(null);
   let [isCurrentUser,  setIsCurrentUser] = useState(null);
+
+  const pathname = usePathname()
   
   useEffect(() => {
     if (profile !== null && session?.user !== null) {
@@ -24,6 +27,7 @@ const  SideBar = ({}) => {
       setIsCurrentUser(false);
     }
   }, [profile, session]);
+
 
 
   function handleClickOutside(event) {
@@ -426,10 +430,12 @@ const  SideBar = ({}) => {
     
 
 //  console.log("OPENED", openMobileNav, "SET_OPPENED", handleLinkClick);
- return <div id="SIDEBAR"
-  className={clsx("fixed inset-y-0 left-0 w-64 max-lg:hidden   min-w-64 lg:w-[14rem] xl:w-[18rem]  mt-34 lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950")}>
+ return <div id="SIDEBAR"  
+  className={clsx(`${pathname === '/tasks' ? "!hidden" : "sidenav-with-history-container.expanded[_ngcontent-ng-c1631036836] max-lg:hidden"}`)}>
+  {/* // "!fixed inset-y-0 left-0 w-64 max-lg:hidden min-w-64 lg:w-[14rem] xl:w-[18rem] mt-34 lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"}`)}> */}
     <nav className="flex h-full min-h-0 flex-col">
       <div className="flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
+       {/* <h1>  {pathname.startsWith('/tasks') ? "TASKS" : "FALSE"}</h1> */}
         <span className="relative">
           <PopoverComponent
             label="Catalyst"

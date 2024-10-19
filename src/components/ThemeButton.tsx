@@ -4,12 +4,8 @@ import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 
 const ThemeButton = function() {
-  const [theme, setTheme] = useState('system'); // Default to 'system'
   const [storedTheme, setStoredTheme] = useLocalStorage('theme-mode', 'system');
-
-  useEffect(() => {
-    if (storedTheme) setTheme(storedTheme);
-  }, [storedTheme]);
+  const [theme, setTheme] = useState(storedTheme || 'system'); // Initialize with stored value
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -17,15 +13,30 @@ const ThemeButton = function() {
       if (theme === 'dark') {
         root.classList.add('dark');
         root.classList.remove('light');
+        root.classList.remove('system');
       } else if (theme === 'light') {
         root.classList.add('light');
         root.classList.remove('dark');
-      } else {
-        root.classList.remove('dark', 'light');
+        root.classList.remove('system');
+      }  
+       else if (theme === 'system') {
+        root.classList.add('system');
+        root.classList.remove('light');
+        root.classList.remove('dark');
+      }
+      
+      else {
+        root.classList.remove('dark', 'light', "system");
       }
     }
     setStoredTheme(theme);
-  }, [theme]);
+  }, [theme, setStoredTheme]);
+
+
+  useEffect(() => {
+    if (storedTheme) setTheme(storedTheme);
+  }, [storedTheme]);
+
 
   return (
     <li  className={clsx("popover_themeSwitcher__HWbbC !mx-4")}>

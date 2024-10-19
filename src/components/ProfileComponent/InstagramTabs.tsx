@@ -92,7 +92,7 @@ const InstagramTabs: React.FC<InstagramTabsProps> = ({ profile, isCurrentUser, p
   console.log("projects", projects)
   return (
     <Tabs defaultValue="bio" className="min-w-[400px] w-full mt-12 lg:mt-24 ">
-      <TabsList className="grid w-full grid-cols-3 gap-x-4 bg-white system:.bg-muted dark:bg-black ">
+      <TabsList className="grid w-full grid-cols-3 gap-x-4 bg-white dark:bg-black ">
         {tabs.map((tab) => (
           <>
             <TabsTrigger key={tab.value} value={tab.value}

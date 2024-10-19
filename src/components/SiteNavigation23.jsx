@@ -25,6 +25,12 @@ import { useAppContext } from '../app/context'
 import { MessageCircle } from 'lucide-react'
 import  NavbarUserAvatarComponent  from '@/components/NavbarUserAvatarComponent'
 
+import { usePathname } from "next/navigation";
+import clsx from 'clsx';
+
+
+  
+
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, count: '5', current: false },
   { name: 'Home', href: '/profile', icon: UsersIcon, current: false },
@@ -94,13 +100,19 @@ export default function Navbar({}) {
 
   if (loading) return <LoadingDots />; // Show loading spinner while loading
 
+  const pathname = usePathname()
+
+  // flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600  z-50 pt-2 max-w-[600px]:!min-h-[60vh] lg:bg-[white] dark:bg-black
+
+
   //  const baseStyle = 'h-[4.1em] sm:h-[4em] lg:!h-[8em] z-50 mt-0 !z-50';
   // const applyStyle = '!sticky bg-black !top-0 !z-30 !inset-x-0 lg:h-[5em] lg:pl-[1em] lg:pt-[0%] z-50';
 
   console.log("NAVIGATION STARTS HERE", userProfile, "USER", user)
   return (
-    <Disclosure as="nav" className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 
-    z-50 pt-2 max-w-[600px]:!min-h-[60vh] lg:bg-[white] dark:bg-black ">
+    <Disclosure as="nav"  className={clsx(`${pathname === '/tasks' ? "!hidden" : "flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600  z-50 pt-2 max-w-[600px]:!min-h-[60vh] lg:bg-[white] dark:bg-black"}`)}>
+    {/* // className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 
+    // z-50 pt-2 max-w-[600px]:!min-h-[60vh] lg:bg-[white] dark:bg-black "> */}
       <div className="max-w-screen px-4 sm:px-6 lg:px-8 xl:px-12 ">
         <div className="flex h-16 justify-between">
           <div className="flex">
@@ -348,7 +360,9 @@ export default function Navbar({}) {
 
 
 export  function SiteNavigation() {
+
   return (
+    // <div className={clsx(`${pathname === '/tasks' ? "!hidden" : "sidenav-with-history-container.expanded[_ngcontent-ng-c1631036836] flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 dark:bg-black  px-6 max-w[300px]"}`)}>
     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 dark:bg-black  px-6 max-w[300px]">
       <div className="flex h-16 shrink-0 items-center">
         <img

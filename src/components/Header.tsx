@@ -5,6 +5,7 @@ import {Logo}from '@/components/logo';
 import UserItem from '@/components/UserItem';
 import { useRouter } from 'next/navigation';
 import { Link } from './link';
+import ThemeButton from './ThemeButton';
 
 export default function Header() {
   const { user } = useAppContext();
@@ -14,7 +15,7 @@ export default function Header() {
       <Logo  />
     </Link>
     <div className="flex gap-2 items-center">
-      <DarkMode />
+      <ThemeButton />
       <UserItem {...{ user, onClick: () => router.push('/profile') }} />
     </div>
   </header>;

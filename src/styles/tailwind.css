@@ -16,6 +16,40 @@
     -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
 }
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* System mode class */
+@layer utilities {
+  .system {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    /* Other custom variables for system mode */
+  }
+
+  .system:bg-black {
+    --tw-bg-opacity: 1;
+    background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  }
+
+  .system\:text-white {
+    color: white;
+  }
+}
+
+
+
+/* Apply system styles conditionally */
+/* body.system {
+  @apply system:bg-black system:text-white;
+} */
+
 
 @keyframes move-x {
   0% {
@@ -161,6 +195,11 @@
       color: rgb(255 255 255 / var(--tw-text-opacity));
   }
 }
+.system\:bg-black:is(.system *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
 
 @media (min-width: 640px) {
   .sm\:text-sm\/6 {
@@ -372,9 +411,17 @@
     --ds-pink-1000: hsla(var(--ds-pink-1000-value),1);
 }
 
+@media (prefers-color-scheme: system) {
+  :root {
+      --foreground-rgb: 255, 255, 255;
+      --background-start-rgb: 0, 0, 0;
+      --background-end-rgb: 0, 0, 0;
+  }
+}
+
 @media (color-gamut: p3) {
   @supports (color:oklch(0 0 0)) {
-      .dark, .dark-theme, .invert-theme {
+      .system, .system-theme, .invert-theme {
           --ds-blue-100: oklch(22.17% 0.069 259.89);
           --ds-blue-200: oklch(25.45% 0.0811 255.8);
           --ds-blue-300: oklch(30.86% 0.1022 255.21);
@@ -585,7 +632,7 @@
   --ds-shadow-border-inset: inset 0 0 0 1px hsla(0,0%,100%,.1);
 }
 
-.dark, .dark-theme, .invert-theme {
+.system, .sytem-theme, .invert-theme {
   --ds-gray-100-value: 0, 0%, 10%;
   --ds-gray-200-value: 0, 0%, 12%;
   --ds-gray-300-value: 0, 0%, 16%;
@@ -747,6 +794,66 @@
   --ds-gray-800: hsla(var(--ds-gray-800-value),1);
   --ds-gray-900: hsla(var(--ds-gray-900-value),1);
   --ds-gray-1000: hsla(var(--ds-gray-1000-value),1);
+}
+.system, .system-theme, .system-theme .geist-disabled .geist-disabled-skip, .invert-theme {
+  --geist-foreground: #fff;
+  --geist-background: #000;
+  --accents-8: #fafafa;
+  --accents-7: #eaeaea;
+  --accents-6: #999;
+  --accents-5: #888;
+  --accents-4: #666;
+  --accents-3: #444;
+  --accents-2: #333;
+  --accents-1: #111;
+  --geist-secondary-lighter: var(--accents-2);
+  --geist-secondary-light: var(--accents-3);
+  --geist-secondary: var(--accents-5);
+  --geist-secondary-dark: var(--accents-7);
+  --geist-link-color: var(--ds-blue-900);
+  --geist-marketing-gray: var(--accents-1);
+  --geist-code: var(--geist-foreground);
+  --geist-error-light: #f33;
+  --geist-error: red;
+  --geist-error-dark: #e60000;
+  --geist-text-gradient: linear-gradient(180deg,#fff,hsla(0,0%,100%,.75));
+  --dropdown-box-shadow: 0 0 0 1px var(--accents-2);
+  --dropdown-triangle-stroke: #333;
+  --scroller-start: #000;
+  --scroller-end: transparent;
+  --header-border-bottom: 0 1px 0 0 hsla(0,0%,100%,.1);
+  --header-import-flow-background: hsla(0,0%,7%,.8);
+  --shadow-smallest: 0 0 0 1px var(--accents-2);
+  --shadow-extra-small: 0 0 0 1px var(--accents-2);
+  --shadow-small: 0 0 0 1px var(--accents-2);
+  --shadow-medium: 0 0 0 1px var(--accents-2);
+  --shadow-large: 0 0 0 1px var(--accents-2);
+  --shadow-sticky: 0 0 0 1px var(--accents-2);
+  --shadow-hover: 0 0 0 1px var(--geist-foreground);
+  --portal-opacity: 0.75;
+  --geist-violet-background: #291d3a;
+  --geist-violet-background-secondary: #211830;
+  --geist-violet-background-tertiary: #211830;
+  --geist-background-rgb: 0, 0, 0;
+  --geist-foreground-rgb: 255, 255, 255;
+  --geist-console-header: #0f0310;
+  --geist-console-purple: #8a63d2;
+  --geist-console-text-color-default: var(--geist-foreground);
+  --geist-console-text-color-blue: #3291ff;
+  --geist-console-text-color-pink: #eb367f;
+  --next-icon-border: #fff;
+  --ds-shadow-border: 0 0 0 1px hsla(0,0%,100%,.145);
+  --ds-shadow-small: 0px 1px 2px rgba(0,0,0,.16);
+  --ds-shadow-border-small: var(--ds-shadow-border), 0px 1px 2px rgba(0,0,0,.16);
+  --ds-shadow-medium: 0px 2px 2px rgba(0,0,0,.32), 0px 8px 8px -8px rgba(0,0,0,.16);
+  --ds-shadow-border-medium: var(--ds-shadow-border), 0px 2px 2px rgba(0,0,0,.32), 0px 8px 8px -8px rgba(0,0,0,.16);
+  --ds-shadow-large: 0px 2px 2px rgba(0,0,0,.04), 0px 8px 16px -4px rgba(0,0,0,.04);
+  --ds-shadow-border-large: var(--ds-shadow-border), 0px 2px 2px rgba(0,0,0,.04), 0px 8px 16px -4px rgba(0,0,0,.04);
+  --ds-shadow-tooltip: var(--ds-shadow-border), 0px 1px 1px rgba(0,0,0,.02), 0px 4px 8px rgba(0,0,0,.04);
+  --ds-shadow-menu: var(--ds-shadow-border), 0px 1px 1px rgba(0,0,0,.02), 0px 4px 8px -4px rgba(0,0,0,.04), 0px 16px 24px -8px rgba(0,0,0,.06);
+  --ds-shadow-modal: var(--ds-shadow-border), 0px 1px 1px rgba(0,0,0,.02), 0px 8px 16px -4px rgba(0,0,0,.04), 0px 24px 32px -8px rgba(0,0,0,.06);
+  --ds-shadow-fullscreen: var(--ds-shadow-border), 0px 1px 1px rgba(0,0,0,.02), 0px 8px 16px -4px rgba(0,0,0,.04), 0px 24px 32px -8px rgba(0,0,0,.06);
+  --ds-focus-ring: 0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color);
 }
 
 .theme-switcher_root__DrzBE {

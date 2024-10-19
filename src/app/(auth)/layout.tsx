@@ -26,15 +26,19 @@ export default function AuthRootLayout({
         <AppWrapper>   
       
         <div className="lg:py-0 px-0">
-         <div className="grid lg:grid-cols-5 items-start gap-x-1 min-[1490px]:!flex">
-          <div className="grid gap-1  md:col-span-1 lg:col-span-1 max-[1024px]:hidden">
+         {/* <div className="grid lg:grid-cols-5 items-start gap-x-1 min-[1490px]:!flex"> */}
+          <div className="relative flex h-full w-full overflow-hidden transition-colors z-0"> 
+          {/* <div className="grid gap-1  md:col-span-1 lg:col-span-1 max-[1024px]:hidden"> */}
+             <div className="">
              <SideBar />
             </div>
+           <div className="bard-sidenav-content _ngcontent-ng-c1631036836 _nghost-ng-c24741362 relative">
             <div className="lg:col-span-4 xl:w-full">
               <SiteNavigation23 />
               <ViewTransitions>
                 {children}
               </ViewTransitions>
+            </div>
             </div>
           </div>
         </div>
